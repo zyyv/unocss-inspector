@@ -1,4 +1,4 @@
-# UnoCSS Inspector
+# UnoCSS Inspector (WIP)
 
 A UnoCSS-optimized element inspection tool, similar to browser developer tools' element inspector, for visual analysis of web element styles, box models, and property information.
 
