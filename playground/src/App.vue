@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import ElementSelector from '../../src/ElementSelector.vue'
+import Inspector from '../../src/Inspector.vue'
 
 const selectedElement = ref(null)
 
@@ -15,7 +15,7 @@ const style = ref({
 
 <template>
   <div class="min-h-screen font-sans p-5 md:p-10">
-    <ElementSelector
+    <Inspector
       v-model="selectedElement"
       @element-selected="onElementSelected"
     />

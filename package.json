@@ -1,16 +1,18 @@
 {
-  "name": "vue-element-selector",
+  "name": "unocss-inspector",
   "type": "module",
   "version": "0.1.0",
   "packageManager": "pnpm@10.15.0",
-  "description": "A Vue 3 component for selecting DOM elements with visual highlighting",
+  "description": "Interactive dynamic review elements for UnoCSS",
   "author": "Chris",
   "license": "MIT",
   "keywords": [
     "vue",
     "vue3",
-    "element-selector",
-    "dom-selector",
+    "inspector",
+    "unocss",
+    "element-inspector",
+    "dom-inspector",
     "component",
     "typescript"
   ],
