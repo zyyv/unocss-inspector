@@ -158,7 +158,7 @@ const panelPosition = computed(() => {
     }
     else {
       // 默认位置：右上角
-      baseX = window.innerWidth - 380 - 20
+      baseX = window.innerWidth - 300 - 20 // 使用实际的面板宽度
       baseY = 20
     }
 
@@ -172,8 +172,8 @@ const panelPosition = computed(() => {
   // 跟随鼠标状态：跟随鼠标移动，但避免超出视口
   const offsetX = 20
   const offsetY = 20
-  const panelWidth = 380
-  const panelHeight = 420
+  const panelWidth = 300 // 与 CSS 中的实际宽度一致
+  const panelHeight = 350 // 与 CSS 中的 max-height 一致
 
   let left = props.mousePosition.x + offsetX
   let top = props.mousePosition.y + offsetY
@@ -246,8 +246,8 @@ function handleDrag(event: MouseEvent) {
   const newY = event.clientY - dragOffset.value.y
 
   // 限制在视口内
-  const panelWidth = 380
-  const panelHeight = 420
+  const panelWidth = 300 // 与 CSS 中的实际宽度一致
+  const panelHeight = 350 // 与 CSS 中的 max-height 一致
   const maxX = window.innerWidth - panelWidth
   const maxY = window.innerHeight - panelHeight
 
