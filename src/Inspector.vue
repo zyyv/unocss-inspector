@@ -136,7 +136,7 @@ function handleClick(event: MouseEvent) {
   event.stopImmediatePropagation()
 
   const target = event.target as HTMLElement
-  if (target && !target.closest('.element-selector') && !target.closest('.uno-inspect-element-info')) {
+  if (target && !target.closest('.uno-inspect-controls') && !target.closest('.uno-inspect-element-info')) {
     selectedElement.value = target
     showSelectedOverlay.value = true
     isSelecting.value = false
