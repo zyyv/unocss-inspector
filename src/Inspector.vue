@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onUnmounted, ref } from 'vue'
 import ElementInfo from './ElementInfo.vue'
+import IconUnoCSS from './icons/UnoCSS.vue'
 
 interface Emits {
   (e: 'elementSelected', element: HTMLElement): void
@@ -16,6 +17,13 @@ const hoveredElement = ref<HTMLElement | null>(null)
 const mousePosition = ref({ x: 0, y: 0 })
 const showSelectedOverlay = ref(false)
 const updateTrigger = ref(0) // 用于强制重新计算样式
+
+// 控制面板拖拽相关状态
+const isDraggingControl = ref(false)
+const controlPosition = ref({ x: 20, y: 20 })
+const dragOffset = ref({ x: 0, y: 0 })
+const mouseDownPosition = ref({ x: 0, y: 0 })
+const hasMoved = ref(false)
 
 // 计算属性
 
@@ -114,7 +122,7 @@ function handleMouseOver(event: MouseEvent) {
 
   const target = event.target as HTMLElement
   // Exclude some dom elements
-  if (target && !target.closest('.element-selector') && !target.closest('.element-info')) {
+  if (target && !target.closest('.uno-inspect-controls') && !target.closest('.uno-inspect-element-info')) {
     hoveredElement.value = target
   }
 }
@@ -128,7 +136,7 @@ function handleClick(event: MouseEvent) {
   event.stopImmediatePropagation()
 
   const target = event.target as HTMLElement
-  if (target && !target.closest('.element-selector') && !target.closest('.element-info')) {
+  if (target && !target.closest('.element-selector') && !target.closest('.uno-inspect-element-info')) {
     selectedElement.value = target
     showSelectedOverlay.value = true
     isSelecting.value = false
@@ -155,6 +163,65 @@ function clearSelection() {
   window.removeEventListener('scroll', updateHighlight, true)
 }
 
+// 控制面板拖拽相关函数
+function startControlDrag(event: MouseEvent) {
+  // 记录鼠标按下的位置
+  mouseDownPosition.value = { x: event.clientX, y: event.clientY }
+  hasMoved.value = false
+
+  const rect = (event.currentTarget as HTMLElement).getBoundingClientRect()
+  dragOffset.value = {
+    x: event.clientX - rect.left,
+    y: event.clientY - rect.top,
+  }
+
+  document.addEventListener('mousemove', handleControlDrag)
+  document.addEventListener('mouseup', stopControlDrag)
+  event.preventDefault()
+}
+
+function handleControlDrag(event: MouseEvent) {
+  // 计算鼠标移动距离
+  const moveDistance = Math.sqrt(
+    (event.clientX - mouseDownPosition.value.x) ** 2
+    + (event.clientY - mouseDownPosition.value.y) ** 2,
+  )
+
+  // 如果移动距离超过阈值，则认为是拖拽操作
+  if (moveDistance > 5) {
+    isDraggingControl.value = true
+    hasMoved.value = true
+  }
+
+  if (!isDraggingControl.value)
+    return
+
+  const newX = event.clientX - dragOffset.value.x
+  const newY = event.clientY - dragOffset.value.y
+
+  // 限制在视口内
+  const controlSize = 40 // 按钮大小
+  const maxX = window.innerWidth - controlSize
+  const maxY = window.innerHeight - controlSize
+
+  controlPosition.value = {
+    x: Math.max(0, Math.min(newX, maxX)),
+    y: Math.max(0, Math.min(newY, maxY)),
+  }
+}
+
+function stopControlDrag() {
+  // 在鼠标释放时，如果没有拖拽，则触发点击事件
+  if (!hasMoved.value) {
+    startSelecting()
+  }
+
+  isDraggingControl.value = false
+  hasMoved.value = false
+  document.removeEventListener('mousemove', handleControlDrag)
+  document.removeEventListener('mouseup', stopControlDrag)
+}
+
 // 生命周期
 onUnmounted(() => {
   stopSelecting()
@@ -165,92 +232,81 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="element-selector">
-    <!-- 控制按钮 -->
-    <div class="controls">
-      <button
-        v-if="!isSelecting"
-        class="select-btn"
-        @click="startSelecting"
-      >
-        🎯 选择元素
-      </button>
-      <button
-        v-else
-        class="cancel-btn"
-        @click="stopSelecting"
-      >
-        ❌ 取消选择
-      </button>
+  <!-- 控制按钮 -->
+  <div
+    class="uno-inspect-controls"
+    :class="{ dragging: isDraggingControl }"
+    :style="{
+      position: 'fixed',
+      top: `${controlPosition.y}px`,
+      left: `${controlPosition.x}px`,
+      zIndex: '10002',
+    }"
+    @mousedown="startControlDrag"
+  >
+    <button>
+      <IconUnoCSS />
+    </button>
+  </div>
 
-      <button
-        v-if="selectedElement"
-        class="clear-btn"
-        @click="clearSelection"
-      >
-        🗑️ 清除
-      </button>
-    </div>
-
-    <!-- 高亮遮罩 - 盒模型显示 -->
-    <div v-if="(isSelecting && highlightStyle.containerTop !== undefined) || showSelectedOverlay" class="box-model-overlay">
-      <!-- Margin 层 -->
+  <!-- 高亮遮罩 - 盒模型显示 -->
+  <div v-if="(isSelecting && highlightStyle.containerTop !== undefined) || showSelectedOverlay" class="box-model-overlay">
+    <!-- Margin 层 -->
+    <div
+      v-if="highlightStyle.margin && highlightStyle.padding"
+      class="margin-layer"
+      :style="{
+        position: 'fixed',
+        top: `${highlightStyle.containerTop}px`,
+        left: `${highlightStyle.containerLeft}px`,
+        width: `${highlightStyle.containerWidth}px`,
+        height: `${highlightStyle.containerHeight}px`,
+        pointerEvents: 'none',
+        zIndex: '9999',
+        backgroundColor: 'var(--margin-bg-color)',
+        border: '1px dashed oklch(70% 0.15 60)',
+        borderRadius: '3px',
+        overflow: 'hidden',
+      }"
+    >
+      <!-- Border + Element 层 -->
       <div
-        v-if="highlightStyle.margin && highlightStyle.padding"
-        class="margin-layer"
+        class="element-layer"
         :style="{
-          position: 'fixed',
-          top: `${highlightStyle.containerTop}px`,
-          left: `${highlightStyle.containerLeft}px`,
-          width: `${highlightStyle.containerWidth}px`,
-          height: `${highlightStyle.containerHeight}px`,
-          pointerEvents: 'none',
-          zIndex: '9999',
-          backgroundColor: 'var(--margin-bg-color)',
-          border: '1px dashed oklch(70% 0.15 60)',
-          borderRadius: '3px',
-          overflow: 'hidden',
+          position: 'absolute',
+          top: `${highlightStyle.margin.top}px`,
+          left: `${highlightStyle.margin.left}px`,
+          width: `${highlightStyle.elementWidth}px`,
+          height: `${highlightStyle.elementHeight}px`,
+          backgroundColor: 'var(--padding-bg-color)',
+          borderRadius: '2px',
         }"
       >
-        <!-- Border + Element 层 -->
+        <!-- Content 层 -->
         <div
-          class="element-layer"
+          class="content-layer"
           :style="{
             position: 'absolute',
-            top: `${highlightStyle.margin.top}px`,
-            left: `${highlightStyle.margin.left}px`,
-            width: `${highlightStyle.elementWidth}px`,
-            height: `${highlightStyle.elementHeight}px`,
-            backgroundColor: 'var(--padding-bg-color)',
-            borderRadius: '2px',
+            top: `${highlightStyle.padding.top}px`,
+            left: `${highlightStyle.padding.left}px`,
+            width: `${highlightStyle.contentWidth}px`,
+            height: `${highlightStyle.contentHeight}px`,
+            backgroundColor: 'var(--content-bg-color)',
+            borderRadius: '1px',
           }"
-        >
-          <!-- Content 层 -->
-          <div
-            class="content-layer"
-            :style="{
-              position: 'absolute',
-              top: `${highlightStyle.padding.top}px`,
-              left: `${highlightStyle.padding.left}px`,
-              width: `${highlightStyle.contentWidth}px`,
-              height: `${highlightStyle.contentHeight}px`,
-              backgroundColor: 'var(--content-bg-color)',
-              borderRadius: '1px',
-            }"
-          />
-        </div>
+        />
       </div>
     </div>
-
-    <!-- ElementInfo 组件 -->
-    <ElementInfo
-      v-if="(isSelecting && hoveredElement) || showSelectedOverlay"
-      :element="showSelectedOverlay ? selectedElement : hoveredElement"
-      :mouse-position="mousePosition"
-      :is-selected="showSelectedOverlay"
-      @close="clearSelection"
-    />
   </div>
+
+  <!-- ElementInfo 组件 -->
+  <ElementInfo
+    v-if="(isSelecting && hoveredElement) || showSelectedOverlay"
+    :element="showSelectedOverlay ? selectedElement : hoveredElement"
+    :mouse-position="mousePosition"
+    :is-selected="showSelectedOverlay"
+    @close="clearSelection"
+  />
 </template>
 
 <style>
@@ -263,70 +319,46 @@ onUnmounted(() => {
 </style>
 
 <style scoped>
-.element-selector {
-  padding: 16px;
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+.uno-inspect-controls {
+  padding: 4px;
+  cursor: move;
+  user-select: none;
+
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    background: linear-gradient(to bottom right, #c5c5c5, #444444);
+    filter: blur(20px);
+    z-index: -1;
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: rotate-0360 4s linear infinite;
+  }
 }
 
-.controls {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
+@keyframes rotate-0360 {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
-.select-btn,
-.cancel-btn,
-.clear-btn {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
+.uno-inspect-controls:hover {
+  &::before {
+    opacity: 1;
+  }
 }
 
-.select-btn {
-  background: #3b82f6;
-  color: white;
-}
-
-.select-btn:hover {
-  background: #2563eb;
-}
-
-.cancel-btn {
-  background: #ef4444;
-  color: white;
-}
-
-.cancel-btn:hover {
-  background: #dc2626;
-}
-
-.clear-btn {
-  background: #6b7280;
-  color: white;
-}
-
-.clear-btn:hover {
-  background: #4b5563;
-}
-
-.selected-info {
-  background: #f8fafc;
-  padding: 12px;
-  border-radius: 6px;
-  border-left: 4px solid #3b82f6;
-}
-
-.selected-info h3 {
-  margin: 0 0 8px 0;
-  font-size: 16px;
-  color: #1f2937;
+.uno-inspect-controls.dragging {
+  cursor: grabbing;
 }
 
 .element-details {

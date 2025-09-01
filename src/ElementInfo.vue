@@ -1,11 +1,19 @@
 <script lang='ts' setup>
 import type { VNode } from 'vue'
 import { computed, onUnmounted, ref, watch } from 'vue'
+
+import BasicInfo from './components/BasicInfo.vue'
+import BoxModel from './components/BoxModel.vue'
+import ClassList from './components/ClassList.vue'
+import StylesInfo from './components/StylesInfo.vue'
+import TextContent from './components/TextContent.vue'
+
 import IconBasic from './icons/Basic.vue'
 import IconBox from './icons/Box.vue'
 import IconClass from './icons/Class.vue'
 import IconStyle from './icons/Style.vue'
 import IconText from './icons/Text.vue'
+import IconUnoCSS from './icons/UnoCSS.vue'
 
 interface Props {
   element: HTMLElement | null
@@ -206,10 +214,6 @@ function updateElementInfo() {
   updateTrigger.value++
 }
 
-function formatBoxValue(value: number): string {
-  return value === 0 ? '0' : `${value}px`
-}
-
 function setActiveTab(index: number) {
   activeTab.value = index
 }
@@ -220,7 +224,7 @@ function startDrag(event: MouseEvent) {
     return
 
   isDragging.value = true
-  const rect = (event.currentTarget as HTMLElement).closest('.element-info')?.getBoundingClientRect()
+  const rect = (event.currentTarget as HTMLElement).closest('.uno-inspect-element-info')?.getBoundingClientRect()
 
   if (rect) {
     dragOffset.value = {
@@ -302,7 +306,7 @@ onUnmounted(() => {
 <template>
   <div
     v-if="elementInfo"
-    class="element-info"
+    class="uno-inspect-element-info"
     :style="panelPosition"
   >
     <!-- 头部 -->
@@ -311,12 +315,10 @@ onUnmounted(() => {
       :class="{ draggable: isSelected, dragging: isDragging }"
       @mousedown="startDrag"
     >
-      <div class="title">
-        <span class="tag">{{ elementInfo.tagName }}</span>
-        <span v-if="elementInfo.id" class="id">#{{ elementInfo.id }}</span>
-      </div>
+      <IconUnoCSS />
+
       <button
-        v-if="isSelected"
+        v-show="isSelected"
         class="close-btn"
         @click="handleClose"
         @mousedown.stop
@@ -345,151 +347,34 @@ onUnmounted(() => {
     <div class="content">
       <!-- 基本信息 -->
       <section v-if="activeTab === 0" class="section">
-        <div class="info-grid">
-          <div class="info-item">
-            <span class="label">Tag:</span>
-            <span class="value">{{ elementInfo.tagName }}</span>
-          </div>
-          <div v-if="elementInfo.id" class="info-item">
-            <span class="label">ID:</span>
-            <span class="value">#{{ elementInfo.id }}</span>
-          </div>
-          <div class="info-item">
-            <span class="label">Position:</span>
-            <span class="value">{{ elementInfo.rect.x }}, {{ elementInfo.rect.y }}</span>
-          </div>
-          <div class="info-item">
-            <span class="label">Size:</span>
-            <span class="value">{{ elementInfo.rect.width }} × {{ elementInfo.rect.height }}</span>
-          </div>
-        </div>
+        <BasicInfo :basic-info="{ tagName: elementInfo.tagName, id: elementInfo.id, rect: elementInfo.rect }" />
       </section>
 
       <!-- Class 列表 -->
-      <section v-if="activeTab === 1 && elementInfo.classList.length" class="section">
-        <div class="class-list">
-          <span
-            v-for="className in elementInfo.classList"
-            :key="className"
-            class="class-item"
-          >
-            .{{ className }}
-          </span>
-        </div>
-      </section>
-
-      <!-- 当没有 classes 时显示占位内容 -->
-      <section v-if="activeTab === 1 && !elementInfo.classList.length" class="section">
-        <div class="empty-state">
-          <p>This element has no CSS classes</p>
-        </div>
+      <section v-if="activeTab === 1" class="section">
+        <ClassList :class-list="elementInfo.classList" />
       </section>
 
       <!-- 盒模型 -->
       <section v-if="activeTab === 2" class="section">
-        <div class="box-model">
-          <div class="box-layer margin-box">
-            <div class="box-label">
-              margin
-            </div>
-            <div class="box-values">
-              <span>{{ formatBoxValue(elementInfo.boxModel.margin.top) }}</span>
-              <span>{{ formatBoxValue(elementInfo.boxModel.margin.right) }}</span>
-              <span>{{ formatBoxValue(elementInfo.boxModel.margin.bottom) }}</span>
-              <span>{{ formatBoxValue(elementInfo.boxModel.margin.left) }}</span>
-            </div>
-
-            <div class="box-layer border-box">
-              <div class="box-label">
-                border
-              </div>
-              <div class="box-values">
-                <span>{{ formatBoxValue(elementInfo.boxModel.border.top) }}</span>
-                <span>{{ formatBoxValue(elementInfo.boxModel.border.right) }}</span>
-                <span>{{ formatBoxValue(elementInfo.boxModel.border.bottom) }}</span>
-                <span>{{ formatBoxValue(elementInfo.boxModel.border.left) }}</span>
-              </div>
-
-              <div class="box-layer padding-box">
-                <div class="box-label">
-                  padding
-                </div>
-                <div class="box-values">
-                  <span>{{ formatBoxValue(elementInfo.boxModel.padding.top) }}</span>
-                  <span>{{ formatBoxValue(elementInfo.boxModel.padding.right) }}</span>
-                  <span>{{ formatBoxValue(elementInfo.boxModel.padding.bottom) }}</span>
-                  <span>{{ formatBoxValue(elementInfo.boxModel.padding.left) }}</span>
-                </div>
-
-                <div class="box-layer content-box">
-                  <div class="box-label">
-                    content
-                  </div>
-                  <div class="content-size">
-                    {{ Math.round(elementInfo.boxModel.size.width) }} × {{ Math.round(elementInfo.boxModel.size.height) }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <BoxModel :box-model="elementInfo.boxModel" />
       </section>
 
       <!-- 重要样式 -->
       <section v-if="activeTab === 3" class="section">
-        <div class="styles-container">
-          <!-- 行内样式 -->
-          <div v-if="Object.keys(elementInfo.styles.inline).length > 0" class="style-group">
-            <h4 class="style-group-title">
-              Inline Styles
-            </h4>
-            <div class="styles-grid">
-              <div
-                v-for="(value, key) in elementInfo.styles.inline"
-                :key="`inline-${key}`"
-                class="style-item inline-style"
-              >
-                <span class="style-name">{{ key }}:</span>
-                <span class="style-value">{{ value }}</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 计算样式 -->
-          <div class="style-group">
-            <h4 class="style-group-title">
-              Computed Styles
-            </h4>
-            <div class="styles-grid">
-              <div
-                v-for="(value, key) in elementInfo.styles.computed"
-                :key="`computed-${key}`"
-                class="style-item"
-              >
-                <span class="style-name">{{ key }}:</span>
-                <span class="style-value">{{ value }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <StylesInfo :styles="elementInfo.styles" />
       </section>
 
       <!-- 文本内容 -->
       <section v-if="activeTab === 4" class="section">
-        <div v-if="elementInfo.textContent" class="text-content">
-          {{ elementInfo.textContent }}
-          <span v-if="elementInfo.textContent.length >= 100">...</span>
-        </div>
-        <div v-else class="empty-state">
-          <p>This element has no text content</p>
-        </div>
+        <TextContent :text-content="elementInfo.textContent" />
       </section>
     </div>
   </div>
 </template>
 
 <style scoped>
-.element-info {
+.uno-inspect-element-info {
   width: 300px;
   height: auto;
   max-height: 350px;
@@ -645,252 +530,5 @@ onUnmounted(() => {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   flex-shrink: 0;
-}
-
-.info-grid {
-  display: grid;
-  gap: 8px;
-}
-
-.info-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 12px;
-  background: #f8fafc;
-  border-radius: 6px;
-}
-
-.label {
-  font-weight: 500;
-  color: #6b7280;
-  font-size: 13px;
-}
-
-.value {
-  font-family: 'SF Mono', Monaco, monospace;
-  font-size: 12px;
-  color: #374151;
-  font-weight: 500;
-}
-
-.class-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  max-height: 280px;
-  overflow-y: auto;
-}
-
-.class-item {
-  font-family: 'SF Mono', Monaco, monospace;
-  font-size: 12px;
-  background: #dbeafe;
-  color: #1e40af;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: 500;
-}
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  color: #6b7280;
-}
-
-.empty-icon {
-  font-size: 32px;
-  margin-bottom: 8px;
-  opacity: 0.5;
-}
-
-.empty-state p {
-  margin: 0;
-  font-size: 14px;
-}
-
-.box-model {
-  font-family: 'SF Mono', Monaco, monospace;
-  font-size: 11px;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.box-layer {
-  border: 1px solid;
-  /* margin: 4px; */
-  padding: 20px;
-  position: relative;
-  text-align: center;
-}
-
-.margin-box {
-  border-color: var(--margin-bg-color);
-  background: var(--margin-bg-color);
-}
-
-.border-box {
-  border-color: var(--border-bg-color);
-  background: var(--border-bg-color);
-}
-
-.padding-box {
-  border-color: var(--padding-bg-color);
-  background: var(--padding-bg-color)
-}
-
-.content-box {
-  border-color: var(--content-bg-color);
-  background: var(--content-bg-color);
-  min-height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.box-label {
-  position: absolute;
-  top: -1px;
-  left: 4px;
-  background: #666;
-  color: white;
-  padding: 0 4px;
-  font-weight: 600;
-  font-size: 9px;
-  text-transform: uppercase;
-  border-radius: 2px;
-}
-
-.box-values {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  font-size: 8px;
-  opacity: 0.8;
-  pointer-events: none;
-}
-
-.box-values span {
-  position: absolute;
-  padding: 1px 3px;
-  border-radius: 2px;
-  color: #666;
-  background: rgba(255, 255, 255, 0.8);
-  transform: translate(-50%, -50%);
-}
-
-.box-values span:nth-child(1) {
-  /* top */
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, 0);
-}
-
-.box-values span:nth-child(2) {
-  /* right */
-  top: 50%;
-  right: 0;
-  transform: translate(0, -50%);
-}
-
-.box-values span:nth-child(3) {
-  /* bottom */
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%, 0);
-}
-
-.box-values span:nth-child(4) {
-  /* left */
-  top: 50%;
-  left: 0;
-  transform: translate(0, -50%);
-}
-
-.content-size {
-  font-weight: 600;
-  color: #1e40af;
-  font-size: 12px;
-}
-
-.styles-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-height: 280px;
-  overflow-y: auto;
-  flex: 1;
-}
-
-.style-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.style-group-title {
-  margin: 0;
-  font-size: 12px;
-  font-weight: 600;
-  color: #4b5563;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding-bottom: 4px;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.styles-grid {
-  display: grid;
-  gap: 6px;
-}
-
-.style-item {
-  display: flex;
-  padding: 6px 10px;
-  background: #f8fafc;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
-.style-item.inline-style {
-  background: #fef3c7;
-  border-left: 3px solid #f59e0b;
-}
-
-.style-name {
-  color: #7c3aed;
-  font-weight: 500;
-  min-width: 100px;
-  font-family: 'SF Mono', Monaco, monospace;
-}
-
-.inline-style .style-name {
-  color: #92400e;
-}
-
-.style-value {
-  color: #374151;
-  font-family: 'SF Mono', Monaco, monospace;
-  word-break: break-all;
-  margin-left: 8px;
-}
-
-.text-content {
-  background: #f8fafc;
-  padding: 12px;
-  border-radius: 6px;
-  font-size: 13px;
-  line-height: 1.5;
-  color: #374151;
-  /* border-left: 4px solid #3b82f6; */
-  max-height: 260px;
-  overflow-y: auto;
-  flex: 1;
 }
 </style>
