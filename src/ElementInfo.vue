@@ -228,7 +228,6 @@ function startDrag(event: MouseEvent) {
   if (!props.isSelected)
     return
 
-  isDragging.value = true
   const rect = (event.currentTarget as HTMLElement).closest('.uno-inspect-element-info')?.getBoundingClientRect()
 
   if (rect) {
@@ -236,8 +235,15 @@ function startDrag(event: MouseEvent) {
       x: event.clientX - rect.left,
       y: event.clientY - rect.top,
     }
+
+    // 初始化拖拽位置为当前面板位置，避免闪烁
+    dragPosition.value = {
+      x: rect.left,
+      y: rect.top,
+    }
   }
 
+  isDragging.value = true
   document.addEventListener('mousemove', handleDrag)
   document.addEventListener('mouseup', stopDrag)
   event.preventDefault()
