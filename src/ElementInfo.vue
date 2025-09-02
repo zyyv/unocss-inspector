@@ -1,21 +1,9 @@
 <script lang='ts' setup>
-import type { VNode } from 'vue'
 import { useEventListener, useMouse, useToggle, useWindowSize } from '@vueuse/core'
 import { computed, ref, watch } from 'vue'
-
-import BasicInfo from './components/BasicInfo.vue'
-import BoxModel from './components/BoxModel.vue'
-import ClassList from './components/ClassList.vue'
-import StylesInfo from './components/StylesInfo.vue'
-import TextContent from './components/TextContent.vue'
-
-import IconBasic from './icons/Basic.vue'
-import IconBox from './icons/Box.vue'
-import IconClass from './icons/Class.vue'
+import { useTabs } from './composables/tabs'
 import IconClose from './icons/Close.vue'
 import IconCursor from './icons/SmartCursor.vue'
-import IconStyle from './icons/Style.vue'
-import IconText from './icons/Text.vue'
 import IconUnoCSS from './icons/UnoCSS.vue'
 
 interface Props {
@@ -32,7 +20,6 @@ const props = defineProps<Props>()
 const { width: windowWidth, height: windowHeight } = useWindowSize()
 const { x: mouseX, y: mouseY } = useMouse()
 
-const activeTab = ref(0)
 const panelRef = ref<HTMLElement>()
 
 // 拖动相关状态
@@ -45,105 +32,7 @@ const initialSelectedPosition = ref({ x: 0, y: 0 }) // 记录选中时的鼠标�
 // 用于强制更新元素信息的触发器
 const updateTrigger = ref(0)
 
-const tabs = [
-  { id: 'basic', label: 'Basic Info', icon: IconBasic },
-  { id: 'classes', label: 'Class', icon: IconClass },
-  { id: 'box', label: 'Box Model', icon: IconBox },
-  { id: 'styles', label: 'Styles', icon: IconStyle },
-  { id: 'text', label: 'Text', icon: IconText },
-]
-
-const elementInfo = computed(() => {
-  void updateTrigger.value
-
-  if (!props.element) {
-    return null
-  }
-
-  const element = props.element
-  const computedStyle = window.getComputedStyle(element)
-  const rect = element.getBoundingClientRect()
-
-  // 获取所有 class 列表
-  const classList = Array.from(element.classList)
-
-  // 获取所有属性
-  const attributes = Array.from(element.attributes).map(attr => ({
-    name: attr.name,
-    value: attr.value,
-  }))
-
-  // 获取盒模型信息
-  const boxModel = {
-    margin: {
-      top: Number.parseFloat(computedStyle.marginTop),
-      right: Number.parseFloat(computedStyle.marginRight),
-      bottom: Number.parseFloat(computedStyle.marginBottom),
-      left: Number.parseFloat(computedStyle.marginLeft),
-    },
-    border: {
-      top: Number.parseFloat(computedStyle.borderTopWidth),
-      right: Number.parseFloat(computedStyle.borderRightWidth),
-      bottom: Number.parseFloat(computedStyle.borderBottomWidth),
-      left: Number.parseFloat(computedStyle.borderLeftWidth),
-    },
-    padding: {
-      top: Number.parseFloat(computedStyle.paddingTop),
-      right: Number.parseFloat(computedStyle.paddingRight),
-      bottom: Number.parseFloat(computedStyle.paddingBottom),
-      left: Number.parseFloat(computedStyle.paddingLeft),
-    },
-    size: {
-      width: rect.width,
-      height: rect.height,
-    },
-  }
-
-  // 获取行内样式
-  const inlineStyles: Record<string, string> = {}
-  if (element.style.length > 0) {
-    const vnode = (element as any).__vnode as VNode | undefined
-    if (vnode) {
-      for (const [key, value] of Object.entries(vnode.props?.style || {})) {
-        inlineStyles[key] = value as string
-      }
-    }
-    else {
-      for (let i = 0; i < element.style.length; i++) {
-        const property = element.style.item(i)
-        inlineStyles[property] = element.style.getPropertyValue(property)
-      }
-    }
-  }
-
-  const keys = ['display', 'position', 'zIndex', 'color', 'backgroundColor', 'fontSize', 'fontFamily', 'fontWeight', 'lineHeight', 'textAlign', 'overflow', 'opacity', 'transform', 'transition']
-
-  const importantStyles = keys.reduce((acc, key) => {
-    if (!Object.keys(inlineStyles).includes(key) && computedStyle.getPropertyValue(key)) {
-      acc[key] = computedStyle.getPropertyValue(key)
-    }
-    return acc
-  }, {} as Record<string, string>)
-
-  return {
-    tagName: element.tagName.toLowerCase(),
-    id: element.id,
-    classList,
-    attributes,
-    textContent: element.textContent?.trim().slice(0, 100) || '',
-    boxModel,
-    styles: {
-      inline: inlineStyles,
-      computed: importantStyles,
-    },
-    rect: {
-      x: Math.round(rect.x),
-      y: Math.round(rect.y),
-      width: Math.round(rect.width),
-      height: Math.round(rect.height),
-    },
-  }
-})
+const { tabs, activeTab, slideDirection, setActiveTab } = useTabs()
 
 // 计算面板位置的辅助函数
 function calculatePanelPosition(mouseX: number, mouseY: number) {
@@ -219,10 +108,6 @@ function updateElementInfo() {
   updateTrigger.value++
 }
 
-function setActiveTab(index: number) {
-  activeTab.value = index
-}
-
 // 拖动相关函数
 function startDrag(event: MouseEvent) {
   if (!props.isSelected)
@@ -293,7 +178,6 @@ watch(() => props.element, () => {
 // 监听选中状态变化，记录初始鼠标位置
 watch(() => props.isSelected, (isSelected) => {
   if (isSelected) {
-    // 当元素被选中时，记录当前鼠标位置
     initialSelectedPosition.value = {
       x: mouseX.value,
       y: mouseY.value,
@@ -307,7 +191,7 @@ useEventListener('scroll', updateElementInfo, { capture: true })
 
 <template>
   <div
-    v-if="elementInfo"
+    v-if="props.element"
     ref="panelRef"
     class="uno-inspect-element-info"
     :style="panelPosition"
@@ -317,7 +201,7 @@ useEventListener('scroll', updateElementInfo, { capture: true })
       <IconUnoCSS class="header-logo" :class="{ draggable: isSelected, dragging: isDragging }" @mousedown="startDrag" />
 
       <div class="header-right">
-        <IconCursor class="select-btn" @click.stop="action.start()" />
+        <IconCursor class="select-btn" :class="{ selecting: !isSelected }" @click.stop="action.start()" />
         <IconClose
           v-show="isSelected"
           class="close-btn"
@@ -331,12 +215,12 @@ useEventListener('scroll', updateElementInfo, { capture: true })
     <div class="tab-navigation">
       <div class="tab-dots">
         <button
-          v-for="(tab, index) in tabs"
+          v-for="tab in tabs"
           :key="tab.id"
           class="tab-dot"
-          :class="{ active: activeTab === index }"
+          :class="{ active: activeTab.id === tab.id }"
           :title="tab.label"
-          @click="setActiveTab(index)"
+          @click="setActiveTab(tab.id)"
         >
           <component :is="tab.icon" class="tab-icon" />
         </button>
@@ -345,30 +229,9 @@ useEventListener('scroll', updateElementInfo, { capture: true })
 
     <!-- 内容区域 -->
     <div class="content">
-      <!-- 基本信息 -->
-      <section v-if="activeTab === 0" class="section">
-        <BasicInfo :basic-info="{ tagName: elementInfo.tagName, id: elementInfo.id, rect: elementInfo.rect }" />
-      </section>
-
-      <!-- Class 列表 -->
-      <section v-if="activeTab === 1" class="section">
-        <ClassList :class-list="elementInfo.classList" />
-      </section>
-
-      <!-- 盒模型 -->
-      <section v-if="activeTab === 2" class="section">
-        <BoxModel :box-model="elementInfo.boxModel" />
-      </section>
-
-      <!-- 重要样式 -->
-      <section v-if="activeTab === 3" class="section">
-        <StylesInfo :styles="elementInfo.styles" />
-      </section>
-
-      <!-- 文本内容 -->
-      <section v-if="activeTab === 4" class="section">
-        <TextContent :text-content="elementInfo.textContent" />
-      </section>
+      <Transition :name="`slide-${slideDirection}`" mode="out-in">
+        <component :is="activeTab.component" :key="activeTab.id" :el="props.element" :update-trigger="updateTrigger" />
+      </Transition>
     </div>
   </div>
 </template>
@@ -402,7 +265,7 @@ useEventListener('scroll', updateElementInfo, { capture: true })
   font-size: 20px;
 }
 
-@keyframes color-shadow {
+@keyframes color-flashing {
   /* --margin-bg-color: oklch(82% 0.15 60 / 0.25);
   --padding-bg-color: oklch(75% 0.12 240 / 0.3);
   --content-bg-color: oklch(78% 0.14 140 / 0.25);
@@ -443,7 +306,7 @@ useEventListener('scroll', updateElementInfo, { capture: true })
   .select-btn {
     &.selecting{
       opacity: 1;
-      animation: color-shadow 5s infinite;
+      animation: color-flashing 8s ease-in-out infinite;
     }
   }
 
@@ -552,6 +415,45 @@ useEventListener('scroll', updateElementInfo, { capture: true })
   flex: 1;
   overflow-y: auto;
   padding: 16px;
+  position: relative;
+}
+
+/* 滑动切换动画 */
+.slide-left-enter-active,
+.slide-left-leave-active,
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+/* 向左滑动：新内容从右边进入，旧内容向左边退出 */
+.slide-left-enter-from {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.slide-left-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+/* 向右滑动：新内容从左边进入，旧内容向右边退出 */
+.slide-right-enter-from {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.slide-right-leave-to {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.slide-left-enter-to,
+.slide-left-leave-from,
+.slide-right-enter-to,
+.slide-right-leave-from {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .section {

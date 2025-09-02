@@ -1,9 +1,18 @@
 <script lang='ts' setup>
-interface Props {
-  classList: string[]
-}
+import type { TabComponentProps } from '../types'
+import { computed } from 'vue'
 
-defineProps<Props>()
+const props = defineProps<TabComponentProps>()
+
+const classList = computed(() => {
+  void props.updateTrigger
+
+  if (!props.el) {
+    return []
+  }
+
+  return Array.from(props.el.classList)
+})
 </script>
 
 <template>

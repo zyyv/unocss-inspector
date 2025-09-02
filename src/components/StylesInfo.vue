@@ -1,26 +1,63 @@
 <script lang='ts' setup>
-interface StylesData {
-  inline: Record<string, string>
-  computed: Record<string, string>
-}
+import type { VNode } from 'vue'
+import type { TabComponentProps } from '../types'
+import { computed } from 'vue'
 
-interface Props {
-  styles: StylesData
-}
+const props = defineProps<TabComponentProps>()
 
-defineProps<Props>()
+const stylesInfo = computed(() => {
+  void props.updateTrigger
+
+  if (!props.el) {
+    return null
+  }
+
+  const element = props.el
+  const computedStyle = window.getComputedStyle(element)
+
+  // 获取行内样式
+  const inlineStyles: Record<string, string> = {}
+  if (element.style.length > 0) {
+    const vnode = (element as any).__vnode as VNode | undefined
+    if (vnode) {
+      for (const [key, value] of Object.entries(vnode.props?.style || {})) {
+        inlineStyles[key] = value as string
+      }
+    }
+    else {
+      for (let i = 0; i < element.style.length; i++) {
+        const property = element.style.item(i)
+        inlineStyles[property] = element.style.getPropertyValue(property)
+      }
+    }
+  }
+
+  const keys = ['display', 'position', 'zIndex', 'color', 'backgroundColor', 'fontSize', 'fontFamily', 'fontWeight', 'lineHeight', 'textAlign', 'overflow', 'opacity', 'transform', 'transition']
+
+  const importantStyles = keys.reduce((acc, key) => {
+    if (!Object.keys(inlineStyles).includes(key) && computedStyle.getPropertyValue(key)) {
+      acc[key] = computedStyle.getPropertyValue(key)
+    }
+    return acc
+  }, {} as Record<string, string>)
+
+  return {
+    inline: inlineStyles,
+    computed: importantStyles,
+  }
+})
 </script>
 
 <template>
-  <div class="styles-container">
+  <div v-if="stylesInfo" class="styles-container">
     <!-- 行内样式 -->
-    <div v-if="Object.keys(styles.inline).length > 0" class="style-group">
+    <div v-if="Object.keys(stylesInfo.inline).length > 0" class="style-group">
       <h4 class="style-group-title">
         Inline Styles
       </h4>
       <div class="styles-grid">
         <div
-          v-for="(value, key) in styles.inline"
+          v-for="(value, key) in stylesInfo.inline"
           :key="`inline-${key}`"
           class="style-item inline-style"
         >
@@ -37,7 +74,7 @@ defineProps<Props>()
       </h4>
       <div class="styles-grid">
         <div
-          v-for="(value, key) in styles.computed"
+          v-for="(value, key) in stylesInfo.computed"
           :key="`computed-${key}`"
           class="style-item"
         >

@@ -1,34 +1,45 @@
 <script lang='ts' setup>
-interface BoxModelData {
-  margin: {
-    top: number
-    right: number
-    bottom: number
-    left: number
-  }
-  border: {
-    top: number
-    right: number
-    bottom: number
-    left: number
-  }
-  padding: {
-    top: number
-    right: number
-    bottom: number
-    left: number
-  }
-  size: {
-    width: number
-    height: number
-  }
-}
+import type { TabComponentProps } from '../types'
+import { computed } from 'vue'
 
-interface Props {
-  boxModel: BoxModelData
-}
+const props = defineProps<TabComponentProps>()
 
-defineProps<Props>()
+const boxModel = computed(() => {
+  void props.updateTrigger
+
+  if (!props.el) {
+    return null
+  }
+
+  const element = props.el
+  const computedStyle = window.getComputedStyle(element)
+  const rect = element.getBoundingClientRect()
+
+  return {
+    margin: {
+      top: Number.parseFloat(computedStyle.marginTop),
+      right: Number.parseFloat(computedStyle.marginRight),
+      bottom: Number.parseFloat(computedStyle.marginBottom),
+      left: Number.parseFloat(computedStyle.marginLeft),
+    },
+    border: {
+      top: Number.parseFloat(computedStyle.borderTopWidth),
+      right: Number.parseFloat(computedStyle.borderRightWidth),
+      bottom: Number.parseFloat(computedStyle.borderBottomWidth),
+      left: Number.parseFloat(computedStyle.borderLeftWidth),
+    },
+    padding: {
+      top: Number.parseFloat(computedStyle.paddingTop),
+      right: Number.parseFloat(computedStyle.paddingRight),
+      bottom: Number.parseFloat(computedStyle.paddingBottom),
+      left: Number.parseFloat(computedStyle.paddingLeft),
+    },
+    size: {
+      width: rect.width,
+      height: rect.height,
+    },
+  }
+})
 
 function formatBoxValue(value: number): string {
   return value === 0 ? '0' : `${value}px`
@@ -36,7 +47,7 @@ function formatBoxValue(value: number): string {
 </script>
 
 <template>
-  <div class="box-model">
+  <div v-if="boxModel" class="box-model">
     <div class="box-layer margin-box">
       <div class="box-label">
         margin

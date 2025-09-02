@@ -1,24 +1,34 @@
 <script lang='ts' setup>
-interface BasicInfoData {
-  tagName: string
-  id: string
-  rect: {
-    x: number
-    y: number
-    width: number
-    height: number
+import type { TabComponentProps } from '../types'
+import { computed } from 'vue'
+
+const props = defineProps<TabComponentProps>()
+
+const basicInfo = computed(() => {
+  void props.updateTrigger
+
+  if (!props.el) {
+    return null
   }
-}
 
-interface Props {
-  basicInfo: BasicInfoData
-}
+  const el = props.el
+  const rect = el.getBoundingClientRect()
 
-defineProps<Props>()
+  return {
+    tagName: el.tagName.toLowerCase(),
+    id: el.id,
+    rect: {
+      x: Math.round(rect.x),
+      y: Math.round(rect.y),
+      width: Math.round(rect.width),
+      height: Math.round(rect.height),
+    },
+  }
+})
 </script>
 
 <template>
-  <div class="info-grid">
+  <div v-if="basicInfo" class="info-grid">
     <div class="info-item">
       <span class="label">Tag:</span>
       <span class="value">{{ basicInfo.tagName }}</span>

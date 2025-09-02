@@ -1,9 +1,18 @@
 <script lang='ts' setup>
-interface Props {
-  textContent: string
-}
+import type { TabComponentProps } from '../types'
+import { computed } from 'vue'
 
-defineProps<Props>()
+const props = defineProps<TabComponentProps>()
+
+const textContent = computed(() => {
+  void props.updateTrigger
+
+  if (!props.el) {
+    return ''
+  }
+
+  return props.el.textContent?.trim().slice(0, 100) || ''
+})
 </script>
 
 <template>
