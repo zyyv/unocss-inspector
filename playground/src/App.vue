@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import Inspector from '../../src/Inspector.vue'
 
 const selectedElement = ref(null)
 
-function onElementSelected(element: any) {
-  console.log('选择了元素:', element)
-}
+watchEffect(() => {
+  if (selectedElement.value)
+    console.log('选择了元素:', selectedElement.value)
+})
 
 const style = ref({
   display: 'flex',
@@ -15,10 +16,6 @@ const style = ref({
 
 <template>
   <div class="min-h-screen font-sans p-5 md:p-10">
-    <Inspector
-      v-model="selectedElement"
-      @element-selected="onElementSelected"
-    />
     <header class="text-center mb-10 text-white">
       <h1 class="text-4xl md:text-5xl mb-2.5 font-bold drop-shadow-lg">
         UnoCSS Inspector Demo
@@ -95,4 +92,7 @@ const style = ref({
       </div>
     </main>
   </div>
+  <Inspector
+    v-model="selectedElement"
+  />
 </template>

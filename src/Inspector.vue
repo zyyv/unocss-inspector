@@ -1,31 +1,24 @@
 <script setup lang="ts">
+import { useToggle, useWindowSize } from '@vueuse/core'
 import { computed, onUnmounted, ref } from 'vue'
 import ElementInfo from './ElementInfo.vue'
 import IconUnoCSS from './icons/UnoCSS.vue'
 
-interface Emits {
-  (e: 'elementSelected', element: HTMLElement): void
-}
-
-const emit = defineEmits<Emits>()
-
 const selectedElement = defineModel<HTMLElement | null>({ default: null })
 
-// 状态
-const isSelecting = ref(false)
+const { width: windowWidth, height: windowHeight } = useWindowSize()
+
+const [isSelecting, _toggleSelecting] = useToggle(false)
+const [showSelectedOverlay, _toggleSelectedOverlay] = useToggle(false)
+const [isDraggingControl, _toggleDraggingControl] = useToggle(false)
 const hoveredElement = ref<HTMLElement | null>(null)
-const mousePosition = ref({ x: 0, y: 0 })
-const showSelectedOverlay = ref(false)
 const updateTrigger = ref(0) // 用于强制重新计算样式
 
 // 控制面板拖拽相关状态
-const isDraggingControl = ref(false)
 const controlPosition = ref({ x: 20, y: 20 })
 const dragOffset = ref({ x: 0, y: 0 })
 const mouseDownPosition = ref({ x: 0, y: 0 })
 const hasMoved = ref(false)
-
-// 计算属性
 
 const highlightStyle = computed(() => {
   // 触发重新计算（当窗口大小或滚动位置改变时）
@@ -87,9 +80,10 @@ function updateHighlight() {
 function startSelecting() {
   isSelecting.value = true
   showSelectedOverlay.value = false
-  document.addEventListener('mouseover', handleMouseOver, { capture: true })
-  document.addEventListener('mousemove', handleMouseMove, { capture: true })
-  document.addEventListener('click', handleClick, { capture: true })
+
+  // 确保在 body 元素上监听事件，因为检查器组件已经传送到 body
+  document.body.addEventListener('mouseover', handleMouseOver, { capture: true })
+  document.body.addEventListener('click', handleClick, { capture: true })
   document.body.style.cursor = 'crosshair'
 
   // 添加窗口事件监听
@@ -102,18 +96,14 @@ function stopSelecting() {
   hoveredElement.value = null
   showSelectedOverlay.value = false
   selectedElement.value = null
-  document.removeEventListener('mouseover', handleMouseOver, { capture: true })
-  document.removeEventListener('mousemove', handleMouseMove, { capture: true })
-  document.removeEventListener('click', handleClick, { capture: true })
+
+  document.body.removeEventListener('mouseover', handleMouseOver, { capture: true })
+  document.body.removeEventListener('click', handleClick, { capture: true })
   document.body.style.cursor = ''
 
   // 移除窗口事件监听
   window.removeEventListener('resize', updateHighlight)
   window.removeEventListener('scroll', updateHighlight, true)
-}
-
-function handleMouseMove(event: MouseEvent) {
-  mousePosition.value = { x: event.clientX, y: event.clientY }
 }
 
 function handleMouseOver(event: MouseEvent) {
@@ -140,27 +130,12 @@ function handleClick(event: MouseEvent) {
     selectedElement.value = target
     showSelectedOverlay.value = true
     isSelecting.value = false
-    emit('elementSelected', target)
 
     // 移除鼠标事件监听，但保留选中状态和窗口事件监听
-    document.removeEventListener('mouseover', handleMouseOver, { capture: true })
-    document.removeEventListener('mousemove', handleMouseMove, { capture: true })
-    document.removeEventListener('click', handleClick, { capture: true })
+    document.body.removeEventListener('mouseover', handleMouseOver, { capture: true })
+    document.body.removeEventListener('click', handleClick, { capture: true })
     document.body.style.cursor = ''
-
-    // 保持窗口事件监听以更新选中元素的高亮位置
-    // window.addEventListener('resize', updateHighlight) // 已经在 startSelecting 中添加
-    // window.addEventListener('scroll', updateHighlight, true) // 已经在 startSelecting 中添加
   }
-}
-
-function clearSelection() {
-  selectedElement.value = null
-  showSelectedOverlay.value = false
-
-  // 移除窗口事件监听
-  window.removeEventListener('resize', updateHighlight)
-  window.removeEventListener('scroll', updateHighlight, true)
 }
 
 // 控制面板拖拽相关函数
@@ -175,9 +150,12 @@ function startControlDrag(event: MouseEvent) {
     y: event.clientY - rect.top,
   }
 
+  // 在 document 上监听，确保即使鼠标移出按钮也能继续拖拽
   document.addEventListener('mousemove', handleControlDrag)
   document.addEventListener('mouseup', stopControlDrag)
   event.preventDefault()
+  // 阻止事件冒泡，避免干扰其他事件处理
+  event.stopPropagation()
 }
 
 function handleControlDrag(event: MouseEvent) {
@@ -201,19 +179,20 @@ function handleControlDrag(event: MouseEvent) {
 
   // 限制在视口内
   const controlSize = 40 // 按钮大小
-  const maxX = window.innerWidth - controlSize
-  const maxY = window.innerHeight - controlSize
 
   controlPosition.value = {
-    x: Math.max(0, Math.min(newX, maxX)),
-    y: Math.max(0, Math.min(newY, maxY)),
+    x: Math.max(0, Math.min(newX, windowWidth.value - controlSize)),
+    y: Math.max(0, Math.min(newY, windowHeight.value - controlSize)),
   }
 }
 
 function stopControlDrag() {
   // 在鼠标释放时，如果没有拖拽，则触发点击事件
   if (!hasMoved.value) {
-    startSelecting()
+    // 确保在下一个事件循环中执行，避免事件冲突
+    setTimeout(() => {
+      startSelecting()
+    }, 0)
   }
 
   isDraggingControl.value = false
@@ -222,7 +201,6 @@ function stopControlDrag() {
   document.removeEventListener('mouseup', stopControlDrag)
 }
 
-// 生命周期
 onUnmounted(() => {
   stopSelecting()
   // 确保移除所有窗口事件监听
@@ -232,81 +210,82 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <!-- 控制按钮 -->
-  <div
-    class="uno-inspect-controls"
-    :class="{ dragging: isDraggingControl }"
-    :style="{
-      position: 'fixed',
-      top: `${controlPosition.y}px`,
-      left: `${controlPosition.x}px`,
-      zIndex: '10002',
-    }"
-    @mousedown="startControlDrag"
-  >
-    <button>
-      <IconUnoCSS />
-    </button>
-  </div>
-
-  <!-- 高亮遮罩 - 盒模型显示 -->
-  <div v-if="(isSelecting && highlightStyle.containerTop !== undefined) || showSelectedOverlay" class="box-model-overlay">
-    <!-- Margin 层 -->
+  <Teleport to="body">
+    <!-- 控制按钮 -->
     <div
-      v-if="highlightStyle.margin && highlightStyle.padding"
-      class="margin-layer"
+      class="uno-inspect-controls"
+      :class="{ dragging: isDraggingControl }"
       :style="{
         position: 'fixed',
-        top: `${highlightStyle.containerTop}px`,
-        left: `${highlightStyle.containerLeft}px`,
-        width: `${highlightStyle.containerWidth}px`,
-        height: `${highlightStyle.containerHeight}px`,
-        pointerEvents: 'none',
-        zIndex: '9999',
-        backgroundColor: 'var(--margin-bg-color)',
-        border: '1px dashed oklch(70% 0.15 60)',
-        borderRadius: '3px',
-        overflow: 'hidden',
+        top: `${controlPosition.y}px`,
+        left: `${controlPosition.x}px`,
+        zIndex: '10002',
       }"
+      @mousedown="startControlDrag"
     >
-      <!-- Border + Element 层 -->
+      <button>
+        <IconUnoCSS />
+      </button>
+    </div>
+
+    <!-- 高亮遮罩 - 盒模型显示 -->
+    <div v-if="(isSelecting && highlightStyle.containerTop !== undefined) || showSelectedOverlay" class="box-model-overlay">
+      <!-- Margin 层 -->
       <div
-        class="element-layer"
+        v-if="highlightStyle.margin && highlightStyle.padding"
+        class="margin-layer"
         :style="{
-          position: 'absolute',
-          top: `${highlightStyle.margin.top}px`,
-          left: `${highlightStyle.margin.left}px`,
-          width: `${highlightStyle.elementWidth}px`,
-          height: `${highlightStyle.elementHeight}px`,
-          backgroundColor: 'var(--padding-bg-color)',
-          borderRadius: '2px',
+          position: 'fixed',
+          top: `${highlightStyle.containerTop}px`,
+          left: `${highlightStyle.containerLeft}px`,
+          width: `${highlightStyle.containerWidth}px`,
+          height: `${highlightStyle.containerHeight}px`,
+          pointerEvents: 'none',
+          zIndex: '9999',
+          backgroundColor: 'var(--margin-bg-color)',
+          border: '1px dashed oklch(70% 0.15 60)',
+          borderRadius: '3px',
+          overflow: 'hidden',
         }"
       >
-        <!-- Content 层 -->
+        <!-- Border + Element 层 -->
         <div
-          class="content-layer"
+          class="element-layer"
           :style="{
             position: 'absolute',
-            top: `${highlightStyle.padding.top}px`,
-            left: `${highlightStyle.padding.left}px`,
-            width: `${highlightStyle.contentWidth}px`,
-            height: `${highlightStyle.contentHeight}px`,
-            backgroundColor: 'var(--content-bg-color)',
-            borderRadius: '1px',
+            top: `${highlightStyle.margin.top}px`,
+            left: `${highlightStyle.margin.left}px`,
+            width: `${highlightStyle.elementWidth}px`,
+            height: `${highlightStyle.elementHeight}px`,
+            backgroundColor: 'var(--padding-bg-color)',
+            borderRadius: '2px',
           }"
-        />
+        >
+          <!-- Content 层 -->
+          <div
+            class="content-layer"
+            :style="{
+              position: 'absolute',
+              top: `${highlightStyle.padding.top}px`,
+              left: `${highlightStyle.padding.left}px`,
+              width: `${highlightStyle.contentWidth}px`,
+              height: `${highlightStyle.contentHeight}px`,
+              backgroundColor: 'var(--content-bg-color)',
+              borderRadius: '1px',
+            }"
+          />
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- ElementInfo 组件 -->
-  <ElementInfo
-    v-if="(isSelecting && hoveredElement) || showSelectedOverlay"
-    :element="showSelectedOverlay ? selectedElement : hoveredElement"
-    :mouse-position="mousePosition"
-    :is-selected="showSelectedOverlay"
-    @close="clearSelection"
-  />
+    <!-- ElementInfo 组件 -->
+    <ElementInfo
+      v-if="(isSelecting && hoveredElement) || showSelectedOverlay"
+      :element="showSelectedOverlay ? selectedElement : hoveredElement"
+      :is-selected="showSelectedOverlay"
+      :action="{ start: startSelecting, stop: stopSelecting }"
+    />
+  </Teleport>
 </template>
 
 <style>
@@ -315,6 +294,25 @@ onUnmounted(() => {
   --padding-bg-color: oklch(75% 0.12 240 / 0.3);
   --content-bg-color: oklch(78% 0.14 140 / 0.25);
   --border-bg-color: oklch(80% 0.18 20 / 0.3);
+}
+
+/* 确保传送到 body 的元素样式正确 */
+body .uno-inspect-controls {
+  position: fixed !important;
+  z-index: 10002 !important;
+  pointer-events: auto !important;
+}
+
+body .uno-inspect-element-info {
+  position: fixed !important;
+  z-index: 10001 !important;
+  pointer-events: auto !important;
+}
+
+body .box-model-overlay {
+  position: fixed !important;
+  z-index: 9999 !important;
+  pointer-events: none !important;
 }
 </style>
 

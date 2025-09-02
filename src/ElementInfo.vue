@@ -1,6 +1,7 @@
 <script lang='ts' setup>
 import type { VNode } from 'vue'
-import { computed, onUnmounted, ref, watch } from 'vue'
+import { useEventListener, useMouse, useToggle, useWindowSize } from '@vueuse/core'
+import { computed, ref, watch } from 'vue'
 
 import BasicInfo from './components/BasicInfo.vue'
 import BoxModel from './components/BoxModel.vue'
@@ -11,28 +12,30 @@ import TextContent from './components/TextContent.vue'
 import IconBasic from './icons/Basic.vue'
 import IconBox from './icons/Box.vue'
 import IconClass from './icons/Class.vue'
+import IconClose from './icons/Close.vue'
+import IconCursor from './icons/SmartCursor.vue'
 import IconStyle from './icons/Style.vue'
 import IconText from './icons/Text.vue'
 import IconUnoCSS from './icons/UnoCSS.vue'
 
 interface Props {
   element: HTMLElement | null
-  mousePosition: { x: number, y: number }
   isSelected: boolean
-}
-
-interface Emits {
-  (e: 'close'): void
+  action: {
+    start: () => void
+    stop: () => void
+  }
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
 
-// 当前激活的标签页
+const { width: windowWidth, height: windowHeight } = useWindowSize()
+const { x: mouseX, y: mouseY } = useMouse()
+
 const activeTab = ref(0)
 
 // 拖动相关状态
-const isDragging = ref(false)
+const [isDragging, _toggleDragging] = useToggle(false)
 const dragOffset = ref({ x: 0, y: 0 })
 const dragPosition = ref({ x: 0, y: 0 })
 const finalPosition = ref({ x: 0, y: 0 })
@@ -40,7 +43,6 @@ const finalPosition = ref({ x: 0, y: 0 })
 // 用于强制更新元素信息的触发器
 const updateTrigger = ref(0)
 
-// 标签页配置
 const tabs = [
   { id: 'basic', label: 'Basic Info', icon: IconBasic },
   { id: 'classes', label: 'Class', icon: IconClass },
@@ -50,7 +52,6 @@ const tabs = [
 ]
 
 const elementInfo = computed(() => {
-  // 触发重新计算（当窗口大小或滚动位置改变时）
   void updateTrigger.value
 
   if (!props.element) {
@@ -158,7 +159,7 @@ const panelPosition = computed(() => {
     }
     else {
       // 默认位置：右上角
-      baseX = window.innerWidth - 300 - 20 // 使用实际的面板宽度
+      baseX = windowWidth.value - 300 - 20 // 使用实际的面板宽度
       baseY = 20
     }
 
@@ -175,17 +176,17 @@ const panelPosition = computed(() => {
   const panelWidth = 300 // 与 CSS 中的实际宽度一致
   const panelHeight = 350 // 与 CSS 中的 max-height 一致
 
-  let left = props.mousePosition.x + offsetX
-  let top = props.mousePosition.y + offsetY
+  let left = mouseX.value + offsetX
+  let top = mouseY.value + offsetY
 
   // 避免超出右边界
-  if (left + panelWidth > window.innerWidth) {
-    left = props.mousePosition.x - panelWidth - offsetX
+  if (left + panelWidth > windowWidth.value) {
+    left = mouseX.value - panelWidth - offsetX
   }
 
   // 避免超出下边界
-  if (top + panelHeight > window.innerHeight) {
-    top = props.mousePosition.y - panelHeight - offsetY
+  if (top + panelHeight > windowHeight.value) {
+    top = mouseY.value - panelHeight - offsetY
   }
 
   // 避免超出左边界
@@ -205,10 +206,6 @@ const panelPosition = computed(() => {
     zIndex: '10001',
   }
 })
-
-function handleClose() {
-  emit('close')
-}
 
 function updateElementInfo() {
   updateTrigger.value++
@@ -248,8 +245,8 @@ function handleDrag(event: MouseEvent) {
   // 限制在视口内
   const panelWidth = 300 // 与 CSS 中的实际宽度一致
   const panelHeight = 350 // 与 CSS 中的 max-height 一致
-  const maxX = window.innerWidth - panelWidth
-  const maxY = window.innerHeight - panelHeight
+  const maxX = windowWidth.value - panelWidth
+  const maxY = windowHeight.value - panelHeight
 
   dragPosition.value = {
     x: Math.max(0, Math.min(newX, maxX)),
@@ -259,7 +256,6 @@ function handleDrag(event: MouseEvent) {
 
 function stopDrag() {
   if (isDragging.value) {
-    // 保存最终位置
     finalPosition.value = {
       x: dragPosition.value.x,
       y: dragPosition.value.y,
@@ -274,33 +270,14 @@ function stopDrag() {
 // 监听元素变化，重置拖拽位置
 watch(() => props.element, () => {
   if (props.element) {
-    // 当选中新元素时，重置拖拽状态
     finalPosition.value = { x: 0, y: 0 }
     dragPosition.value = { x: 0, y: 0 }
     isDragging.value = false
   }
 })
 
-// 监听 props.element 变化，管理事件监听器
-watch(() => props.element, (newElement, oldElement) => {
-  // 移除旧的事件监听器
-  if (oldElement) {
-    window.removeEventListener('resize', updateElementInfo)
-    window.removeEventListener('scroll', updateElementInfo, true)
-  }
-
-  // 添加新的事件监听器
-  if (newElement) {
-    window.addEventListener('resize', updateElementInfo)
-    window.addEventListener('scroll', updateElementInfo, true)
-  }
-}, { immediate: true })
-
-// 组件卸载时清理事件监听器
-onUnmounted(() => {
-  window.removeEventListener('resize', updateElementInfo)
-  window.removeEventListener('scroll', updateElementInfo, true)
-})
+useEventListener('resize', updateElementInfo)
+useEventListener('scroll', updateElementInfo, { capture: true })
 </script>
 
 <template>
@@ -310,21 +287,18 @@ onUnmounted(() => {
     :style="panelPosition"
   >
     <!-- 头部 -->
-    <div
-      class="header"
-      :class="{ draggable: isSelected, dragging: isDragging }"
-      @mousedown="startDrag"
-    >
-      <IconUnoCSS />
+    <div class="header">
+      <IconUnoCSS class="header-logo" :class="{ draggable: isSelected, dragging: isDragging }" @mousedown="startDrag" />
 
-      <button
-        v-show="isSelected"
-        class="close-btn"
-        @click="handleClose"
-        @mousedown.stop
-      >
-        ✕
-      </button>
+      <div class="header-right">
+        <IconCursor class="select-btn" @click.stop="action.start()" />
+        <IconClose
+          v-show="isSelected"
+          class="close-btn"
+          @click.stop="action.stop()"
+          @mousedown.stop
+        />
+      </div>
     </div>
 
     <!-- 标签页导航 -->
@@ -375,16 +349,18 @@ onUnmounted(() => {
 
 <style scoped>
 .uno-inspect-element-info {
+  --border-color: rgba(255, 255, 255, 0.1);
+  --bg-color: rgba(77, 77, 77, 0.4);
+
   width: 300px;
   height: auto;
   max-height: 350px;
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   overflow: hidden;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(6px);
   display: flex;
   flex-direction: column;
 }
@@ -393,18 +369,70 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 8px;
-  background: #f8fafc;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border-color);
   flex-shrink: 0;
   user-select: none;
+  font-size: 20px;
 }
 
-.header.draggable {
+@keyframes color-shadow {
+  /* --margin-bg-color: oklch(82% 0.15 60 / 0.25);
+  --padding-bg-color: oklch(75% 0.12 240 / 0.3);
+  --content-bg-color: oklch(78% 0.14 140 / 0.25);
+  --border-bg-color: oklch(80% 0.18 20 / 0.3); */
+
+  0% {
+    color: oklch(82% 0.15 60);
+  }
+  30% {
+    color: oklch(75% 0.12 240);
+  }
+  50% {
+    color: oklch(80% 0.18 20);
+  }
+  80% {
+    color: oklch(78% 0.14 140);
+  }
+  100% {
+    color: oklch(82% 0.15 60);
+  }
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  > * {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.2s;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .select-btn {
+    &.selecting{
+      opacity: 1;
+      animation: color-shadow 5s infinite;
+    }
+  }
+
+  .close-btn {
+    font-size: 24px;
+    padding: 4px;
+  }
+
+}
+
+.header-logo.draggable {
   cursor: move;
 }
 
-.header.dragging {
+.header-logo.dragging {
   cursor: grabbing;
 }
 
@@ -434,28 +462,13 @@ onUnmounted(() => {
   border-radius: 4px;
 }
 
-.close-btn {
-  background: none;
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-  padding: 4px;
-  color: #6b7280;
-  transition: all 0.2s;
-  cursor: pointer;
-}
-
-.close-btn:hover {
-  color: #374151;
-}
-
 .tab-navigation {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 8px 16px;
-  background: #f8fafc;
-  border-bottom: 1px solid #e5e7eb;
+  /* background: #f8fafc; */
+  /* border-bottom: 1px solid #e5e7eb; */
   flex-shrink: 0;
 }
 
@@ -493,7 +506,6 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color:#2228;
 }
 
 .tab-dot:hover {
