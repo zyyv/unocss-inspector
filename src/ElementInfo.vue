@@ -33,6 +33,7 @@ const { width: windowWidth, height: windowHeight } = useWindowSize()
 const { x: mouseX, y: mouseY } = useMouse()
 
 const activeTab = ref(0)
+const panelRef = ref<HTMLElement>()
 
 // 拖动相关状态
 const [isDragging, _toggleDragging] = useToggle(false)
@@ -174,7 +175,7 @@ const panelPosition = computed(() => {
   const offsetX = 20
   const offsetY = 20
   const panelWidth = 300 // 与 CSS 中的实际宽度一致
-  const panelHeight = 350 // 与 CSS 中的 max-height 一致
+  const panelHeight = panelRef.value?.offsetHeight || 350 // 使用真实DOM高度，fallback到max-height
 
   let left = mouseX.value + offsetX
   let top = mouseY.value + offsetY
@@ -244,7 +245,7 @@ function handleDrag(event: MouseEvent) {
 
   // 限制在视口内
   const panelWidth = 300 // 与 CSS 中的实际宽度一致
-  const panelHeight = 350 // 与 CSS 中的 max-height 一致
+  const panelHeight = panelRef.value?.offsetHeight || 350 // 使用真实DOM高度，fallback到max-height
   const maxX = windowWidth.value - panelWidth
   const maxY = windowHeight.value - panelHeight
 
@@ -283,6 +284,7 @@ useEventListener('scroll', updateElementInfo, { capture: true })
 <template>
   <div
     v-if="elementInfo"
+    ref="panelRef"
     class="uno-inspect-element-info"
     :style="panelPosition"
   >
