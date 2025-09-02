@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { useToggle, useWindowSize } from '@vueuse/core'
 import { computed, onUnmounted, ref } from 'vue'
+import { useMagicKey } from './composables/magickey'
 import ElementInfo from './ElementInfo.vue'
 import IconUnoCSS from './icons/UnoCSS.vue'
 
 const selectedElement = defineModel<HTMLElement | null>({ default: null })
-
-const { width: windowWidth, height: windowHeight } = useWindowSize()
-
 const [isSelecting, _toggleSelecting] = useToggle(false)
 const [showSelectedOverlay, _toggleSelectedOverlay] = useToggle(false)
 const [isDraggingControl, _toggleDraggingControl] = useToggle(false)
+const { width: windowWidth, height: windowHeight } = useWindowSize()
+
 const hoveredElement = ref<HTMLElement | null>(null)
 const updateTrigger = ref(0) // 用于强制重新计算样式
 
@@ -187,9 +187,7 @@ function handleControlDrag(event: MouseEvent) {
 }
 
 function stopControlDrag() {
-  // 在鼠标释放时，如果没有拖拽，则触发点击事件
   if (!hasMoved.value) {
-    // 确保在下一个事件循环中执行，避免事件冲突
     setTimeout(() => {
       startSelecting()
     }, 0)
@@ -206,6 +204,15 @@ onUnmounted(() => {
   // 确保移除所有窗口事件监听
   window.removeEventListener('resize', updateHighlight)
   window.removeEventListener('scroll', updateHighlight, true)
+})
+
+useMagicKey(() => {
+  if (isSelecting.value) {
+    stopSelecting()
+  }
+  else {
+    startSelecting()
+  }
 })
 </script>
 
