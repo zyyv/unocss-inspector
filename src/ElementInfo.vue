@@ -40,6 +40,7 @@ const [isDragging, _toggleDragging] = useToggle(false)
 const dragOffset = ref({ x: 0, y: 0 })
 const dragPosition = ref({ x: 0, y: 0 })
 const finalPosition = ref({ x: 0, y: 0 })
+const initialSelectedPosition = ref({ x: 0, y: 0 }) // 记录选中时的鼠标位置
 
 // 用于强制更新元素信息的触发器
 const updateTrigger = ref(0)
@@ -144,11 +145,45 @@ const elementInfo = computed(() => {
   }
 })
 
+// 计算面板位置的辅助函数
+function calculatePanelPosition(mouseX: number, mouseY: number) {
+  const offsetX = 20
+  const offsetY = 20
+  const panelWidth = 300
+  const panelHeight = panelRef.value?.offsetHeight || 350
+  const minMargin = 10
+
+  let left = mouseX + offsetX
+  let top = mouseY + offsetY
+
+  // 避免超出右边界
+  if (left + panelWidth > windowWidth.value) {
+    left = mouseX - panelWidth - offsetX
+  }
+
+  // 避免超出下边界
+  if (top + panelHeight > windowHeight.value) {
+    top = mouseY - panelHeight - offsetY
+  }
+
+  // 避免超出左边界
+  if (left < minMargin) {
+    left = minMargin
+  }
+
+  // 避免超出上边界
+  if (top < minMargin) {
+    top = minMargin
+  }
+
+  return { x: left, y: top }
+}
+
 const panelPosition = computed(() => {
+  let baseX, baseY
+
   if (props.isSelected) {
     // 选中状态：使用拖动后的最终位置，如果正在拖动则使用当前拖动位置
-    let baseX, baseY
-
     if (isDragging.value) {
       baseX = dragPosition.value.x
       baseY = dragPosition.value.y
@@ -159,51 +194,23 @@ const panelPosition = computed(() => {
       baseY = finalPosition.value.y
     }
     else {
-      // 默认位置：右上角
-      baseX = windowWidth.value - 300 - 20 // 使用实际的面板宽度
-      baseY = 20
-    }
-
-    return {
-      position: 'fixed' as const,
-      top: `${baseY}px`,
-      left: `${baseX}px`,
-      zIndex: '10001',
+      // 使用选中时记录的鼠标位置作为初始位置
+      const position = calculatePanelPosition(initialSelectedPosition.value.x, initialSelectedPosition.value.y)
+      baseX = position.x
+      baseY = position.y
     }
   }
-  // 跟随鼠标状态：跟随鼠标移动，但避免超出视口
-  const offsetX = 20
-  const offsetY = 20
-  const panelWidth = 300 // 与 CSS 中的实际宽度一致
-  const panelHeight = panelRef.value?.offsetHeight || 350 // 使用真实DOM高度，fallback到max-height
-
-  let left = mouseX.value + offsetX
-  let top = mouseY.value + offsetY
-
-  // 避免超出右边界
-  if (left + panelWidth > windowWidth.value) {
-    left = mouseX.value - panelWidth - offsetX
-  }
-
-  // 避免超出下边界
-  if (top + panelHeight > windowHeight.value) {
-    top = mouseY.value - panelHeight - offsetY
-  }
-
-  // 避免超出左边界
-  if (left < 10) {
-    left = 10
-  }
-
-  // 避免超出上边界
-  if (top < 10) {
-    top = 10
+  else {
+    // 跟随鼠标状态：跟随鼠标移动，但避免超出视口
+    const position = calculatePanelPosition(mouseX.value, mouseY.value)
+    baseX = position.x
+    baseY = position.y
   }
 
   return {
     position: 'fixed' as const,
-    left: `${left}px`,
-    top: `${top}px`,
+    left: `${baseX}px`,
+    top: `${baseY}px`,
     zIndex: '10001',
   }
 })
@@ -274,6 +281,17 @@ watch(() => props.element, () => {
     finalPosition.value = { x: 0, y: 0 }
     dragPosition.value = { x: 0, y: 0 }
     isDragging.value = false
+  }
+})
+
+// 监听选中状态变化，记录初始鼠标位置
+watch(() => props.isSelected, (isSelected) => {
+  if (isSelected) {
+    // 当元素被选中时，记录当前鼠标位置
+    initialSelectedPosition.value = {
+      x: mouseX.value,
+      y: mouseY.value,
+    }
   }
 })
 
