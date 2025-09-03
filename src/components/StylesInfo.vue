@@ -49,103 +49,39 @@ const stylesInfo = computed(() => {
 </script>
 
 <template>
-  <div v-if="stylesInfo" class="styles-container">
+  <div v-if="stylesInfo" class="flex flex-col gap-4 max-h-[280px] overflow-y-auto flex-1">
     <!-- 行内样式 -->
-    <div v-if="Object.keys(stylesInfo.inline).length > 0" class="style-group">
-      <h4 class="style-group-title">
+    <div v-if="Object.keys(stylesInfo.inline).length > 0" class="flex flex-col gap-2">
+      <h4 class="m-0 text-xs font-semibold text-gray-600 uppercase tracking-wider pb-1 border-b border-gray-200">
         Inline Styles
       </h4>
-      <div class="styles-grid">
+      <div class="grid gap-1.5">
         <div
           v-for="(value, key) in stylesInfo.inline"
           :key="`inline-${key}`"
-          class="style-item inline-style"
+          class="flex px-2.5 py-1.5 text-xs bg-amber-100 rounded border-l-3 border-amber-500"
         >
-          <span class="style-name">{{ key }}:</span>
-          <span class="style-value">{{ value }}</span>
+          <span class="text-amber-800 font-medium min-w-[100px] font-mono">{{ key }}:</span>
+          <span class="text-gray-700 font-mono break-all ml-2">{{ value }}</span>
         </div>
       </div>
     </div>
 
     <!-- 计算样式 -->
-    <div class="style-group">
-      <h4 class="style-group-title">
+    <div class="flex flex-col gap-2">
+      <h4 class="m-0 text-xs font-semibold text-gray-600 uppercase tracking-wider pb-1 border-b border-gray-200">
         Computed Styles
       </h4>
-      <div class="styles-grid">
+      <div class="grid gap-1.5">
         <div
           v-for="(value, key) in stylesInfo.computed"
           :key="`computed-${key}`"
-          class="style-item"
+          class="flex px-2.5 py-1.5 text-xs bg-slate-50 rounded"
         >
-          <span class="style-name">{{ key }}:</span>
-          <span class="style-value">{{ value }}</span>
+          <span class="text-purple-700 font-medium min-w-[100px] font-mono">{{ key }}:</span>
+          <span class="text-gray-700 font-mono break-all ml-2">{{ value }}</span>
         </div>
       </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-.styles-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-height: 280px;
-  overflow-y: auto;
-  flex: 1;
-}
-
-.style-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.style-group-title {
-  margin: 0;
-  font-size: 12px;
-  font-weight: 600;
-  color: #4b5563;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding-bottom: 4px;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.styles-grid {
-  display: grid;
-  gap: 6px;
-}
-
-.style-item {
-  display: flex;
-  padding: 6px 10px;
-  background: #f8fafc;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
-.style-item.inline-style {
-  background: #fef3c7;
-  border-left: 3px solid #f59e0b;
-}
-
-.style-name {
-  color: #7c3aed;
-  font-weight: 500;
-  min-width: 100px;
-  font-family: 'SF Mono', Monaco, monospace;
-}
-
-.inline-style .style-name {
-  color: #92400e;
-}
-
-.style-value {
-  color: #374151;
-  font-family: 'SF Mono', Monaco, monospace;
-  word-break: break-all;
-  margin-left: 8px;
-}
-</style>

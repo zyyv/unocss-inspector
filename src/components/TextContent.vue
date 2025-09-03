@@ -16,39 +16,13 @@ const textContent = computed(() => {
 </script>
 
 <template>
-  <div v-if="textContent" class="text-content">
+  <div v-if="textContent" class="bg-slate-50 p-3 rounded-md text-xs leading-6 text-gray-700 max-h-[260px] overflow-y-auto flex-1">
     {{ textContent }}
     <span v-if="textContent.length >= 100">...</span>
   </div>
-  <div v-else class="empty-state">
-    <p>This element has no text content</p>
+  <div v-else class="flex flex-col items-center justify-center h-[200px] text-gray-500">
+    <p class="m-0 text-sm">
+      This element has no text content
+    </p>
   </div>
 </template>
-
-<style scoped>
-.text-content {
-  background: #f8fafc;
-  padding: 12px;
-  border-radius: 6px;
-  font-size: 13px;
-  line-height: 1.5;
-  color: #374151;
-  max-height: 260px;
-  overflow-y: auto;
-  flex: 1;
-}
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  color: #6b7280;
-}
-
-.empty-state p {
-  margin: 0;
-  font-size: 14px;
-}
-</style>

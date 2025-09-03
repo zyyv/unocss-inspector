@@ -47,45 +47,45 @@ function formatBoxValue(value: number): string {
 </script>
 
 <template>
-  <div v-if="boxModel" class="box-model">
-    <div class="box-layer margin-box">
-      <div class="box-label">
+  <div v-if="boxModel" class="font-mono text-xs flex-1 flex items-center justify-center">
+    <div class="border border-[var(--margin-bg-color)] bg-[var(--margin-bg-color)] p-5 relative text-center">
+      <div class="absolute -top-px left-1 bg-gray-600 text-white px-1 font-semibold text-[9px] uppercase rounded-sm">
         margin
       </div>
-      <div class="box-values">
-        <span>{{ formatBoxValue(boxModel.margin.top) }}</span>
-        <span>{{ formatBoxValue(boxModel.margin.right) }}</span>
-        <span>{{ formatBoxValue(boxModel.margin.bottom) }}</span>
-        <span>{{ formatBoxValue(boxModel.margin.left) }}</span>
+      <div class="absolute top-0 left-0 w-full h-full text-[8px] opacity-80 pointer-events-none">
+        <span class="absolute top-0 left-1/2 -translate-x-1/2 translate-y-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.margin.top) }}</span>
+        <span class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.margin.right) }}</span>
+        <span class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.margin.bottom) }}</span>
+        <span class="absolute top-1/2 left-0 -translate-y-1/2 translate-x-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.margin.left) }}</span>
       </div>
 
-      <div class="box-layer border-box">
-        <div class="box-label">
+      <div class="border border-[var(--border-bg-color)] bg-[var(--border-bg-color)] p-5 relative text-center">
+        <div class="absolute -top-px left-1 bg-gray-600 text-white px-1 font-semibold text-[9px] uppercase rounded-sm">
           border
         </div>
-        <div class="box-values">
-          <span>{{ formatBoxValue(boxModel.border.top) }}</span>
-          <span>{{ formatBoxValue(boxModel.border.right) }}</span>
-          <span>{{ formatBoxValue(boxModel.border.bottom) }}</span>
-          <span>{{ formatBoxValue(boxModel.border.left) }}</span>
+        <div class="absolute top-0 left-0 w-full h-full text-[8px] opacity-80 pointer-events-none">
+          <span class="absolute top-0 left-1/2 -translate-x-1/2 translate-y-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.border.top) }}</span>
+          <span class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.border.right) }}</span>
+          <span class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.border.bottom) }}</span>
+          <span class="absolute top-1/2 left-0 -translate-y-1/2 translate-x-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.border.left) }}</span>
         </div>
 
-        <div class="box-layer padding-box">
-          <div class="box-label">
+        <div class="border border-[var(--padding-bg-color)] bg-[var(--padding-bg-color)] p-5 relative text-center">
+          <div class="absolute -top-px left-1 bg-gray-600 text-white px-1 font-semibold text-[9px] uppercase rounded-sm">
             padding
           </div>
-          <div class="box-values">
-            <span>{{ formatBoxValue(boxModel.padding.top) }}</span>
-            <span>{{ formatBoxValue(boxModel.padding.right) }}</span>
-            <span>{{ formatBoxValue(boxModel.padding.bottom) }}</span>
-            <span>{{ formatBoxValue(boxModel.padding.left) }}</span>
+          <div class="absolute top-0 left-0 w-full h-full text-[8px] opacity-80 pointer-events-none">
+            <span class="absolute top-0 left-1/2 -translate-x-1/2 translate-y-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.padding.top) }}</span>
+            <span class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.padding.right) }}</span>
+            <span class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.padding.bottom) }}</span>
+            <span class="absolute top-1/2 left-0 -translate-y-1/2 translate-x-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.padding.left) }}</span>
           </div>
 
-          <div class="box-layer content-box">
-            <div class="box-label">
+          <div class="border border-[var(--content-bg-color)] bg-[var(--content-bg-color)] min-h-10 flex items-center justify-center">
+            <div class="absolute -top-px left-1 bg-gray-600 text-white px-1 font-semibold text-[9px] uppercase rounded-sm">
               content
             </div>
-            <div class="content-size">
+            <div class="font-semibold text-blue-800 text-xs">
               {{ Math.round(boxModel.size.width) }} × {{ Math.round(boxModel.size.height) }}
             </div>
           </div>
@@ -94,113 +94,3 @@ function formatBoxValue(value: number): string {
     </div>
   </div>
 </template>
-
-<style scoped>
-.box-model {
-  font-family: 'SF Mono', Monaco, monospace;
-  font-size: 11px;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.box-layer {
-  border: 1px solid;
-  /* margin: 4px; */
-  padding: 20px;
-  position: relative;
-  text-align: center;
-}
-
-.margin-box {
-  border-color: var(--margin-bg-color);
-  background: var(--margin-bg-color);
-}
-
-.border-box {
-  border-color: var(--border-bg-color);
-  background: var(--border-bg-color);
-}
-
-.padding-box {
-  border-color: var(--padding-bg-color);
-  background: var(--padding-bg-color)
-}
-
-.content-box {
-  border-color: var(--content-bg-color);
-  background: var(--content-bg-color);
-  min-height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.box-label {
-  position: absolute;
-  top: -1px;
-  left: 4px;
-  background: #666;
-  color: white;
-  padding: 0 4px;
-  font-weight: 600;
-  font-size: 9px;
-  text-transform: uppercase;
-  border-radius: 2px;
-}
-
-.box-values {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  font-size: 8px;
-  opacity: 0.8;
-  pointer-events: none;
-}
-
-.box-values span {
-  position: absolute;
-  padding: 1px 3px;
-  border-radius: 2px;
-  color: #666;
-  background: rgba(255, 255, 255, 0.8);
-  transform: translate(-50%, -50%);
-}
-
-.box-values span:nth-child(1) {
-  /* top */
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, 0);
-}
-
-.box-values span:nth-child(2) {
-  /* right */
-  top: 50%;
-  right: 0;
-  transform: translate(0, -50%);
-}
-
-.box-values span:nth-child(3) {
-  /* bottom */
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%, 0);
-}
-
-.box-values span:nth-child(4) {
-  /* left */
-  top: 50%;
-  left: 0;
-  transform: translate(0, -50%);
-}
-
-.content-size {
-  font-weight: 600;
-  color: #1e40af;
-  font-size: 12px;
-}
-</style>

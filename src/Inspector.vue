@@ -4,7 +4,6 @@ import { computed, onUnmounted, ref } from 'vue'
 import { provideCurrentElement } from './composables/element'
 import { useMagicKey } from './composables/magickey'
 import ElementInfo from './ElementInfo.vue'
-import IconUnoCSS from './icons/UnoCSS.vue'
 
 const selectedElement = defineModel<HTMLElement | null>({ default: null })
 const [isSelecting, _toggleSelecting] = useToggle(false)
@@ -39,7 +38,6 @@ const highlightStyle = computed(() => {
   const rect = element.getBoundingClientRect()
   const computedStyle = window.getComputedStyle(element)
 
-  // 获取盒模型的各个值
   const margin = {
     top: Number.parseFloat(computedStyle.marginTop),
     right: Number.parseFloat(computedStyle.marginRight),
@@ -55,25 +53,21 @@ const highlightStyle = computed(() => {
   }
 
   return {
-    // 容器定位 (包含 margin)
     containerTop: rect.top - margin.top,
     containerLeft: rect.left - margin.left,
     containerWidth: rect.width + margin.left + margin.right,
     containerHeight: rect.height + margin.top + margin.bottom,
 
-    // 元素自身 (不包含 margin)
     elementTop: rect.top,
     elementLeft: rect.left,
     elementWidth: rect.width,
     elementHeight: rect.height,
 
-    // 内容区域 (不包含 padding)
     contentTop: rect.top + padding.top,
     contentLeft: rect.left + padding.left,
     contentWidth: rect.width - padding.left - padding.right,
     contentHeight: rect.height - padding.top - padding.bottom,
 
-    // 边距和内边距值
     margin,
     padding,
   }
@@ -227,8 +221,8 @@ useMagicKey(() => {
   <Teleport to="body">
     <!-- 控制按钮 -->
     <div
-      class="uno-inspect-controls"
-      :class="{ dragging: isDraggingControl }"
+      class="uno-inspect-controls p-1 cursor-move select-none"
+      :class="{ 'cursor-grabbing': isDraggingControl }"
       :style="{
         position: 'fixed',
         top: `${controlPosition.y}px`,
@@ -237,17 +231,18 @@ useMagicKey(() => {
       }"
       @mousedown="startControlDrag"
     >
-      <button>
-        <IconUnoCSS />
+      <button class="border-none bg-transparent cursor-move">
+        <div text-xl i-catppuccin:unocss />
       </button>
     </div>
 
     <!-- 高亮遮罩 - 盒模型显示 -->
-    <div v-if="(isSelecting && highlightStyle.containerTop !== undefined) || showSelectedOverlay" class="box-model-overlay">
+    <div v-if="(isSelecting && highlightStyle.containerTop !== undefined) || showSelectedOverlay" class="fixed pointer-events-none z-[9999]">
       <!-- Margin 层 -->
       <div
         v-if="highlightStyle.margin && highlightStyle.padding"
-        class="margin-layer"
+        b="~ dashed inspect-margin/50"
+        class="rd-md bg-inspect-margin/25 overflow-hidden transition-all duration-100"
         :style="{
           position: 'fixed',
           top: `${highlightStyle.containerTop}px`,
@@ -256,36 +251,26 @@ useMagicKey(() => {
           height: `${highlightStyle.containerHeight}px`,
           pointerEvents: 'none',
           zIndex: '9999',
-          backgroundColor: 'var(--margin-bg-color)',
-          border: '1px dashed oklch(70% 0.15 60)',
-          borderRadius: '3px',
-          overflow: 'hidden',
+
         }"
       >
-        <!-- Border + Element 层 -->
         <div
-          class="element-layer"
+          class="absolute bg-inspect-padding/30 transition-all duration-100"
           :style="{
-            position: 'absolute',
             top: `${highlightStyle.margin.top}px`,
             left: `${highlightStyle.margin.left}px`,
             width: `${highlightStyle.elementWidth}px`,
             height: `${highlightStyle.elementHeight}px`,
-            backgroundColor: 'var(--padding-bg-color)',
-            borderRadius: '2px',
           }"
         >
           <!-- Content 层 -->
           <div
-            class="content-layer"
+            class="absolute bg-inspect-content/15 transition-all duration-100"
             :style="{
-              position: 'absolute',
               top: `${highlightStyle.padding.top}px`,
               left: `${highlightStyle.padding.left}px`,
               width: `${highlightStyle.contentWidth}px`,
               height: `${highlightStyle.contentHeight}px`,
-              backgroundColor: 'var(--content-bg-color)',
-              borderRadius: '1px',
             }"
           />
         </div>
@@ -331,9 +316,7 @@ body .box-model-overlay {
 
 <style scoped>
 .uno-inspect-controls {
-  padding: 4px;
-  cursor: move;
-  user-select: none;
+  position: relative;
 
   &::before {
     content: '';
@@ -366,90 +349,5 @@ body .box-model-overlay {
   &::before {
     opacity: 1;
   }
-}
-
-.uno-inspect-controls.dragging {
-  cursor: grabbing;
-}
-
-.element-details {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.detail-item {
-  display: flex;
-  gap: 8px;
-}
-
-.label {
-  font-weight: 600;
-  color: #6b7280;
-  min-width: 60px;
-}
-
-.value {
-  color: #1f2937;
-  font-family: 'SF Mono', monospace;
-  font-size: 13px;
-}
-
-.instructions {
-  background: #f0f9ff;
-  padding: 12px;
-  border-radius: 6px;
-  border-left: 4px solid #0ea5e9;
-}
-
-.instructions p {
-  margin: 0;
-  color: #0c4a6e;
-  font-size: 14px;
-}
-
-.selecting-hint {
-  background: #fef3c7;
-  padding: 12px;
-  border-radius: 6px;
-  border-left: 4px solid #f59e0b;
-}
-
-.selecting-hint p {
-  margin: 0;
-  color: #92400e;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.box-model-overlay {
-  pointer-events: none;
-  z-index: 9999;
-}
-
-.margin-layer {
-  transition: all 0.1s ease;
-}
-
-.element-layer {
-  transition: all 0.1s ease;
-}
-
-.content-layer {
-  transition: all 0.1s ease;
-}
-
-.box-model-labels {
-  z-index: 10000;
-  line-height: 1.4;
-  box-shadow: 0 4px 12px oklch(0% 0 0 / 0.15);
-}
-
-.box-model-labels div {
-  margin: 2px 0;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 4px;
 }
 </style>
