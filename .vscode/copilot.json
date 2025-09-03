@@ -1,0 +1,16 @@
+{
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": true,
+    "scminput": false
+  },
+  "github.copilot.editor.enableAutoCompletions": true,
+  "github.copilot.editor.enableCodeActions": true,
+  "github.copilot.chat.followUps": "always",
+  "github.copilot.chat.localeOverride": "zh-CN",
+  "github.copilot.advanced": {
+    "listCount": 5,
+    "inlineSuggestCount": 3
+  }
+}
