@@ -190,7 +190,7 @@ useEventListener('scroll', updateElementInfo, { capture: true })
   <div
     v-if="element"
     ref="panelRef"
-    class="uno-inspect-element-info"
+    class="uno-inspect-element-info font-dm"
     :style="panelPosition"
   >
     <!-- 头部 -->

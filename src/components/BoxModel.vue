@@ -47,45 +47,51 @@ function formatBoxValue(value: number): string {
 </script>
 
 <template>
-  <div v-if="boxModel" class="font-mono text-xs flex-1 flex items-center justify-center">
-    <div class="border border-[var(--margin-bg-color)] bg-[var(--margin-bg-color)] p-5 relative text-center">
-      <div class="absolute -top-px left-1 bg-gray-600 text-white px-1 font-semibold text-[9px] uppercase rounded-sm">
+  <div v-if="boxModel" class="lh-loose flex items-center justify-center">
+    <div
+      b="~ dashed inspect-margin"
+      class="w-full bg-inspect-margin bg-op-50 p-5 relative"
+    >
+      <div class="box-model-title">
         margin
       </div>
-      <div class="absolute top-0 left-0 w-full h-full text-[8px] opacity-80 pointer-events-none">
-        <span class="absolute top-0 left-1/2 -translate-x-1/2 translate-y-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.margin.top) }}</span>
-        <span class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.margin.right) }}</span>
-        <span class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.margin.bottom) }}</span>
-        <span class="absolute top-1/2 left-0 -translate-y-1/2 translate-x-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.margin.left) }}</span>
+      <div class="box-model-labels">
+        <span class="box-model-text top-0 left-1/2 -translate-x-1/2 translate-y-0">{{ formatBoxValue(boxModel.margin.top) }}</span>
+        <span class="box-model-text top-1/2 right-0 -translate-y-1/2 translate-x-0">{{ formatBoxValue(boxModel.margin.right) }}</span>
+        <span class="box-model-text bottom-0 left-1/2 -translate-x-1/2 translate-y-0">{{ formatBoxValue(boxModel.margin.bottom) }}</span>
+        <span class="box-model-text top-1/2 left-0 -translate-y-1/2 translate-x-0">{{ formatBoxValue(boxModel.margin.left) }}</span>
       </div>
 
-      <div class="border border-[var(--border-bg-color)] bg-[var(--border-bg-color)] p-5 relative text-center">
-        <div class="absolute -top-px left-1 bg-gray-600 text-white px-1 font-semibold text-[9px] uppercase rounded-sm">
+      <div
+        b="~ solid inspect-border/35"
+        class="bg-inspect-border/35 p-5 relative text-center"
+      >
+        <div class="box-model-title">
           border
         </div>
-        <div class="absolute top-0 left-0 w-full h-full text-[8px] opacity-80 pointer-events-none">
-          <span class="absolute top-0 left-1/2 -translate-x-1/2 translate-y-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.border.top) }}</span>
-          <span class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.border.right) }}</span>
-          <span class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.border.bottom) }}</span>
-          <span class="absolute top-1/2 left-0 -translate-y-1/2 translate-x-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.border.left) }}</span>
+        <div class="box-model-labels">
+          <span class="box-model-text top-0 left-1/2 -translate-x-1/2 translate-y-0">{{ formatBoxValue(boxModel.border.top) }}</span>
+          <span class="box-model-text top-1/2 right-0 -translate-y-1/2 translate-x-0">{{ formatBoxValue(boxModel.border.right) }}</span>
+          <span class="box-model-text bottom-0 left-1/2 -translate-x-1/2 translate-y-0">{{ formatBoxValue(boxModel.border.bottom) }}</span>
+          <span class="box-model-text top-1/2 left-0 -translate-y-1/2 translate-x-0">{{ formatBoxValue(boxModel.border.left) }}</span>
         </div>
 
-        <div class="border border-[var(--padding-bg-color)] bg-[var(--padding-bg-color)] p-5 relative text-center">
-          <div class="absolute -top-px left-1 bg-gray-600 text-white px-1 font-semibold text-[9px] uppercase rounded-sm">
+        <div
+          b="~ dashed inspect-padding"
+          class="bg-inspect-padding/40 p-5 relative text-center"
+        >
+          <div class="box-model-title">
             padding
           </div>
-          <div class="absolute top-0 left-0 w-full h-full text-[8px] opacity-80 pointer-events-none">
-            <span class="absolute top-0 left-1/2 -translate-x-1/2 translate-y-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.padding.top) }}</span>
-            <span class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.padding.right) }}</span>
-            <span class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.padding.bottom) }}</span>
-            <span class="absolute top-1/2 left-0 -translate-y-1/2 translate-x-0 px-1 rounded-sm text-gray-600 bg-white/80">{{ formatBoxValue(boxModel.padding.left) }}</span>
+          <div class="box-model-labels">
+            <span class="box-model-text top-0 left-1/2 -translate-x-1/2 translate-y-0">{{ formatBoxValue(boxModel.padding.top) }}</span>
+            <span class="box-model-text top-1/2 right-0 -translate-y-1/2 translate-x-0">{{ formatBoxValue(boxModel.padding.right) }}</span>
+            <span class="box-model-text bottom-0 left-1/2 -translate-x-1/2 translate-y-0">{{ formatBoxValue(boxModel.padding.bottom) }}</span>
+            <span class="box-model-text top-1/2 left-0 -translate-y-1/2 translate-x-0">{{ formatBoxValue(boxModel.padding.left) }}</span>
           </div>
 
-          <div class="border border-[var(--content-bg-color)] bg-[var(--content-bg-color)] min-h-10 flex items-center justify-center">
-            <div class="absolute -top-px left-1 bg-gray-600 text-white px-1 font-semibold text-[9px] uppercase rounded-sm">
-              content
-            </div>
-            <div class="font-semibold text-blue-800 text-xs">
+          <div class="border border-inspect-content bg-inspect-content/40 min-h-10 flex items-center justify-center">
+            <div class="text-10px">
               {{ Math.round(boxModel.size.width) }} × {{ Math.round(boxModel.size.height) }}
             </div>
           </div>

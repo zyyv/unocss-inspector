@@ -237,12 +237,12 @@ useMagicKey(() => {
     </div>
 
     <!-- 高亮遮罩 - 盒模型显示 -->
-    <div v-if="(isSelecting && highlightStyle.containerTop !== undefined) || showSelectedOverlay" class="fixed pointer-events-none z-[9999]">
+    <div v-if="(isSelecting && highlightStyle.containerTop !== undefined) || showSelectedOverlay" class="fixed pointer-events-none z-9999 font-dm">
       <!-- Margin 层 -->
       <div
         v-if="highlightStyle.margin && highlightStyle.padding"
         b="~ dashed inspect-margin/50"
-        class="rd-md bg-inspect-margin/25 overflow-hidden transition-all duration-100"
+        class="rd-md bg-inspect-margin/25 overflow-hidden transition-all duration-100 relative"
         :style="{
           position: 'fixed',
           top: `${highlightStyle.containerTop}px`,
@@ -254,8 +254,60 @@ useMagicKey(() => {
 
         }"
       >
+        <!-- Margin 数值标签 -->
+        <div class="absolute text-10px font-medium text-inspect-margin inset-0 pointer-events-none">
+          <!-- Margin Top -->
+          <div
+            v-if="highlightStyle.margin.top > 0"
+            class="absolute"
+            :style="{
+              top: '0',
+              left: '50%',
+              transform: 'translateX(-50%)',
+            }"
+          >
+            mt-{{ highlightStyle.margin.top / 4 }}
+          </div>
+          <!-- Margin Right -->
+          <div
+            v-if="highlightStyle.margin.right > 0"
+            class="absolute"
+            :style="{
+              top: '50%',
+              right: `0`,
+              transform: 'translateY(-50%)',
+            }"
+          >
+            mr-{{ highlightStyle.margin.right / 4 }}
+          </div>
+          <!-- Margin Bottom -->
+          <div
+            v-if="highlightStyle.margin.bottom > 0"
+            class="absolute"
+            :style="{
+              bottom: '0',
+              left: '50%',
+              transform: 'translateX(-50%)',
+            }"
+          >
+            mb-{{ highlightStyle.margin.bottom / 4 }}
+          </div>
+          <!-- Margin Left -->
+          <div
+            v-if="highlightStyle.margin.left > 0"
+            class="absolute"
+            :style="{
+              top: '50%',
+              left: '0',
+              transform: 'translateY(-50%)',
+            }"
+          >
+            ml-{{ highlightStyle.margin.left / 4 }}
+          </div>
+        </div>
+
         <div
-          class="absolute bg-inspect-padding/30 transition-all duration-100"
+          class="absolute bg-inspect-padding/30 transition-all duration-100 relative"
           :style="{
             top: `${highlightStyle.margin.top}px`,
             left: `${highlightStyle.margin.left}px`,
@@ -263,6 +315,58 @@ useMagicKey(() => {
             height: `${highlightStyle.elementHeight}px`,
           }"
         >
+          <!-- Padding 数值标签 -->
+          <div class="absolute text-10px font-medium inset-0 text-inspect-padding pointer-events-none">
+            <!-- Padding Top -->
+            <div
+              v-if="highlightStyle.padding.top > 0"
+              class="absolute"
+              :style="{
+                top: '0',
+                left: '50%',
+                transform: 'translateX(-50%)',
+              }"
+            >
+              pt-{{ highlightStyle.padding.top / 4 }}
+            </div>
+            <!-- Padding Right -->
+            <div
+              v-if="highlightStyle.padding.right > 0"
+              class="absolute"
+              :style="{
+                top: '50%',
+                right: '0',
+                transform: 'translateY(-50%)',
+              }"
+            >
+              pr-{{ highlightStyle.padding.right / 4 }}
+            </div>
+            <!-- Padding Bottom -->
+            <div
+              v-if="highlightStyle.padding.bottom > 0"
+              class="absolute"
+              :style="{
+                bottom: '0',
+                left: '50%',
+                transform: 'translateX(-50%)',
+              }"
+            >
+              pb-{{ highlightStyle.padding.bottom / 4 }}
+            </div>
+            <!-- Padding Left -->
+            <div
+              v-if="highlightStyle.padding.left > 0"
+              class="absolute"
+              :style="{
+                top: '50%',
+                left: '0',
+                transform: 'translateY(-50%)',
+              }"
+            >
+              pl-{{ highlightStyle.padding.left / 4 }}
+            </div>
+          </div>
+
           <!-- Content 层 -->
           <div
             class="absolute bg-inspect-content/15 transition-all duration-100"
