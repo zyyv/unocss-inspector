@@ -1,33 +1,33 @@
 <script lang='ts' setup>
 import type { VNode } from 'vue'
-import type { TabComponentProps } from '../types'
 import { computed } from 'vue'
+import { useElement } from '../composables/element'
 
-const props = defineProps<TabComponentProps>()
+const { element, updateTrigger } = useElement()
 
 const stylesInfo = computed(() => {
-  void props.updateTrigger
+  void updateTrigger.value
 
-  if (!props.el) {
+  if (!element.value) {
     return null
   }
 
-  const element = props.el
-  const computedStyle = window.getComputedStyle(element)
+  const el = element.value
+  const computedStyle = window.getComputedStyle(el)
 
   // 获取行内样式
   const inlineStyles: Record<string, string> = {}
-  if (element.style.length > 0) {
-    const vnode = (element as any).__vnode as VNode | undefined
+  if (el.style.length > 0) {
+    const vnode = (el as any).__vnode as VNode | undefined
     if (vnode) {
       for (const [key, value] of Object.entries(vnode.props?.style || {})) {
         inlineStyles[key] = value as string
       }
     }
     else {
-      for (let i = 0; i < element.style.length; i++) {
-        const property = element.style.item(i)
-        inlineStyles[property] = element.style.getPropertyValue(property)
+      for (let i = 0; i < el.style.length; i++) {
+        const property = el.style.item(i)
+        inlineStyles[property] = el.style.getPropertyValue(property)
       }
     }
   }

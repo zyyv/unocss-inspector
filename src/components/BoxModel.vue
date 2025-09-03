@@ -1,19 +1,19 @@
 <script lang='ts' setup>
-import type { TabComponentProps } from '../types'
 import { computed } from 'vue'
+import { useElement } from '../composables/element'
 
-const props = defineProps<TabComponentProps>()
+const { element, updateTrigger } = useElement()
 
 const boxModel = computed(() => {
-  void props.updateTrigger
+  void updateTrigger.value
 
-  if (!props.el) {
+  if (!element.value) {
     return null
   }
 
-  const element = props.el
-  const computedStyle = window.getComputedStyle(element)
-  const rect = element.getBoundingClientRect()
+  const el = element.value
+  const computedStyle = window.getComputedStyle(el)
+  const rect = el.getBoundingClientRect()
 
   return {
     margin: {

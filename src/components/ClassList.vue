@@ -1,17 +1,17 @@
 <script lang='ts' setup>
-import type { TabComponentProps } from '../types'
 import { computed } from 'vue'
+import { useElement } from '../composables/element'
 
-const props = defineProps<TabComponentProps>()
+const { element, updateTrigger } = useElement()
 
 const classList = computed(() => {
-  void props.updateTrigger
+  void updateTrigger.value
 
-  if (!props.el) {
+  if (!element.value) {
     return []
   }
 
-  return Array.from(props.el.classList)
+  return Array.from(element.value.classList)
 })
 </script>
 

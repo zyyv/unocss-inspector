@@ -1,17 +1,17 @@
 <script lang='ts' setup>
-import type { TabComponentProps } from '../types'
 import { computed } from 'vue'
+import { useElement } from '../composables/element'
 
-const props = defineProps<TabComponentProps>()
+const { element, updateTrigger } = useElement()
 
 const basicInfo = computed(() => {
-  void props.updateTrigger
+  void updateTrigger.value
 
-  if (!props.el) {
+  if (!element.value) {
     return null
   }
 
-  const el = props.el
+  const el = element.value
   const rect = el.getBoundingClientRect()
 
   return {

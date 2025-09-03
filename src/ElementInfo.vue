@@ -1,13 +1,13 @@
 <script lang='ts' setup>
 import { useEventListener, useMouse, useToggle, useWindowSize } from '@vueuse/core'
 import { computed, ref, watch } from 'vue'
+import { useElement } from './composables/element'
 import { useTabs } from './composables/tabs'
 import IconClose from './icons/Close.vue'
 import IconCursor from './icons/SmartCursor.vue'
 import IconUnoCSS from './icons/UnoCSS.vue'
 
 interface Props {
-  element: HTMLElement | null
   isSelected: boolean
   action: {
     start: () => void
@@ -16,6 +16,9 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
+// 使用 inject 获取 element 和 updateTrigger
+const { element, updateTrigger } = useElement()
 
 const { width: windowWidth, height: windowHeight } = useWindowSize()
 const { x: mouseX, y: mouseY } = useMouse()
@@ -28,9 +31,6 @@ const dragOffset = ref({ x: 0, y: 0 })
 const dragPosition = ref({ x: 0, y: 0 })
 const finalPosition = ref({ x: 0, y: 0 })
 const initialSelectedPosition = ref({ x: 0, y: 0 }) // 记录选中时的鼠标位置
-
-// 用于强制更新元素信息的触发器
-const updateTrigger = ref(0)
 
 const { tabs, activeTab, slideDirection, setActiveTab } = useTabs()
 
@@ -167,8 +167,8 @@ function stopDrag() {
 }
 
 // 监听元素变化，重置拖拽位置
-watch(() => props.element, () => {
-  if (props.element) {
+watch(() => element.value, () => {
+  if (element.value) {
     finalPosition.value = { x: 0, y: 0 }
     dragPosition.value = { x: 0, y: 0 }
     isDragging.value = false
@@ -191,7 +191,7 @@ useEventListener('scroll', updateElementInfo, { capture: true })
 
 <template>
   <div
-    v-if="props.element"
+    v-if="element"
     ref="panelRef"
     class="uno-inspect-element-info"
     :style="panelPosition"
@@ -230,7 +230,7 @@ useEventListener('scroll', updateElementInfo, { capture: true })
     <!-- 内容区域 -->
     <div class="content">
       <Transition :name="`slide-${slideDirection}`" mode="out-in">
-        <component :is="activeTab.component" :key="activeTab.id" :el="props.element" :update-trigger="updateTrigger" />
+        <component :is="activeTab.component" :key="activeTab.id" />
       </Transition>
     </div>
   </div>

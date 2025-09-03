@@ -1,17 +1,17 @@
 <script lang='ts' setup>
-import type { TabComponentProps } from '../types'
 import { computed } from 'vue'
+import { useElement } from '../composables/element'
 
-const props = defineProps<TabComponentProps>()
+const { element, updateTrigger } = useElement()
 
 const textContent = computed(() => {
-  void props.updateTrigger
+  void updateTrigger.value
 
-  if (!props.el) {
+  if (!element.value) {
     return ''
   }
 
-  return props.el.textContent?.trim().slice(0, 100) || ''
+  return element.value.textContent?.trim().slice(0, 100) || ''
 })
 </script>
 

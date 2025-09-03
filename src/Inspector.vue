@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useToggle, useWindowSize } from '@vueuse/core'
 import { computed, onUnmounted, ref } from 'vue'
+import { provideCurrentElement } from './composables/element'
 import { useMagicKey } from './composables/magickey'
 import ElementInfo from './ElementInfo.vue'
 import IconUnoCSS from './icons/UnoCSS.vue'
@@ -13,6 +14,12 @@ const { width: windowWidth, height: windowHeight } = useWindowSize()
 
 const hoveredElement = ref<HTMLElement | null>(null)
 const updateTrigger = ref(0) // 用于强制重新计算样式
+
+const currentElement = computed(() => {
+  return showSelectedOverlay.value ? selectedElement.value : hoveredElement.value
+})
+
+provideCurrentElement(currentElement, updateTrigger)
 
 // 控制面板拖拽相关状态
 const controlPosition = ref({ x: 20, y: 20 })
@@ -288,7 +295,6 @@ useMagicKey(() => {
     <!-- ElementInfo 组件 -->
     <ElementInfo
       v-if="(isSelecting && hoveredElement) || showSelectedOverlay"
-      :element="showSelectedOverlay ? selectedElement : hoveredElement"
       :is-selected="showSelectedOverlay"
       :action="{ start: startSelecting, stop: stopSelecting }"
     />
