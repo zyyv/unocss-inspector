@@ -35,6 +35,7 @@
     "build": "tsdown",
     "dev": "tsdown --watch",
     "play": "vite",
+    "play:build": "vite build",
     "test": "vitest",
     "typecheck": "vue-tsc --noEmit",
     "prepublishOnly": "pnpm run build"
