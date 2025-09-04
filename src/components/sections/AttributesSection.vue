@@ -20,11 +20,11 @@ defineEmits<Emits>()
 </script>
 
 <template>
-  <div p="x4 y2" class="flex flex-col gap-1">
+  <div v-if="attributes?.size" p="x4 y2" class="flex flex-col gap-1">
     <h5 m0>
       Attributes
     </h5>
-    <div v-if="attributes?.size" class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2">
       <div
         v-for="[key, attrData] in attributes!"
         :key="key"

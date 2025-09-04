@@ -76,7 +76,25 @@ export function useAttributes() {
     if (!element.value) {
       return
     }
-    element.value.setAttribute(attrName, newValues.join(' '))
+
+    // 如果为空数组，则删除属性
+    if (newValues.length === 0) {
+      element.value.removeAttribute(attrName)
+    }
+    // 如果只包含占位符 '~'，则添加空属性
+    else if (newValues.length === 1 && newValues[0] === '~') {
+      element.value.setAttribute(attrName, '')
+    }
+    else {
+      // 过滤掉占位符 '~'，只设置实际的值
+      const filteredValues = newValues.filter(value => value !== '~')
+      if (filteredValues.length === 0) {
+        element.value.removeAttribute(attrName)
+      }
+      else {
+        element.value.setAttribute(attrName, filteredValues.join(' '))
+      }
+    }
     updateTrigger.value++
   }
 

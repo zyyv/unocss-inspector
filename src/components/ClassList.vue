@@ -16,13 +16,11 @@ const { attributes, updateAttribute } = useAttributes()
       @update:class-list="(newList) => classList = newList"
     />
 
-    <template v-if="attributes.size > 0">
-      <div divided />
+    <div v-if="attributes.size > 0 && displayClasses.length > 0" divided />
 
-      <AttributesSection
-        :attributes="attributes"
-        @update-attribute="updateAttribute"
-      />
-    </template>
+    <AttributesSection
+      :attributes="attributes"
+      @update-attribute="updateAttribute"
+    />
   </div>
 </template>
