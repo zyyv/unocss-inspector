@@ -1,5 +1,6 @@
 import type { Theme } from '@unocss/preset-wind4'
 import { symbols } from '@unocss/core'
+import { createLocalFontProcessor } from '@unocss/preset-web-fonts/local'
 import { defineConfig, presetAttributify, presetIcons, presetWebFonts, presetWind4 } from 'unocss'
 
 export default defineConfig<Theme>({
@@ -57,6 +58,8 @@ export default defineConfig<Theme>({
     'colors:inspect-padding',
     'colors:inspect-content',
     'colors:inspect-border',
+    'colors:sky-DEFAULT',
+    'colors:teal-DEFAULT',
   ],
   presets: [
     presetWind4({
@@ -71,6 +74,7 @@ export default defineConfig<Theme>({
       fonts: {
         dm: ['DM Sans', 'DM Sans:400,700'],
       },
+      // processors: [createLocalFontProcessor()],
     }),
   ],
 })

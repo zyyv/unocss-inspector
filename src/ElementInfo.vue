@@ -231,7 +231,7 @@ useEventListener('scroll', updateElementInfo, { capture: true })
     </div>
 
     <!-- 内容区域 -->
-    <div class="flex-1 overflow-y-auto p-4 relative no-scrollbar">
+    <div class="flex-1 overflow-y-auto relative no-scrollbar">
       <Transition :name="`slide-${slideDirection}`" mode="out-in">
         <KeepAlive>
           <component :is="activeTab.component" :key="activeTab.id" />

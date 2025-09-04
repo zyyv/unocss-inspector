@@ -19,7 +19,12 @@ watchEffect(() => {
         <h1 id="main-title" class="text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">
           UnoCSS Inspector
         </h1>
-        <p class="text-xl opacity-90 max-w-2xl mx-auto leading-relaxed">
+        <p
+          class="opacity-90 mx-auto leading-relaxed" max-w-2xl
+          text="xl red hover:blue sad asdqwe adqws asdqwgfd"
+          custom="foo bar"
+          dark:hover="baz text-foo"
+        >
           Explore and inspect CSS properties with interactive element selection
         </p>
         <div class="mt-8 inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm">

@@ -1,12 +1,15 @@
 <script lang='ts' setup>
 import { computed, inject } from 'vue'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   id?: string
   label?: string
   disabled?: boolean
   modelValue?: string | boolean
-}>()
+  shape?: 'square' | 'round'
+}>(), {
+  shape: 'square',
+})
 
 const model = defineModel<boolean | string>()
 const realId = props.id || Math.random().toString(36).slice(2, 11)
@@ -32,29 +35,38 @@ function handleToggle() {
     model.value = !model.value
   }
 }
+
+function handleLabelClick(event: Event) {
+  event.preventDefault()
+  handleToggle()
+}
 </script>
 
 <template>
-  <div inline-flex w-fit flex="items-center gap-0.75" children:cursor-pointer select-none @click="handleToggle">
+  <div inline-flex w-fit flex="items-center gap-0.75" children:cursor-pointer select-none>
     <div
       class="inline-flex items-center relative"
-      :class="{ 'opacity-50 cursor-not-allowed': disabled }"
+      :class="{
+        'opacity-50 cursor-not-allowed': disabled,
+      }"
+      @click="handleToggle"
     >
       <input
         :id="realId"
         :checked="checked"
         type="checkbox"
         :disabled="disabled"
-        class="btn-clear peer size-4 rd-sm"
+        class="btn-clear peer size-4"
+        :class="shape === 'square' ? 'rd-sm' : 'rd-full'"
         style="--webkit-appearance: none; -moz-appearance: none; appearance: none;"
-        b="~ solid white/50 checked:sky/50"
-        @change="handleToggle"
+        b="~ solid white/50 checked:$checked-context/50"
       >
       <div
-        class="pos-center transition-all size-0 rd-2px"
-        peer-checked="size-60% bg-sky"
+        class="pos-center transition-all size-0"
+        :class="shape === 'square' ? 'rd-2px' : 'rd-full'"
+        peer-checked="size-58% bg-$checked-context"
       />
     </div>
-    <label v-if="label" :for="realId" class="text-sm whitespace-nowrap">{{ label }}</label>
+    <label v-if="label" transition-opacity :class="{ 'op-50': !checked }" :for="realId" class="text-sm whitespace-nowrap" @click="handleLabelClick">{{ label }}</label>
   </div>
 </template>
