@@ -1,6 +1,6 @@
 <script lang='ts' setup>
 import { useEventListener, useMouse, useToggle, useWindowSize } from '@vueuse/core'
-import { computed, ref, watch } from 'vue'
+import { computed, KeepAlive, ref, watch } from 'vue'
 import { useElement } from './composables/element'
 import { useTabs } from './composables/tabs'
 
@@ -231,9 +231,11 @@ useEventListener('scroll', updateElementInfo, { capture: true })
     </div>
 
     <!-- 内容区域 -->
-    <div class="flex-1 overflow-y-auto p-4 relative">
+    <div class="flex-1 overflow-y-auto p-4 relative no-scrollbar">
       <Transition :name="`slide-${slideDirection}`" mode="out-in">
-        <component :is="activeTab.component" :key="activeTab.id" />
+        <KeepAlive>
+          <component :is="activeTab.component" :key="activeTab.id" />
+        </KeepAlive>
       </Transition>
     </div>
   </div>

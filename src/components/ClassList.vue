@@ -1,10 +1,14 @@
 <script lang='ts' setup>
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useElement } from '../composables/element'
+import Checkbox from './basic/Checkbox.vue'
+import CheckboxGroup from './basic/CheckboxGroup.vue'
 
 const { element, updateTrigger } = useElement()
 
-const classList = computed(() => {
+const allClasses = ref<Set<string>>(new Set())
+
+const activeClasses = computed(() => {
   void updateTrigger.value
 
   if (!element.value) {
@@ -13,17 +17,55 @@ const classList = computed(() => {
 
   return Array.from(element.value.classList)
 })
+
+watch(
+  () => element.value,
+  (newElement) => {
+    allClasses.value.clear()
+    if (newElement) {
+      Array.from(newElement.classList).forEach((className) => {
+        allClasses.value.add(className)
+      })
+    }
+  },
+  { immediate: true },
+)
+
+watch(
+  activeClasses,
+  (newClasses) => {
+    newClasses.forEach((className) => {
+      allClasses.value.add(className)
+    })
+  },
+  { immediate: true },
+)
+
+const displayClasses = computed(() => Array.from(allClasses.value))
+
+const classList = computed({
+  get: () => activeClasses.value,
+  set: (newList: string[]) => {
+    if (!element.value) {
+      return
+    }
+    element.value.className = newList.join(' ')
+    updateTrigger.value++
+  },
+})
 </script>
 
 <template>
-  <div v-if="classList.length" class="flex flex-wrap gap-1.5 max-h-[280px] overflow-y-auto">
-    <span
-      v-for="className in classList"
-      :key="className"
-      class="font-mono text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded font-medium"
-    >
-      .{{ className }}
-    </span>
+  <div v-if="displayClasses.length" class="flex flex-wrap gap-2 w-full">
+    <CheckboxGroup v-model="classList">
+      <Checkbox
+        v-for="className in displayClasses"
+        :id="`class-${className}`"
+        :key="className"
+        :model-value="className"
+        :label="`.${className}`"
+      />
+    </CheckboxGroup>
   </div>
   <div v-else class="flex flex-col items-center justify-center h-[200px] text-gray-500">
     <p class="m-0 text-sm">
