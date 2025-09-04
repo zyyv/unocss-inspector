@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
 import Inspector from '../../src/Inspector.vue'
+import FormControlExample from './FormControlExample.vue'
 
 const selectedElement = ref(null)
 
@@ -218,6 +219,16 @@ watchEffect(() => {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- Form Controls Demo -->
+      <section>
+        <h3 class="text-2xl font-bold text-gray-100 mb-6">
+          Form Controls Demo
+        </h3>
+        <div class="bg-dark-200 text-gray-100 rounded-xl p-6 border border-gray-700">
+          <FormControlExample />
         </div>
       </section>
     </main>

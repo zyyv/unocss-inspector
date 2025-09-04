@@ -7,32 +7,46 @@ const props = withDefaults(defineProps<{
   disabled?: boolean
   modelValue?: string | boolean
   shape?: 'square' | 'round'
+  type?: 'checkbox' | 'radio'
 }>(), {
   shape: 'square',
+  type: 'checkbox',
 })
 
 const model = defineModel<boolean | string>()
 const realId = props.id || Math.random().toString(36).slice(2, 11)
 
-const checkboxGroup = inject<{
+const controlGroup = inject<{
   toggle: (value: string) => void
+  select: (value: string) => void
   isChecked: (value: string) => boolean
-  modelValue: { value: string[] }
-} | null>('checkboxGroup', null)
+  modelValue: { value: string[] | string }
+  type: 'checkbox' | 'radio'
+} | null>('controlGroup', null)
 
 const checked = computed(() => {
-  if (checkboxGroup && typeof props.modelValue === 'string') {
-    return checkboxGroup.isChecked(props.modelValue)
+  if (controlGroup && typeof props.modelValue === 'string') {
+    return controlGroup.isChecked(props.modelValue)
   }
   return Boolean(model.value)
 })
 
 function handleToggle() {
-  if (checkboxGroup && typeof props.modelValue === 'string') {
-    checkboxGroup.toggle(props.modelValue)
+  if (controlGroup && typeof props.modelValue === 'string') {
+    if (props.type === 'radio' || controlGroup.type === 'radio') {
+      controlGroup.select(props.modelValue)
+    }
+    else {
+      controlGroup.toggle(props.modelValue)
+    }
   }
   else {
-    model.value = !model.value
+    if (props.type === 'radio') {
+      model.value = true
+    }
+    else {
+      model.value = !model.value
+    }
   }
 }
 
@@ -54,7 +68,7 @@ function handleLabelClick(event: Event) {
       <input
         :id="realId"
         :checked="checked"
-        type="checkbox"
+        :type="type"
         :disabled="disabled"
         class="btn-clear peer size-4"
         :class="shape === 'square' ? 'rd-sm' : 'rd-full'"

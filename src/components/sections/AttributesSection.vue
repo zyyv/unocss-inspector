@@ -1,6 +1,6 @@
 <script lang='ts' setup>
-import Checkbox from '../basic/Checkbox.vue'
-import CheckboxGroup from '../basic/CheckboxGroup.vue'
+import FormControl from '../basic/FormControl.vue'
+import FormControlGroup from '../basic/FormControlGroup.vue'
 
 interface AttributeData {
   all: string[]
@@ -36,20 +36,22 @@ defineEmits<Emits>()
           flex="1 ~ justify-end gap-1.5"
           style="--checked-context: var(--colors-teal-DEFAULT)"
         >
-          <CheckboxGroup
+          <FormControlGroup
             :model-value="attrData.active"
+            type="checkbox"
             justify-end
-            @update:model-value="(newValues) => $emit('updateAttribute', key, newValues)"
+            @update:model-value="(newValues) => $emit('updateAttribute', key, (newValues as string[]) || [])"
           >
-            <Checkbox
+            <FormControl
               v-for="value in attrData.all"
               :id="`attr-${key}-${value}`"
               :key="value"
               :model-value="value"
               :label="value"
+              type="checkbox"
               shape="round"
             />
-          </CheckboxGroup>
+          </FormControlGroup>
         </div>
       </div>
     </div>

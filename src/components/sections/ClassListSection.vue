@@ -1,6 +1,6 @@
 <script lang='ts' setup>
-import Checkbox from '../basic/Checkbox.vue'
-import CheckboxGroup from '../basic/CheckboxGroup.vue'
+import FormControl from '../basic/FormControl.vue'
+import FormControlGroup from '../basic/FormControlGroup.vue'
 
 interface Props {
   displayClasses: string[]
@@ -24,17 +24,19 @@ defineEmits<Emits>()
     <h5 m0>
       Class List
     </h5>
-    <CheckboxGroup
+    <FormControlGroup
       :model-value="classList"
-      @update:model-value="$emit('update:classList', $event)"
+      type="checkbox"
+      @update:model-value="$emit('update:classList', ($event as string[]) || [])"
     >
-      <Checkbox
+      <FormControl
         v-for="className in displayClasses"
         :id="`class-${className}`"
         :key="className"
         :model-value="className"
         :label="`.${className}`"
+        type="checkbox"
       />
-    </CheckboxGroup>
+    </FormControlGroup>
   </div>
 </template>
