@@ -50,6 +50,7 @@
     "@iconify-json/catppuccin": "^1.2.11",
     "@iconify-json/hugeicons": "^1.2.5",
     "@types/node": "^22.18.0",
+    "@unocss/core": "^66.5.0",
     "@unocss/preset-wind4": "^66.5.0",
     "@vitejs/plugin-vue": "^6.0.1",
     "eslint": "^9.34.0",

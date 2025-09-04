@@ -190,11 +190,15 @@ useEventListener('scroll', updateElementInfo, { capture: true })
   <div
     v-if="element"
     ref="panelRef"
-    class="uno-inspect-element-info font-dm"
+    class="uno-inspect-element-info font-dm rd-md"
+    b="~ solid white/10"
     :style="panelPosition"
   >
     <!-- 头部 -->
-    <div class="flex justify-between items-center px-2 py-1.5 border-b border-[var(--border-color)] flex-shrink-0 select-none text-xl">
+    <div
+      b-b="~ solid white/10"
+      class="flex justify-between items-center px-2 py-1.5 select-none text-xl"
+    >
       <div i-catppuccin:unocss class="header-logo" :class="{ draggable: isSelected, dragging: isDragging }" @mousedown="startDrag" />
       <div class="flex items-center gap-2">
         <div i-hugeicons:cursor-magic-selection-02 class="select-btn cursor-pointer opacity-70 transition-all duration-200 hover:opacity-100" :class="{ selecting: !isSelected }" @click.stop="action.start()" />
@@ -208,19 +212,22 @@ useEventListener('scroll', updateElementInfo, { capture: true })
     </div>
 
     <!-- 标签页导航 -->
-    <div class="flex items-center justify-between px-4 py-2 flex-shrink-0">
-      <div class="flex gap-2 items-center">
-        <button
-          v-for="tab in tabs"
-          :key="tab.id"
-          class="tab-dot rounded-full cursor-pointer transition-colors duration-200 flex items-center justify-center hover:text-[#10b98180]"
-          :class="{ active: activeTab.id === tab.id }"
-          :title="tab.label"
-          @click="setActiveTab(tab.id)"
-        >
-          <component :is="tab.icon" class="text-sm" />
-        </button>
-      </div>
+    <div
+      class="flex items-center gap-1.25 px-2 py-1 no-scrollbar of-x-auto"
+      b-b="~ solid white/10"
+    >
+      <button
+        v-for="tab in tabs"
+        :key="tab.id"
+        class="btn-clear p-1 rounded-full cursor-pointer transition-colors duration-200 flex items-center justify-center cursor-pointer @active:bg-amber/20 @active:text-amber"
+        :class="{ active: activeTab.id === tab.id }"
+        :title="tab.label"
+        text="white/60"
+        hover="bg-amber/20 text-amber"
+        @click="setActiveTab(tab.id)"
+      >
+        <div :class="tab.icon" class="text-base" />
+      </button>
     </div>
 
     <!-- 内容区域 -->
@@ -234,20 +241,13 @@ useEventListener('scroll', updateElementInfo, { capture: true })
 
 <style scoped>
 .uno-inspect-element-info {
-  --border-color: rgba(255, 255, 255, 0.1);
-  --bg-color: rgba(77, 77, 77, 0.4);
-
   width: 300px;
   height: auto;
   max-height: 350px;
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
+  background: rgba(77, 77, 77, 0.4);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   backdrop-filter: blur(6px);
-  display: flex;
-  flex-direction: column;
 }
 
 @keyframes color-flashing {
@@ -279,10 +279,6 @@ useEventListener('scroll', updateElementInfo, { capture: true })
 
 .header-logo.dragging {
   cursor: grabbing;
-}
-
-.tab-dot.active {
-  color:#10b981;
 }
 
 /* 滑动切换动画 */

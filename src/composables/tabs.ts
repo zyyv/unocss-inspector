@@ -1,23 +1,17 @@
+// @unocss-includes
 import type { Component, ComputedRef, Ref } from 'vue'
-import type { TabComponentProps } from '../types'
 import { computed, ref } from 'vue'
 import BasicInfo from '../components/BasicInfo.vue'
 import BoxModel from '../components/BoxModel.vue'
 import ClassList from '../components/ClassList.vue'
 import StylesInfo from '../components/StylesInfo.vue'
-
 import TextContent from '../components/TextContent.vue'
-import IconBasic from '../icons/Basic.vue'
-import IconBox from '../icons/Box.vue'
-import IconClass from '../icons/Class.vue'
-import IconStyle from '../icons/Style.vue'
-import IconText from '../icons/Text.vue'
 
 interface Tab {
   id: string
   label: string
-  icon: Component
-  component: Component<TabComponentProps>
+  icon: string
+  component: Component
 }
 
 interface UseTabsReturn {
@@ -29,11 +23,12 @@ interface UseTabsReturn {
 
 export function useTabs(): UseTabsReturn {
   const tabs: Tab[] = [
-    { id: 'basic', label: 'Basic Info', icon: IconBasic, component: BasicInfo },
-    { id: 'classes', label: 'Class', icon: IconClass, component: ClassList },
-    { id: 'box', label: 'Box Model', icon: IconBox, component: BoxModel },
-    { id: 'styles', label: 'Styles', icon: IconStyle, component: StylesInfo },
-    { id: 'text', label: 'Text', icon: IconText, component: TextContent },
+    { id: 'basic', label: 'Basic Info', icon: 'i-hugeicons:information-square', component: BasicInfo },
+    { id: 'classes', label: 'Class', icon: 'i-hugeicons:colors', component: ClassList },
+    { id: 'styles', label: 'Styles', icon: 'i-hugeicons:biscuit', component: StylesInfo },
+    { id: 'box', label: 'Box Model', icon: 'i-hugeicons:blockchain-01', component: BoxModel },
+    { id: 'text', label: 'Text', icon: 'i-hugeicons:text-footnote', component: TextContent },
+    { id: 'dom-tree', label: 'Dom Tree', icon: 'i-hugeicons:crowdfunding', component: TextContent },
   ]
 
   const activeTabId = ref<string>(tabs[0].id)

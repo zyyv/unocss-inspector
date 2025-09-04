@@ -24,6 +24,9 @@ importers:
       '@types/node':
         specifier: ^22.18.0
         version: 22.18.0
+      '@unocss/core':
+        specifier: ^66.5.0
+        version: 66.5.0
       '@unocss/preset-wind4':
         specifier: ^66.5.0
         version: 66.5.0

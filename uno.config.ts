@@ -1,4 +1,5 @@
 import type { Theme } from '@unocss/preset-wind4'
+import { symbols } from '@unocss/core'
 import { defineConfig, presetAttributify, presetIcons, presetWebFonts, presetWind4 } from 'unocss'
 
 export default defineConfig<Theme>({
@@ -12,11 +13,43 @@ export default defineConfig<Theme>({
       },
     },
   },
+  rules: [
+    [
+      'no-scrollbar',
+      [
+        {
+          'scrollbar-width': 'none',
+          '-ms-overflow-style': 'none',
+        },
+        {
+          [symbols.selector]: (s: string) => `${s}::-webkit-scrollbar`,
+          display: 'none',
+        } as any,
+      ],
+    ],
+  ],
+  variants: [
+    {
+      name: '@active',
+      match(matcher) {
+        if (!matcher.startsWith('@active'))
+          return matcher
+
+        return {
+          matcher: matcher.slice(8),
+          selector: s => `${s}.active`,
+        }
+      },
+    },
+  ],
   shortcuts: {
     // box model
     'box-model-title': 'absolute top-1px left-1px text-white px-0.5 font-semibold text-8px uppercase',
     'box-model-labels': 'absolute top-0 left-0 size-full text-8px pointer-events-none',
     'box-model-text': 'absolute px-1 text-dark/80',
+    // clear default button styles
+    'btn-clear': 'm0 p0 text-inherit bg-transparent border-none outline-none cursor-pointer rd-0',
+    // tabs
   },
   safelist: [
     'colors:inspect-margin',
