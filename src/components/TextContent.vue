@@ -1,8 +1,8 @@
-<!-- eslint-disable @stylistic/prefer-text-content -->
-<!-- eslint-disable style/prefer-text-content -->
 <script lang='ts' setup>
 import { computed, ref, watch } from 'vue'
 import { useElement } from '../composables/element'
+import FormControl from './basic/FormControl.vue'
+import FormControlGroup from './basic/FormControlGroup.vue'
 
 const { element, updateTrigger } = useElement()
 
@@ -125,32 +125,32 @@ function useRecommendedType() {
 
     <div class="mb-1 flex items-center gap-2 text-xs">
       <span text="white/60">Type:</span>
-      <div class="flex items-center gap-1">
-        <label
+      <FormControlGroup
+        v-model="contentType"
+        type="radio"
+        class="flex items-center gap-3"
+        style="--checked-context: var(--colors-yellow-DEFAULT)"
+      >
+        <div
           v-for="type in ['innerText', 'innerHTML'] as ContentType[]"
           :key="type"
-          class="flex items-center gap-1 cursor-pointer"
-          :class="{ 'text-blue': contentType === type, 'text-white/60': contentType !== type }"
+          class="flex items-center gap-1"
+          :class="{ 'text-yellow': contentType === type, 'text-white/60': contentType !== type }"
         >
-          <input
-            v-model="contentType"
+          <FormControl
+            :model-value="type"
+            :label="type"
             type="radio"
-            :value="type"
-            class="sr-only"
-          >
-          <div
-            class="w-2 h-2 rounded-full border border-current"
-            :class="{ 'bg-current': contentType === type }"
+            shape="round"
           />
-          <span class="text-xs">{{ type }}</span>
           <div
             v-if="type === recommendedType"
             i-hugeicons:star
             class="text-xs text-yellow ml-0.5"
             title="Recommended"
           />
-        </label>
-      </div>
+        </div>
+      </FormControlGroup>
     </div>
 
     <div class="mb-2 text-2.5 text-white/50 leading-relaxed">
