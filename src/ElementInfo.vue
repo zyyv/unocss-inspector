@@ -245,11 +245,15 @@ useEventListener('scroll', updateElementInfo, { capture: true })
 .uno-inspect-element-info {
   width: 300px;
   height: auto;
-  max-height: 350px;
+  interpolate-size: allow-keywords;
+  transition: height 0.3s ease-in-out;
+
   background: rgba(77, 77, 77, 0.4);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes color-flashing {

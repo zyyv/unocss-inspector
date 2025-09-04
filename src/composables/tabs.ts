@@ -4,7 +4,7 @@ import { computed, ref } from 'vue'
 import BasicInfo from '../components/BasicInfo.vue'
 import BoxModel from '../components/BoxModel.vue'
 import ClassList from '../components/ClassList.vue'
-import StylesInfo from '../components/StylesInfo.vue'
+import StylesInfo from '../components/InlineStyles.vue'
 import TextContent from '../components/TextContent.vue'
 
 interface Tab {
@@ -25,7 +25,7 @@ export function useTabs(): UseTabsReturn {
   const tabs: Tab[] = [
     { id: 'basic', label: 'Basic Info', icon: 'i-hugeicons:alert-diamond', component: BasicInfo },
     { id: 'classes', label: 'Class', icon: 'i-hugeicons:colors', component: ClassList },
-    { id: 'styles', label: 'Styles', icon: 'i-hugeicons:left-to-right-list-star', component: StylesInfo },
+    { id: 'styles', label: 'Inline Styles', icon: 'i-hugeicons:left-to-right-list-star', component: StylesInfo },
     { id: 'colors', label: 'Colors', icon: 'i-hugeicons:biscuit', component: StylesInfo },
     { id: 'box', label: 'Box Model', icon: 'i-hugeicons:package-dimensions-02', component: BoxModel },
     { id: 'text', label: 'Text', icon: 'i-hugeicons:text-footnote', component: TextContent },
@@ -41,10 +41,10 @@ export function useTabs(): UseTabsReturn {
     const newIndex = tabs.findIndex(tab => tab.id === id)
 
     if (newIndex < currentIndex) {
-      slideDirection.value = 'right' // 向前切换，从右滑入
+      slideDirection.value = 'right'
     }
     else {
-      slideDirection.value = 'left' // 向后切换，从左滑入
+      slideDirection.value = 'left'
     }
 
     activeTabId.value = id

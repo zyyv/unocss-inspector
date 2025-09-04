@@ -132,14 +132,12 @@ function handleClick(event: MouseEvent) {
     showSelectedOverlay.value = true
     isSelecting.value = false
 
-    // 移除鼠标事件监听，但保留选中状态和窗口事件监听
     document.body.removeEventListener('mouseover', handleMouseOver, { capture: true })
     document.body.removeEventListener('click', handleClick, { capture: true })
     document.body.style.cursor = ''
   }
 }
 
-// 控制面板拖拽相关函数
 function startControlDrag(event: MouseEvent) {
   // 记录鼠标按下的位置
   mouseDownPosition.value = { x: event.clientX, y: event.clientY }
@@ -425,10 +423,10 @@ body .box-model-overlay {
     left: 50%;
     border-radius: 50%;
     background: linear-gradient(to bottom right, #c5c5c5, #444444);
-    filter: blur(20px);
+    filter: blur(30px);
     z-index: -1;
     transition: all 0.3s ease;
-    opacity: 0;
+    opacity: 0.72;
     animation: rotate-0360 4s linear infinite;
   }
 }
@@ -444,7 +442,7 @@ body .box-model-overlay {
 
 .uno-inspect-controls:hover {
   &::before {
-    opacity: 1;
+    opacity: 0.2;
   }
 }
 </style>
