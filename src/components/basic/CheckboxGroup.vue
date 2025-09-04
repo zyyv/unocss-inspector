@@ -1,5 +1,5 @@
 <script lang='ts' setup>
-import { computed, defineModel, provide } from 'vue'
+import { computed, provide } from 'vue'
 
 const model = defineModel<string[]>({ default: () => [] })
 

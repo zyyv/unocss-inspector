@@ -1,5 +1,5 @@
 <script lang='ts' setup>
-import { computed, defineModel, defineProps, inject } from 'vue'
+import { computed, inject } from 'vue'
 
 const props = defineProps<{
   id?: string
