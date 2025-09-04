@@ -25,7 +25,7 @@ export default defineConfig<Theme>({
         {
           [symbols.selector]: (s: string) => `${s}::-webkit-scrollbar`,
           display: 'none',
-        } as any,
+        },
       ],
     ],
   ],
@@ -52,6 +52,8 @@ export default defineConfig<Theme>({
     'box-model-text': 'absolute px-1 text-dark/80',
     // clear default button styles
     'btn-clear': 'm0 p0 text-inherit bg-transparent border-none outline-none cursor-pointer rd-0',
+
+    'divided': 'h-1px b-b-(~ dashed white/10)',
   },
   safelist: [
     'colors:inspect-margin',
@@ -74,7 +76,7 @@ export default defineConfig<Theme>({
       fonts: {
         dm: ['DM Sans', 'DM Sans:400,700'],
       },
-      // processors: [createLocalFontProcessor()],
+      processors: [createLocalFontProcessor()],
     }),
   ],
 })
