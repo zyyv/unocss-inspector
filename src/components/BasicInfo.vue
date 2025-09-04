@@ -2,6 +2,7 @@
 import { useClipboard } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useElement } from '../composables/element'
+import { round } from '../utils'
 
 const { element, updateTrigger } = useElement()
 const showRem = ref(false)
@@ -38,7 +39,7 @@ const basicInfo = computed(() => {
 })
 
 function pxToRem(px: number) {
-  return (px / 16).toFixed(2).replace(/0+$/, '').replace(/\.$/, '')
+  return round(px / 16)
 }
 
 function toggleUnit() {

@@ -4,6 +4,7 @@ import { computed, onUnmounted, ref } from 'vue'
 import { provideCurrentElement } from './composables/element'
 import { useMagicKey } from './composables/magickey'
 import ElementInfo from './ElementInfo.vue'
+import { round } from './utils'
 
 const selectedElement = defineModel<HTMLElement | null>({ default: null })
 const [isSelecting, _toggleSelecting] = useToggle(false)
@@ -264,7 +265,7 @@ useMagicKey(() => {
               transform: 'translateX(-50%)',
             }"
           >
-            mt-{{ highlightStyle.margin.top / 4 }}
+            mt-{{ round(highlightStyle.margin.top / 4) }}
           </div>
           <!-- Margin Right -->
           <div
@@ -276,7 +277,7 @@ useMagicKey(() => {
               transform: 'translateY(-50%)',
             }"
           >
-            mr-{{ highlightStyle.margin.right / 4 }}
+            mr-{{ round(highlightStyle.margin.right / 4) }}
           </div>
           <!-- Margin Bottom -->
           <div
@@ -288,7 +289,7 @@ useMagicKey(() => {
               transform: 'translateX(-50%)',
             }"
           >
-            mb-{{ highlightStyle.margin.bottom / 4 }}
+            mb-{{ round(highlightStyle.margin.bottom / 4) }}
           </div>
           <!-- Margin Left -->
           <div
@@ -300,7 +301,7 @@ useMagicKey(() => {
               transform: 'translateY(-50%)',
             }"
           >
-            ml-{{ highlightStyle.margin.left / 4 }}
+            ml-{{ round(highlightStyle.margin.left / 4) }}
           </div>
         </div>
 
@@ -325,7 +326,7 @@ useMagicKey(() => {
                 transform: 'translateX(-50%)',
               }"
             >
-              pt-{{ highlightStyle.padding.top / 4 }}
+              pt-{{ round(highlightStyle.padding.top / 4) }}
             </div>
             <!-- Padding Right -->
             <div
@@ -337,7 +338,7 @@ useMagicKey(() => {
                 transform: 'translateY(-50%)',
               }"
             >
-              pr-{{ highlightStyle.padding.right / 4 }}
+              pr-{{ round(highlightStyle.padding.right / 4) }}
             </div>
             <!-- Padding Bottom -->
             <div
@@ -349,7 +350,7 @@ useMagicKey(() => {
                 transform: 'translateX(-50%)',
               }"
             >
-              pb-{{ highlightStyle.padding.bottom / 4 }}
+              pb-{{ round(highlightStyle.padding.bottom / 4) }}
             </div>
             <!-- Padding Left -->
             <div
@@ -361,7 +362,7 @@ useMagicKey(() => {
                 transform: 'translateY(-50%)',
               }"
             >
-              pl-{{ highlightStyle.padding.left / 4 }}
+              pl-{{ round(highlightStyle.padding.left / 4) }}
             </div>
           </div>
 
