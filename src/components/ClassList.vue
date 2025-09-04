@@ -16,6 +16,8 @@ const { attributes, updateAttribute } = useAttributes()
       @update:class-list="(newList) => classList = newList"
     />
 
+    <div b-b="~ dashed white/10" h-1px />
+
     <AttributesSection
       :attributes="attributes"
       @update-attribute="updateAttribute"
