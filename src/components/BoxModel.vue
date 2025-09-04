@@ -47,7 +47,7 @@ function formatBoxValue(value: number): string {
 </script>
 
 <template>
-  <div v-if="boxModel" class="lh-loose flex items-center justify-center">
+  <div v-if="boxModel" class="lh-loose flex items-center justify-center p-4">
     <div
       b="~ dashed inspect-margin"
       class="w-full bg-inspect-margin bg-op-50 p-5 relative"

@@ -12,14 +12,15 @@ export function useAttributes() {
     void updateTrigger.value
 
     if (!element.value) {
-      return new Map<string, string[]>()
+      return new Map<string, Set<string>>()
     }
 
-    const attrs = new Map<string, string[]>()
+    const attrs = new Map<string, Set<string>>()
     for (let i = 0; i < element.value.attributes.length; i++) {
       const attr = element.value.attributes[i]
       if (!FILTERED_ATTRIBUTES.includes(attr.name)) {
-        attrs.set(attr.name, attr.value.split(' ').filter(Boolean))
+        const list = attr.value.split(' ').filter(Boolean)
+        attrs.set(attr.name, new Set(list.length > 0 ? list : ['~']))
       }
     }
     return attrs
@@ -61,10 +62,10 @@ export function useAttributes() {
     const result = new Map<string, { all: string[], active: string[] }>()
 
     allAttributes.value.forEach((allValues, attrName) => {
-      const activeValues = activeAttributes.value.get(attrName) || []
+      const activeValues = activeAttributes.value.get(attrName) || new Set()
       result.set(attrName, {
         all: Array.from(allValues),
-        active: activeValues,
+        active: Array.from(activeValues),
       })
     })
 

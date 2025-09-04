@@ -67,6 +67,6 @@ function handleLabelClick(event: Event) {
         peer-checked="size-58% bg-$checked-context"
       />
     </div>
-    <label v-if="label" transition-opacity :class="{ 'op-50': !checked }" :for="realId" class="text-sm whitespace-nowrap" @click="handleLabelClick">{{ label }}</label>
+    <label v-if="label" transition-opacity :class="{ 'op-50': !checked }" :for="realId" class="text-3.25 whitespace-nowrap" @click="handleLabelClick">{{ label }}</label>
   </div>
 </template>
