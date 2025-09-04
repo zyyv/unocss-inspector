@@ -20,16 +20,23 @@ watchEffect(() => {
           UnoCSS Inspector
         </h1>
         <p
-          class="opacity-90 mx-auto leading-relaxed" max-w-2xl
-          text="xl red hover:blue sad asdqwe adqws asdqwgfd"
-          custom="foo bar"
-          dark:hover="baz text-foo"
+          class="opacity-90 mx-auto leading-relaxed" max-w-2xl text="xl red hover:blue sad asdqwe adqws asdqwgfd"
+          custom="foo bar" dark:hover="baz text-foo"
         >
           Explore and inspect CSS properties with interactive element selection
         </p>
         <div class="mt-8 inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm">
           <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-          Click the inspect button to start
+          Click the
+          <span text-pink>UnoCSS Icon</span>
+          or use
+          <span text-amber inline-flex items-center gap-0.5>
+            <kbd>
+              <div i-hugeicons:command />
+            </kbd> + U
+          </span>
+
+          to start
         </div>
       </div>
     </header>
@@ -47,10 +54,14 @@ watchEffect(() => {
             to visualize margin, padding, borders, and other CSS properties in real-time.
           </p>
           <div class="flex flex-wrap gap-4">
-            <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg">
+            <button
+              class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg"
+            >
               Start Inspecting
             </button>
-            <button class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg">
+            <button
+              class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg"
+            >
               Learn More
             </button>
           </div>
@@ -63,7 +74,9 @@ watchEffect(() => {
           Grid Layout Components
         </h3>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="bg-dark-200 text-gray-100 p-6 rounded-xl text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-700">
+          <div
+            class="bg-dark-200 text-gray-100 p-6 rounded-xl text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-700"
+          >
             <div class="w-12 h-12 bg-blue-500 rounded-lg mx-auto mb-4 flex items-center justify-center">
               <span class="text-white font-bold">1</span>
             </div>
@@ -74,7 +87,9 @@ watchEffect(() => {
               Interactive card with hover effects
             </p>
           </div>
-          <div class="bg-dark-200 text-gray-100 p-6 rounded-xl text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-700">
+          <div
+            class="bg-dark-200 text-gray-100 p-6 rounded-xl text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-700"
+          >
             <div class="w-12 h-12 bg-green-500 rounded-lg mx-auto mb-4 flex items-center justify-center">
               <span class="text-white font-bold">2</span>
             </div>
@@ -85,7 +100,9 @@ watchEffect(() => {
               Responsive grid layout
             </p>
           </div>
-          <div class="bg-dark-200 text-gray-100 p-6 rounded-xl text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-700">
+          <div
+            class="bg-dark-200 text-gray-100 p-6 rounded-xl text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-700"
+          >
             <div class="w-12 h-12 bg-purple-500 rounded-lg mx-auto mb-4 flex items-center justify-center">
               <span class="text-white font-bold">3</span>
             </div>
@@ -96,7 +113,9 @@ watchEffect(() => {
               Modern design system
             </p>
           </div>
-          <div class="bg-dark-200 text-gray-100 p-6 rounded-xl text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-700">
+          <div
+            class="bg-dark-200 text-gray-100 p-6 rounded-xl text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-700"
+          >
             <div class="w-12 h-12 bg-orange-500 rounded-lg mx-auto mb-4 flex items-center justify-center">
               <span class="text-white font-bold">4</span>
             </div>
@@ -120,8 +139,7 @@ watchEffect(() => {
             <div>
               <label for="firstName" class="block text-gray-300 font-medium mb-2">First Name</label>
               <input
-                id="firstName"
-                type="text"
+                id="firstName" type="text"
                 class="w-full p-4 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 placeholder="Enter your first name"
               >
@@ -129,8 +147,7 @@ watchEffect(() => {
             <div>
               <label for="lastName" class="block text-gray-300 font-medium mb-2">Last Name</label>
               <input
-                id="lastName"
-                type="text"
+                id="lastName" type="text"
                 class="w-full p-4 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 placeholder="Enter your last name"
               >
@@ -139,8 +156,7 @@ watchEffect(() => {
           <div>
             <label for="email" class="block text-gray-300 font-medium mb-2">Email Address</label>
             <input
-              id="email"
-              type="email"
+              id="email" type="email"
               class="w-full p-4 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               placeholder="your@email.com"
             >
@@ -148,8 +164,7 @@ watchEffect(() => {
           <div>
             <label for="message" class="block text-gray-300 font-medium mb-2">Message</label>
             <textarea
-              id="message"
-              rows="4"
+              id="message" rows="4"
               class="w-full p-4 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
               placeholder="Tell us about your project..."
             />
