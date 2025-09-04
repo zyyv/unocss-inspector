@@ -5,94 +5,215 @@ import Inspector from '../../src/Inspector.vue'
 const selectedElement = ref(null)
 
 watchEffect(() => {
-  if (selectedElement.value)
-    console.log('选择了元素:', selectedElement.value)
-})
-
-const style = ref({
-  display: 'flex',
+  if (selectedElement.value) {
+    // Element selected for inspection
+  }
 })
 </script>
 
 <template>
-  <div class="min-h-screen font-sans p-5 md:p-10">
-    <header class="text-center mb-10 text-white">
-      <h1 class="text-4xl md:text-5xl mb-2.5 font-bold drop-shadow-lg">
-        UnoCSS Inspector Demo
-      </h1>
-      <p class="text-lg opacity-90">
-        Click the inspect button below to start element inspection
-      </p>
+  <div class="min-h-screen bg-gray-900 font-dm-sans">
+    <!-- Header Section -->
+    <header class="bg-gradient-to-br from-blue-600 to-purple-700 text-white py-16 px-6">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 id="main-title" class="text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">
+          UnoCSS Inspector
+        </h1>
+        <p class="text-xl opacity-90 max-w-2xl mx-auto leading-relaxed">
+          Explore and inspect CSS properties with interactive element selection
+        </p>
+        <div class="mt-8 inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm">
+          <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+          Click the inspect button to start
+        </div>
+      </div>
     </header>
 
-    <main max-w-4xl mx-auto flex flex-col gap-7.5>
-      <div bg-white rounded-3xl p-5 md:p-7.5 shadow-2xl border border-white border-opacity-20>
-        <h2 text-gray-800 mb-4 text-xl md:text-2xl font-semibold>
-          Sample Card Component
-        </h2>
-        <p class="text-gray-600 leading-relaxed mb-5">
-          This is a sample card with various styling properties. Hover over this element and inspect it to see the margin, padding, and other CSS properties.
-        </p>
-        <button class="px-5 py-2.5 border-0 rounded-md font-semibold cursor-pointer mr-2.5 mb-2 transition-all duration-300 ease-in-out bg-blue-600 text-white hover:bg-blue-700 hover:-translate-y-0.5">
-          Primary Button
-        </button>
-        <button class="px-5 py-2.5 border-0 rounded-md font-semibold cursor-pointer transition-all duration-300 ease-in-out bg-gray-600 text-white hover:bg-gray-700 hover:-translate-y-0.5">
-          Secondary Button
-        </button>
-      </div>
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto py-12 px-6 space-y-12">
+      <!-- Feature Card -->
+      <section class="bg-dark-200 text-gray-100 rounded-3xl p-8 md:p-12 shadow-xl border border-gray-700">
+        <div class="max-w-3xl">
+          <h2 class="text-3xl md:text-4xl font-bold mb-6 text-white">
+            Interactive Element Inspector
+          </h2>
+          <p class="text-gray-300 text-lg leading-relaxed mb-8">
+            This demo showcases the UnoCSS Inspector's capabilities. Hover over any element and use the inspector
+            to visualize margin, padding, borders, and other CSS properties in real-time.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg">
+              Start Inspecting
+            </button>
+            <button class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg">
+              Learn More
+            </button>
+          </div>
+        </div>
+      </section>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-        <div class="bg-white p-7.5 rounded-2xl text-center font-semibold text-gray-800 shadow-lg transition-transform duration-300 ease-in-out hover:-translate-y-1.25">
-          Grid Item 1
-        </div>
-        <div class="bg-white p-7.5 rounded-2xl text-center font-semibold text-gray-800 shadow-lg transition-transform duration-300 ease-in-out hover:-translate-y-1.25">
-          Grid Item 2
-        </div>
-        <div class="bg-white p-7.5 rounded-2xl text-center font-semibold text-gray-800 shadow-lg transition-transform duration-300 ease-in-out hover:-translate-y-1.25">
-          Grid Item 3
-        </div>
-        <div class="bg-white p-7.5 rounded-2xl text-center font-semibold text-gray-800 shadow-lg transition-transform duration-300 ease-in-out hover:-translate-y-1.25">
-          Grid Item 4
-        </div>
-      </div>
-
-      <form class="bg-white p-5 md:p-7.5 rounded-3xl shadow-2xl">
-        <div class="mb-5">
-          <label for="name" class="block mb-1.25 font-semibold text-gray-800">Name</label>
-          <input id="name" type="text" class="w-full p-3 border-2 border-gray-200 rounded-md text-sm transition-all duration-300 focus:outline-none focus:border-blue-600" placeholder="Enter your name">
-        </div>
-        <div class="mb-5">
-          <label for="email" class="block mb-1.25 font-semibold text-gray-800">Email</label>
-          <input id="email" type="email" class="w-full p-3 border-2 border-gray-200 rounded-md text-sm transition-all duration-300 focus:outline-none focus:border-blue-600" placeholder="Enter your email">
-        </div>
-        <button type="submit" class="px-5 py-2.5 border-0 rounded-md font-semibold cursor-pointer transition-all duration-300 ease-in-out bg-blue-600 text-white hover:bg-blue-700 hover:-translate-y-0.5">
-          Submit
-        </button>
-      </form>
-
-      <div style="margin-top: 1.25rem;">
-        <div>
-          <h3 :style="style" style="color: white; margin-bottom: 1rem; font-size: 1.125rem; font-weight: 500;">
-            Styled Elements for Testing
-          </h3>
-          <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-            <div style="margin: 1.25rem; padding: 1rem; border: 3px solid #2563eb; background-color: #eff6ff; border-radius: 1rem; font-family: ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.875rem;">
-              Element with margin (20px), padding (15px), and border (3px)
+      <!-- Grid Layout Demo -->
+      <section>
+        <h3 class="text-2xl font-bold text-gray-100 mb-6">
+          Grid Layout Components
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-dark-200 text-gray-100 p-6 rounded-xl text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-700">
+            <div class="w-12 h-12 bg-blue-500 rounded-lg mx-auto mb-4 flex items-center justify-center">
+              <span class="text-white font-bold">1</span>
             </div>
-            <div style="margin-top: 0.625rem; margin-right: 1.25rem; margin-bottom: 1.875rem; margin-left: 2.5rem; padding-top: 0.3125rem; padding-right: 0.625rem; padding-bottom: 1rem; padding-left: 1.25rem; background-color: #fef2f2; border-radius: 1rem; font-family: ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.875rem;">
-              Element with different margin/padding on each side
+            <h4 class="font-semibold text-white mb-2">
+              Component One
+            </h4>
+            <p class="text-gray-300 text-sm">
+              Interactive card with hover effects
+            </p>
+          </div>
+          <div class="bg-dark-200 text-gray-100 p-6 rounded-xl text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-700">
+            <div class="w-12 h-12 bg-green-500 rounded-lg mx-auto mb-4 flex items-center justify-center">
+              <span class="text-white font-bold">2</span>
             </div>
-            <div style="padding: 1.5625rem; background-color: #f0fdf4; border: 2px dashed #4ade80; border-radius: 1rem; font-family: ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.875rem;">
-              <div style="margin: 1rem; padding: 0.625rem; background-color: #f3e8ff; border: 1px solid #a855f7; border-radius: 0.5rem;">
-                Nested element for testing selection
+            <h4 class="font-semibold text-white mb-2">
+              Component Two
+            </h4>
+            <p class="text-gray-300 text-sm">
+              Responsive grid layout
+            </p>
+          </div>
+          <div class="bg-dark-200 text-gray-100 p-6 rounded-xl text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-700">
+            <div class="w-12 h-12 bg-purple-500 rounded-lg mx-auto mb-4 flex items-center justify-center">
+              <span class="text-white font-bold">3</span>
+            </div>
+            <h4 class="font-semibold text-white mb-2">
+              Component Three
+            </h4>
+            <p class="text-gray-300 text-sm">
+              Modern design system
+            </p>
+          </div>
+          <div class="bg-dark-200 text-gray-100 p-6 rounded-xl text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-700">
+            <div class="w-12 h-12 bg-orange-500 rounded-lg mx-auto mb-4 flex items-center justify-center">
+              <span class="text-white font-bold">4</span>
+            </div>
+            <h4 class="font-semibold text-white mb-2">
+              Component Four
+            </h4>
+            <p class="text-gray-300 text-sm">
+              Utility-first approach
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Form Demo -->
+      <section class="bg-dark-200 text-gray-100 rounded-3xl p-8 md:p-12 shadow-xl border border-gray-700">
+        <h3 class="text-2xl font-bold text-white mb-8">
+          Contact Form Example
+        </h3>
+        <form class="max-w-2xl space-y-6">
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label for="firstName" class="block text-gray-300 font-medium mb-2">First Name</label>
+              <input
+                id="firstName"
+                type="text"
+                class="w-full p-4 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                placeholder="Enter your first name"
+              >
+            </div>
+            <div>
+              <label for="lastName" class="block text-gray-300 font-medium mb-2">Last Name</label>
+              <input
+                id="lastName"
+                type="text"
+                class="w-full p-4 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                placeholder="Enter your last name"
+              >
+            </div>
+          </div>
+          <div>
+            <label for="email" class="block text-gray-300 font-medium mb-2">Email Address</label>
+            <input
+              id="email"
+              type="email"
+              class="w-full p-4 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              placeholder="your@email.com"
+            >
+          </div>
+          <div>
+            <label for="message" class="block text-gray-300 font-medium mb-2">Message</label>
+            <textarea
+              id="message"
+              rows="4"
+              class="w-full p-4 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
+              placeholder="Tell us about your project..."
+            />
+          </div>
+          <button
+            type="submit"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg"
+          >
+            Send Message
+          </button>
+        </form>
+      </section>
+
+      <!-- Box Model Testing -->
+      <section>
+        <h3 class="text-2xl font-bold text-gray-100 mb-6">
+          Box Model Testing Elements
+        </h3>
+        <div class="space-y-8">
+          <!-- Standard Box Model -->
+          <div class="bg-blue-900/30 border-3 border-blue-400 rounded-2xl p-6 m-5 font-mono text-sm">
+            <div class="text-blue-300 font-semibold mb-2">
+              Standard Box Model
+            </div>
+            <div class="text-blue-200">
+              Margin: 20px | Border: 3px solid | Padding: 24px | Content area with rounded corners
+            </div>
+          </div>
+
+          <!-- Asymmetric Spacing -->
+          <div class="bg-red-900/30 rounded-2xl font-mono text-sm mt-2.5 mr-5 mb-7.5 ml-10 pt-1.25 pr-2.5 pb-4 pl-5">
+            <div class="text-red-300 font-semibold mb-2">
+              Asymmetric Spacing
+            </div>
+            <div class="text-red-200">
+              Different margin and padding values on each side for testing complex layouts
+            </div>
+          </div>
+
+          <!-- Nested Elements -->
+          <div class="bg-green-900/30 border-2 border-dashed border-green-400 rounded-2xl p-6 font-mono text-sm">
+            <div class="text-green-300 font-semibold mb-4">
+              Nested Element Container
+            </div>
+            <div class="bg-purple-900/40 border border-purple-400 rounded-lg p-4 m-4">
+              <div class="text-purple-300 font-semibold mb-2">
+                Nested Child Element
+              </div>
+              <div class="text-purple-200">
+                Perfect for testing element selection and hierarchy visualization
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-950 text-gray-300 py-8 px-6 mt-16 border-t border-gray-700">
+      <div class="max-w-4xl mx-auto text-center">
+        <p class="mb-2">
+          Built with UnoCSS • Designed for developers
+        </p>
+        <p class="text-gray-500 text-sm">
+          Inspect any element to see its CSS properties in action
+        </p>
+      </div>
+    </footer>
   </div>
-  <Inspector
-    v-model="selectedElement"
-  />
+
+  <Inspector v-model="selectedElement" />
 </template>
