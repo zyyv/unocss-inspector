@@ -391,13 +391,6 @@ useMagicKey(() => {
 </template>
 
 <style>
-:root {
-  --margin-bg-color: oklch(82% 0.15 60 / 0.25);
-  --padding-bg-color: oklch(75% 0.12 240 / 0.3);
-  --content-bg-color: oklch(78% 0.14 140 / 0.25);
-  --border-bg-color: oklch(80% 0.18 20 / 0.3);
-}
-
 /* 确保传送到 body 的元素样式正确 */
 body .uno-inspect-controls {
   position: fixed !important;

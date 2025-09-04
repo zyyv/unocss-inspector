@@ -23,12 +23,14 @@ interface UseTabsReturn {
 
 export function useTabs(): UseTabsReturn {
   const tabs: Tab[] = [
-    { id: 'basic', label: 'Basic Info', icon: 'i-hugeicons:information-square', component: BasicInfo },
+    { id: 'basic', label: 'Basic Info', icon: 'i-hugeicons:alert-diamond', component: BasicInfo },
     { id: 'classes', label: 'Class', icon: 'i-hugeicons:colors', component: ClassList },
-    { id: 'styles', label: 'Styles', icon: 'i-hugeicons:biscuit', component: StylesInfo },
-    { id: 'box', label: 'Box Model', icon: 'i-hugeicons:blockchain-01', component: BoxModel },
+    { id: 'styles', label: 'Styles', icon: 'i-hugeicons:left-to-right-list-star', component: StylesInfo },
+    { id: 'colors', label: 'Colors', icon: 'i-hugeicons:biscuit', component: StylesInfo },
+    { id: 'box', label: 'Box Model', icon: 'i-hugeicons:package-dimensions-02', component: BoxModel },
     { id: 'text', label: 'Text', icon: 'i-hugeicons:text-footnote', component: TextContent },
     { id: 'dom-tree', label: 'Dom Tree', icon: 'i-hugeicons:crowdfunding', component: TextContent },
+    { id: 'setting', label: 'Setting', icon: 'i-hugeicons:ai-setting', component: TextContent },
   ]
 
   const activeTabId = ref<string>(tabs[0].id)
