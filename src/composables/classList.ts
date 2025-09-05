@@ -5,6 +5,7 @@ export function useClassList() {
   const { element, updateTrigger } = useElement()
 
   const allClasses = ref<Set<string>>(new Set())
+  const originalClassOrder = ref<string[]>([])
 
   const activeClasses = computed(() => {
     void updateTrigger.value
@@ -20,8 +21,12 @@ export function useClassList() {
     () => element.value,
     (newElement) => {
       allClasses.value.clear()
+      originalClassOrder.value = []
       if (newElement) {
-        Array.from(newElement.classList).forEach((className) => {
+        const classList = Array.from(newElement.classList)
+        // 记录原始顺序
+        originalClassOrder.value = [...classList]
+        classList.forEach((className) => {
           allClasses.value.add(className)
         })
       }
@@ -33,13 +38,20 @@ export function useClassList() {
     activeClasses,
     (newClasses) => {
       newClasses.forEach((className) => {
-        allClasses.value.add(className)
+        if (!allClasses.value.has(className)) {
+          allClasses.value.add(className)
+          if (!originalClassOrder.value.includes(className)) {
+            originalClassOrder.value.push(className)
+          }
+        }
       })
     },
     { immediate: true },
   )
 
-  const displayClasses = computed(() => Array.from(allClasses.value))
+  const displayClasses = computed(() => {
+    return originalClassOrder.value.filter(className => allClasses.value.has(className))
+  })
 
   const classList = computed({
     get: () => activeClasses.value,
@@ -47,7 +59,11 @@ export function useClassList() {
       if (!element.value) {
         return
       }
-      element.value.className = newList.join(' ')
+      const orderedList = originalClassOrder.value.filter(className => newList.includes(className))
+      const newClasses = newList.filter(className => !originalClassOrder.value.includes(className))
+      const finalList = [...orderedList, ...newClasses]
+
+      element.value.className = finalList.join(' ')
       updateTrigger.value++
     },
   })
@@ -55,5 +71,6 @@ export function useClassList() {
   return {
     displayClasses,
     classList,
+    originalClassOrder: computed(() => originalClassOrder.value),
   }
 }

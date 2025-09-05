@@ -7,6 +7,8 @@ export function useAttributes() {
   const { element, updateTrigger } = useElement()
 
   const allAttributes = ref<Map<string, Set<string>>>(new Map())
+  const originalAttributeOrder = ref<string[]>([])
+  const originalValueOrder = ref<Map<string, string[]>>(new Map())
 
   const activeAttributes = computed(() => {
     void updateTrigger.value
@@ -30,12 +32,19 @@ export function useAttributes() {
     () => element.value,
     (newElement) => {
       allAttributes.value.clear()
+      originalAttributeOrder.value = []
+      originalValueOrder.value.clear()
+
       if (newElement) {
         for (let i = 0; i < newElement.attributes.length; i++) {
           const attr = newElement.attributes[i]
           if (!FILTERED_ATTRIBUTES.includes(attr.name)) {
+            originalAttributeOrder.value.push(attr.name)
+
             const values = attr.value.split(' ').filter(Boolean)
             allAttributes.value.set(attr.name, new Set(values))
+
+            originalValueOrder.value.set(attr.name, values.length > 0 ? values : ['~'])
           }
         }
       }
@@ -49,10 +58,23 @@ export function useAttributes() {
       newAttrs.forEach((values, attrName) => {
         if (!allAttributes.value.has(attrName)) {
           allAttributes.value.set(attrName, new Set())
+          if (!originalAttributeOrder.value.includes(attrName)) {
+            originalAttributeOrder.value.push(attrName)
+          }
         }
+
         values.forEach((value) => {
           allAttributes.value.get(attrName)!.add(value)
         })
+
+        if (!originalValueOrder.value.has(attrName)) {
+          originalValueOrder.value.set(attrName, Array.from(values))
+        }
+        else {
+          const existingOrder = originalValueOrder.value.get(attrName)!
+          const newValues = Array.from(values).filter(v => !existingOrder.includes(v))
+          originalValueOrder.value.set(attrName, [...existingOrder, ...newValues])
+        }
       })
     },
     { immediate: true },
@@ -61,12 +83,20 @@ export function useAttributes() {
   const attributes = computed(() => {
     const result = new Map<string, { all: string[], active: string[] }>()
 
-    allAttributes.value.forEach((allValues, attrName) => {
-      const activeValues = activeAttributes.value.get(attrName) || new Set()
-      result.set(attrName, {
-        all: Array.from(allValues),
-        active: Array.from(activeValues),
-      })
+    originalAttributeOrder.value.forEach((attrName) => {
+      if (allAttributes.value.has(attrName)) {
+        const allValues = allAttributes.value.get(attrName)!
+        const activeValues = activeAttributes.value.get(attrName) || new Set()
+
+        const originalOrder = originalValueOrder.value.get(attrName) || []
+        const orderedAllValues = originalOrder.filter(v => allValues.has(v))
+        const orderedActiveValues = originalOrder.filter(v => activeValues.has(v))
+
+        result.set(attrName, {
+          all: orderedAllValues,
+          active: orderedActiveValues,
+        })
+      }
     })
 
     return result
@@ -92,7 +122,13 @@ export function useAttributes() {
         element.value.removeAttribute(attrName)
       }
       else {
-        element.value.setAttribute(attrName, filteredValues.join(' '))
+        // 按照原始顺序重新排列值
+        const originalOrder = originalValueOrder.value.get(attrName) || []
+        const orderedValues = originalOrder.filter(value => filteredValues.includes(value))
+        const newUniqueValues = filteredValues.filter(value => !originalOrder.includes(value))
+        const finalValues = [...orderedValues, ...newUniqueValues]
+
+        element.value.setAttribute(attrName, finalValues.join(' '))
       }
     }
     updateTrigger.value++
@@ -101,5 +137,7 @@ export function useAttributes() {
   return {
     attributes,
     updateAttribute,
+    originalAttributeOrder: computed(() => originalAttributeOrder.value),
+    originalValueOrder: computed(() => originalValueOrder.value),
   }
 }
