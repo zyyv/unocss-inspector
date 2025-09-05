@@ -59,7 +59,7 @@ function copyToClipboard(text: string) {
 </script>
 
 <template>
-  <div v-if="basicInfo">
+  <div v-if="basicInfo" p-4>
     <div class="flex flex-col gap-2">
       <!-- Tag Name -->
       <div

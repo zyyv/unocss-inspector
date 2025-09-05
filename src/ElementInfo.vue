@@ -31,6 +31,7 @@ const initialSelectedPosition = ref({ x: 0, y: 0 }) // 记录选中时的鼠标�
 
 const { tabs, activeTab, slideDirection, setActiveTab } = useTabs()
 
+// 计算面板位置的辅助函数
 function calculatePanelPosition(mouseX: number, mouseY: number) {
   const offsetX = 20
   const offsetY = 20
