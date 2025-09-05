@@ -1,7 +1,7 @@
 <script lang='ts' setup>
 import { useClipboard } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import { useElement } from '../composables/element'
+import { useElement } from '../composables/exports/element'
 import { round } from '../utils'
 
 const { element, updateTrigger } = useElement()

@@ -1,7 +1,7 @@
 <script lang='ts' setup>
 import { useEventListener, useMouse, useToggle, useWindowSize } from '@vueuse/core'
 import { computed, KeepAlive, ref, watch } from 'vue'
-import { useElement } from './composables/element'
+import { useElement } from './composables/exports/element'
 import { useTabs } from './composables/tabs'
 
 interface Props {
@@ -10,6 +10,7 @@ interface Props {
     start: () => void
     stop: () => void
   }
+  userPanels?: import('./types').TabPanel[]
 }
 
 const props = defineProps<Props>()
@@ -29,7 +30,7 @@ const dragPosition = ref({ x: 0, y: 0 })
 const finalPosition = ref({ x: 0, y: 0 })
 const initialSelectedPosition = ref({ x: 0, y: 0 }) // 记录选中时的鼠标位置
 
-const { tabs, activeTab, slideDirection, setActiveTab } = useTabs()
+const { tabs, activeTab, slideDirection, setActiveTab } = useTabs(props.userPanels)
 
 // 计算面板位置的辅助函数
 function calculatePanelPosition(mouseX: number, mouseY: number) {

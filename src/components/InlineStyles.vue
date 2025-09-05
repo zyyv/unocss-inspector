@@ -1,7 +1,7 @@
 <script lang='ts' setup>
 import type { VNode } from 'vue'
 import { computed } from 'vue'
-import { useElement } from '../composables/element'
+import { useElement } from '../composables/exports/element'
 
 const { element, updateTrigger } = useElement()
 

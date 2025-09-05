@@ -1,5 +1,5 @@
 import { computed, ref, watch } from 'vue'
-import { useElement } from './element'
+import { useElement } from './exports/element'
 
 export function useClassList() {
   const { element, updateTrigger } = useElement()

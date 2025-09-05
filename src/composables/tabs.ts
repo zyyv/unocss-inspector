@@ -1,5 +1,6 @@
 // @unocss-includes
-import type { Component, ComputedRef, Ref } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
+import type { TabPanel } from '../types'
 import { computed, ref } from 'vue'
 import BasicInfo from '../components/BasicInfo.vue'
 import BoxModel from '../components/BoxModel.vue'
@@ -8,22 +9,15 @@ import StylesInfo from '../components/InlineStyles.vue'
 import Settings from '../components/Settings.vue'
 import TextContent from '../components/TextContent.vue'
 
-interface Tab {
-  id: string
-  label: string
-  icon: string
-  component: Component
-}
-
 interface UseTabsReturn {
-  tabs: Tab[]
-  activeTab: ComputedRef<Tab>
+  tabs: TabPanel[]
+  activeTab: ComputedRef<TabPanel>
   slideDirection: Ref<'left' | 'right'>
   setActiveTab: (id: string) => void
 }
 
-export function useTabs(): UseTabsReturn {
-  const tabs: Tab[] = [
+export function useTabs(userPanels: TabPanel[] = []): UseTabsReturn {
+  const tabs: TabPanel[] = [
     { id: 'basic', label: 'Basic Info', icon: 'i-hugeicons:alert-diamond', component: BasicInfo },
     { id: 'classes', label: 'Class', icon: 'i-hugeicons:colors', component: ClassList },
     { id: 'styles', label: 'Inline Styles', icon: 'i-hugeicons:left-to-right-list-star', component: StylesInfo },
@@ -32,6 +26,7 @@ export function useTabs(): UseTabsReturn {
     { id: 'text', label: 'Text', icon: 'i-hugeicons:text-footnote', component: TextContent },
     { id: 'dom-tree', label: 'Dom Tree', icon: 'i-hugeicons:crowdfunding', component: TextContent },
     { id: 'setting', label: 'Setting', icon: 'i-hugeicons:ai-setting', component: Settings },
+    ...userPanels,
   ]
 
   const activeTabId = ref<string>(tabs[0].id)

@@ -1,10 +1,15 @@
 <script setup lang="ts">
+import type { TabPanel } from './types'
 import { useToggle, useWindowSize } from '@vueuse/core'
 import { computed, onUnmounted, ref } from 'vue'
-import { provideCurrentElement } from './composables/element'
+import { provideCurrentElement } from './composables/exports/element'
 import { useMagicKey } from './composables/magickey'
 import ElementInfo from './ElementInfo.vue'
 import { round } from './utils'
+
+defineProps<{
+  panels?: TabPanel[]
+}>()
 
 const selectedElement = defineModel<HTMLElement | null>({ default: null })
 const [isSelecting, _toggleSelecting] = useToggle(false)
@@ -385,6 +390,7 @@ useMagicKey(() => {
       v-if="(isSelecting && hoveredElement) || showSelectedOverlay"
       :is-selected="showSelectedOverlay"
       :action="{ start: startSelecting, stop: stopSelecting }"
+      :user-panels="panels"
     />
   </Teleport>
 </template>

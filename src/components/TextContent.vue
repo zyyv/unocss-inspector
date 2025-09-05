@@ -1,6 +1,6 @@
 <script lang='ts' setup>
 import { computed, ref, watch } from 'vue'
-import { useElement } from '../composables/element'
+import { useElement } from '../composables/exports/element'
 import FormControl from './basic/FormControl.vue'
 import FormControlGroup from './basic/FormControlGroup.vue'
 

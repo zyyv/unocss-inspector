@@ -2,7 +2,7 @@ import type { Theme } from '@unocss/preset-wind4'
 import { createGenerator } from '@unocss/core'
 import { computedAsync } from '@vueuse/core'
 import { ref } from 'vue'
-import userConfig from '../../uno.config'
+import userConfig from '../../../uno.config'
 
 const config = ref(userConfig)
 
