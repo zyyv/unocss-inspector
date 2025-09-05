@@ -17,7 +17,7 @@ defineEmits<Emits>()
 
 <template>
   <div
-    v-if="displayClasses.length" p="x4 y2"
+    v-if="displayClasses.length"
     class="flex flex-wrap gap-1"
     style="--checked-context: var(--colors-sky-DEFAULT)"
   >

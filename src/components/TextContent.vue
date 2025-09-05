@@ -90,7 +90,7 @@ function useRecommendedType() {
 <template>
   <div
     v-if="elementContent"
-    class="p-3 no-scrollbar"
+    class="no-scrollbar"
   >
     <h5 m0 mb-2 flex="~ items-center justify-between">
       <div flex="~ items-center gap-1">
