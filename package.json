@@ -50,6 +50,7 @@
     "@antfu/eslint-config": "^5.2.1",
     "@iconify-json/catppuccin": "^1.2.11",
     "@iconify-json/hugeicons": "^1.2.5",
+    "@iconify/utils": "^3.0.1",
     "@types/node": "^22.18.0",
     "@unocss/core": "^66.5.0",
     "@unocss/preset-web-fonts": "^66.4.2",

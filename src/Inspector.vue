@@ -399,19 +399,19 @@ useMagicKey(() => {
 /* 确保传送到 body 的元素样式正确 */
 body .uno-inspect-controls {
   position: fixed !important;
-  z-index: 10002 !important;
+  z-index: 1002 !important;
   pointer-events: auto !important;
 }
 
 body .uno-inspect-element-info {
   position: fixed !important;
-  z-index: 10001 !important;
+  z-index: 1001 !important;
   pointer-events: auto !important;
 }
 
 body .box-model-overlay {
   position: fixed !important;
-  z-index: 9999 !important;
+  z-index: 999 !important;
   pointer-events: none !important;
 }
 </style>
