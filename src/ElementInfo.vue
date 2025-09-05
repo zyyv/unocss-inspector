@@ -2,7 +2,7 @@
 import { useEventListener, useMouse, useToggle, useWindowSize } from '@vueuse/core'
 import { computed, ref, watch } from 'vue'
 import { useElement } from './composables/exports/element'
-import { useTabs } from './composables/tabs'
+import { useTabs } from './composables/exports/tabs'
 
 interface Props {
   isSelected: boolean
