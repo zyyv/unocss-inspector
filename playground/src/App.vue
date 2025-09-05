@@ -95,7 +95,7 @@ const userPanels: TabPanel[] = [
         </h3>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div
-            class="bg-dark-200 text-gray-100 p-6 rounded-xl text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-700"
+            class="bg-dark-200 text-gray-100 p-6 rounded-xl text-center shadow-lg hover:shadow-xl transition-all duration-3000 hover:-translate-y-1 border border-gray-700"
           >
             <div class="w-12 h-12 bg-blue-500 rounded-lg mx-auto mb-4 flex items-center justify-center">
               <span class="text-white font-bold">1</span>
@@ -104,7 +104,7 @@ const userPanels: TabPanel[] = [
               Component One
             </h4>
             <p class="text-gray-300 text-sm">
-              Interactive card with hover effects
+              Update after 3000ms
             </p>
           </div>
           <div
@@ -117,7 +117,7 @@ const userPanels: TabPanel[] = [
               Component Two
             </h4>
             <p class="text-gray-300 text-sm">
-              Responsive grid layout
+              Update after 300ms
             </p>
           </div>
           <div
