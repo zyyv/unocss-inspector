@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint&build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set node
+        uses: actions/setup-node@v4
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+
+      - name: 📦 Install dependencies
+        run: pnpm install
+
+      - name: 📝 Lint
+        run: pnpm lint
+
+      - name: build playground
+        run: pnpm play:build
