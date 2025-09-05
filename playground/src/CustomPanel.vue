@@ -11,7 +11,10 @@ const elementTag = computed(() => {
 </script>
 
 <template>
-  <div>
-    {{ elementTag }}
+  <div p-4>
+    I'm a user custom panel!
+    <p text-green>
+      Selected Element: {{ elementTag }}
+    </p>
   </div>
 </template>
