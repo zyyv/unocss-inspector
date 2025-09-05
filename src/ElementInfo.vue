@@ -1,6 +1,6 @@
 <script lang='ts' setup>
 import { useEventListener, useMouse, useToggle, useWindowSize } from '@vueuse/core'
-import { computed, KeepAlive, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useElement } from './composables/exports/element'
 import { useTabs } from './composables/tabs'
 
