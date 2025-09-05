@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import FormControl from '../../src/components/basic/FormControl.vue'
-import FormControlGroup from '../../src/components/basic/FormControlGroup.vue'
+import { FormControl, FormControlGroup } from '../../src'
 
 // 单独使用的示例
 const singleCheckbox = ref(false)

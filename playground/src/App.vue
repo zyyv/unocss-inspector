@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { TabPanel } from '../../src'
 import { ref, watchEffect } from 'vue'
-import Inspector from '../../src/Inspector.vue'
+import { Inspector } from '../../src'
+import CustomPanel from './CustomPanel.vue'
 import FormControlExample from './FormControlExample.vue'
 
 const selectedElement = ref(null)
@@ -10,6 +12,15 @@ watchEffect(() => {
     // Element selected for inspection
   }
 })
+
+const userPanels: TabPanel[] = [
+  {
+    id: 'custom',
+    label: 'Custom Panel',
+    icon: 'i-hugeicons:confused',
+    component: CustomPanel,
+  },
+]
 </script>
 
 <template>
@@ -254,5 +265,5 @@ watchEffect(() => {
     </footer>
   </div>
 
-  <Inspector v-model="selectedElement" />
+  <Inspector v-model="selectedElement" :panels="userPanels" />
 </template>
