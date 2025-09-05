@@ -17,8 +17,16 @@ watchEffect(() => {
     <!-- Header Section -->
     <header class="bg-gradient-to-br from-blue-600 to-purple-700 text-white py-16 px-6">
       <div class="max-w-4xl mx-auto text-center">
-        <h1 id="main-title" class="text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">
-          UnoCSS Inspector
+        <h1
+          id="main-title"
+          w-full
+          flex="~ items-center justify-center gap-2"
+          class="text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg"
+        >
+          <span>UnoCSS Inspector</span>
+          <a text-inherit hover:text-rose href="https://github.com/zyyv/unocss-inspector" target="_blank">
+            <div text-8 cursor-pointer i-hugeicons:github />
+          </a>
         </h1>
         <p
           class="opacity-90 mx-auto leading-relaxed" max-w-2xl text="xl red hover:blue sad asdqwe adqws asdqwgfd"
