@@ -5,4 +5,7 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   root: './playground',
   plugins: [vue(), UnoCSS()],
+  define: {
+    'process.env.BABEL_TYPES_8_BREAKING': 'false',
+  },
 })

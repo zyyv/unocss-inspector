@@ -5,6 +5,7 @@ import BasicInfo from '../components/BasicInfo.vue'
 import BoxModel from '../components/BoxModel.vue'
 import ClassList from '../components/ClassList.vue'
 import StylesInfo from '../components/InlineStyles.vue'
+import Settings from '../components/Settings.vue'
 import TextContent from '../components/TextContent.vue'
 
 interface Tab {
@@ -30,7 +31,7 @@ export function useTabs(): UseTabsReturn {
     { id: 'box', label: 'Box Model', icon: 'i-hugeicons:package-dimensions-02', component: BoxModel },
     { id: 'text', label: 'Text', icon: 'i-hugeicons:text-footnote', component: TextContent },
     { id: 'dom-tree', label: 'Dom Tree', icon: 'i-hugeicons:crowdfunding', component: TextContent },
-    { id: 'setting', label: 'Setting', icon: 'i-hugeicons:ai-setting', component: TextContent },
+    { id: 'setting', label: 'Setting', icon: 'i-hugeicons:ai-setting', component: Settings },
   ]
 
   const activeTabId = ref<string>(tabs[0].id)
