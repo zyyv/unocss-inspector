@@ -303,7 +303,7 @@ useEventListener('scroll', updateElementInfo, { capture: true })
     <div class="flex-1 overflow-y-auto relative no-scrollbar">
       <Transition :name="`slide-${slideDirection}`" mode="out-in">
         <KeepAlive>
-          <component :is="activeTab.component" :key="activeTab.id" class="p-4" />
+          <component :is="activeTab.component" :key="activeTab.id" />
         </KeepAlive>
       </Transition>
     </div>
