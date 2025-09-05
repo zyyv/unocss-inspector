@@ -64,7 +64,16 @@ export function useClassList() {
       const finalList = [...orderedList, ...newClasses]
 
       element.value.className = finalList.join(' ')
-      updateTrigger.value++
+
+      const computedStyle = window.getComputedStyle(element.value)
+      const transitionTime = Number.parseFloat(computedStyle.transitionDuration) + Number.parseFloat(computedStyle.transitionDelay)
+      const animateTime = Number.parseFloat(computedStyle.animationDuration) + Number.parseFloat(computedStyle.animationDelay)
+
+      const maxTime = Math.max(transitionTime, animateTime)
+
+      setTimeout(() => {
+        updateTrigger.value++
+      }, maxTime * 1000 + 50)
     },
   })
 

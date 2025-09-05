@@ -36,7 +36,7 @@ const highlightStyle = computed(() => {
   // 触发重新计算（当窗口大小或滚动位置改变时）
   void updateTrigger.value
 
-  const element = (showSelectedOverlay.value && selectedElement.value) ? selectedElement.value : hoveredElement.value
+  const element = currentElement.value
 
   if (!element || (!isSelecting.value && !showSelectedOverlay.value))
     return { display: 'none' }
