@@ -213,7 +213,7 @@ useMagicKey(() => {
   else {
     startSelecting()
   }
-})
+}, stopSelecting)
 </script>
 
 <template>
