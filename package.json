@@ -41,6 +41,7 @@
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
+    "unocss": "^66.0.0",
     "vue": "^3.0.0"
   },
   "dependencies": {
