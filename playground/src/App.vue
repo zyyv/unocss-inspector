@@ -4,6 +4,7 @@ import { ref, watchEffect } from 'vue'
 import { Inspector } from '../../src'
 import CustomPanel from './CustomPanel.vue'
 import FormControlExample from './FormControlExample.vue'
+import SelectDemo from './SelectDemo.vue'
 
 const selectedElement = ref(null)
 
@@ -248,6 +249,15 @@ const userPanels: TabPanel[] = [
         </h3>
         <div class="bg-dark-200 text-gray-100 rounded-xl p-6 border border-gray-700">
           <FormControlExample />
+        </div>
+      </section>
+
+      <section>
+        <h3 class="text-2xl font-bold text-gray-100 mb-6">
+          Select Component Demo
+        </h3>
+        <div class="bg-dark-200 text-gray-100 rounded-xl border border-gray-700 flex justify-center">
+          <SelectDemo />
         </div>
       </section>
     </main>

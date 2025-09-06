@@ -98,7 +98,7 @@ const panelPosition = computed(() => {
     position: 'fixed' as const,
     left: `${baseX}px`,
     top: `${baseY}px`,
-    zIndex: '10001',
+    zIndex: '1001',
   }
 })
 
