@@ -41,7 +41,15 @@ const sizeOptions = [
         v-model="selectedTheme"
         :options="themeOptions"
         placeholder="选择主题"
-      />
+        inputable
+      >
+        <template #prefix>
+          <span op-50>W</span>
+        </template>
+        <template #suffix>
+          <span op-50>px</span>
+        </template>
+      </Select>
       <p text="white/60" text-xs>
         当前选择: {{ selectedTheme || '未选择' }}
       </p>

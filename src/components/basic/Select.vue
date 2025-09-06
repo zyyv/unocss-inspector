@@ -1,6 +1,6 @@
 <script lang='ts' setup>
 import { useEventListener } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 interface Option {
   value: string | number
@@ -12,18 +12,58 @@ interface Props {
   options?: Option[]
   placeholder?: string
   disabled?: boolean
+  inputable?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   options: () => [],
-  placeholder: '请选择...',
+  placeholder: 'Please select...',
   disabled: false,
+  inputable: false,
 })
 
 const modelValue = defineModel<string | number>({ default: '' })
 
 const isOpen = ref(false)
 const selectRef = ref<HTMLElement>()
+const inputRef = ref<HTMLInputElement>()
+
+// 添加一个临时输入值的ref
+const tempInputValue = ref('')
+
+// 同步tempInputValue和modelValue
+watch(modelValue, (newVal: string | number) => {
+  tempInputValue.value = String(newVal || '')
+}, { immediate: true })
+
+const inputValue = computed({
+  get: () => props.inputable ? tempInputValue.value : '',
+  set: (value: string) => {
+    // 直接更新临时输入值
+    tempInputValue.value = value
+  },
+})
+
+// 处理输入框失焦和Enter键
+function handleInputChange(event: Event) {
+  if (!props.inputable)
+    return
+  const target = event.target as HTMLInputElement
+  const value = target.value.trim()
+  if (value !== String(modelValue.value || '')) {
+    modelValue.value = value || ''
+  }
+}
+
+function handleKeydown(event: KeyboardEvent) {
+  if (!props.inputable)
+    return
+  if (event.key === 'Enter') {
+    event.preventDefault()
+    handleInputChange(event)
+    inputRef.value?.blur()
+  }
+}
 
 const selectedOption = computed(() => {
   return props.options.find(option => option.value === modelValue.value)
@@ -71,17 +111,37 @@ useEventListener('click', handleClickOutside)
       hover:text-white
       @click="toggleDropdown"
     >
-      <div flex items-center gap-1>
+      <div flex="~ items-center gap-1">
+        <slot name="prefix" />
         <span v-if="selectedOption?.icon" :class="selectedOption.icon" />
-        <span>{{ selectedOption?.label || placeholder }}</span>
+        <input
+          v-if="inputable"
+          ref="inputRef"
+          v-model="inputValue"
+          name="select-input"
+          :placeholder="placeholder"
+          text-size-inherit
+          w-full
+          flex-1
+          min-w-0
+          bg-transparent
+          border-none
+          outline-none
+          @click.stop
+          @blur="handleInputChange"
+          @keydown="handleKeydown"
+        >
+        <span v-else :class="{ 'op-50': !selectedOption }">{{ selectedOption?.label || placeholder }}</span>
       </div>
-      <div
-        class="select-arrow"
-        :class="{ 'rotate-180': isOpen }"
-        i-hugeicons:arrow-down-01
-        transition-transform
-        duration-200
-      />
+      <div flex="~ items-center gap-1">
+        <slot name="suffix" />
+        <div
+          :class="{ 'rotate-180': isOpen }"
+          i-hugeicons:arrow-down-01
+          transition-transform
+          duration-200
+        />
+      </div>
     </div>
 
     <Transition
@@ -101,8 +161,9 @@ useEventListener('click', handleClickOutside)
         z-20
         mt-1
         backdrop-blur-md
-        class="bg-white/5 rd-md of-hidden!"
+        class="bg-white/5 rd-md max-h-30 of-y-auto no-scrollbar"
         border="~ solid white/5 1px"
+        select-none
       >
         <div
           v-for="option in options"

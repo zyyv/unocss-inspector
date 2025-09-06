@@ -76,7 +76,7 @@ export default defineConfig<Theme>({
       },
     }),
     presetWebFonts({
-      provider: 'fontsource',
+      // provider: 'fontsource',
       fonts: {
         dm: ['DM Sans', 'DM Sans:400,700'],
       },

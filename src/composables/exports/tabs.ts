@@ -6,7 +6,7 @@ import BasicInfo from '../../components/BasicInfo.vue'
 import BoxModel from '../../components/BoxModel.vue'
 import ClassList from '../../components/ClassList.vue'
 import StylesInfo from '../../components/InlineStyles.vue'
-import Layout from '../../components/Layout.vue'
+import Layout from '../../components/layout/index.vue'
 // import Settings from '../../components/Settings.vue'
 import TextContent from '../../components/TextContent.vue'
 
@@ -31,7 +31,7 @@ const defaultPanels: TabPanel[] = [
 
 export function useTabs(userPanels: TabPanel[] = []): UseTabsReturn {
   const tabs = ref<TabPanel[]>([...defaultPanels, ...userPanels])
-  const activeTabId = ref<string>(tabs.value[0].id)
+  const activeTabId = ref<string>(tabs.value[3].id)
   const slideDirection = ref<'left' | 'right'>('right')
 
   function setActiveTab(id: string) {
