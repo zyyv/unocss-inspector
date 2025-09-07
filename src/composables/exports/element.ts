@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { computed, inject, provide, ref } from 'vue'
+import { inject, provide, ref } from 'vue'
 
 const CURRENT_ELEMENT_INJECTION_KEY = 'current-element'
 const UPDATE_TRIGGER_INJECTION_KEY = 'update-trigger'
@@ -38,19 +38,28 @@ export function useTracker(element: Ref<HTMLElement | null>) {
 
 export function useElement() {
   const element = inject(CURRENT_ELEMENT_INJECTION_KEY) as Ref<HTMLElement | null> | undefined
-  /**
-   * Styles as a shortcut to access the element's computed styles, it's **READONLY**!
-   */
-  const styles = computed(() => element?.value?.style)
 
   if (!element) {
     throw new Error('useElement must be used within a component that provides element context')
   }
 
+  function setElementStyle(styles: Partial<CSSStyleDeclaration>, mode: 'style' | 'class' | 'both' = 'style') {
+    if (element?.value) {
+      if (mode === 'style' || mode === 'both') {
+        Object.assign(element.value.style, styles)
+      }
+      if (mode === 'class' || mode === 'both') {
+        // TODO: 将 styles 转换为 UnoCSS utility classes
+      }
+
+      triggering(element)
+    }
+  }
+
   return {
     element,
-    styles,
     tracking,
     triggering: () => triggering(element),
+    setElementStyle,
   }
 }

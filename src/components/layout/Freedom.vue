@@ -1,19 +1,24 @@
 <script lang='ts' setup>
-import { onMounted, ref } from 'vue'
+import { computed } from 'vue'
 import { useElement } from '../../composables/exports'
 import FormControl from '../basic/FormControl.vue'
 import WH from './WH.vue'
 
-const clip = ref(false)
-
-const { element, styles, updateTrigger } = useElement()
-
-onMounted(() => {
-  if (styles.value) {
-    if (styles.value.overflow && styles.value.overflow !== 'visible') {
-      clip.value = true
+const { element, tracking, setElementStyle } = useElement()
+const clip = computed({
+  get: () => {
+    if (element.value) {
+      tracking()
+      const computedStyle = window.getComputedStyle(element.value)
+      return computedStyle.overflow && computedStyle.overflow !== 'visible'
     }
-  }
+    return false
+  },
+  set: (value: boolean) => {
+    if (element.value) {
+      setElementStyle({ overflow: value ? 'hidden' : 'visible' })
+    }
+  },
 })
 </script>
 

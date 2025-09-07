@@ -1,6 +1,6 @@
 <script lang='ts' setup>
 import { useToggle } from '@vueuse/core'
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import { useElement } from '../../composables/exports/element'
 import FlexCol from './FlexCol.vue'
 import FlexRow from './FlexRow.vue'
@@ -25,15 +25,9 @@ function handleSelect(id: string) {
 
 const [openWrap, toggleWrap] = useToggle(false)
 
-onMounted(() => {
+watchEffect(() => {
   if (element.value) {
     const style = window.getComputedStyle(element.value)
-    if (style.flexWrap === 'wrap') {
-      openWrap.value = true
-    }
-    else {
-      openWrap.value = false
-    }
 
     if (style.display.includes('flex')) {
       const direction = style.flexDirection
@@ -43,10 +37,21 @@ onMounted(() => {
       else {
         selectedId.value = 'horizontal'
       }
+
+      if (style.flexWrap === 'wrap') {
+        openWrap.value = true
+      }
+      else {
+        openWrap.value = false
+      }
     }
 
-    if (style.display.includes('grid')) {
+    else if (style.display.includes('grid')) {
       selectedId.value = 'grid'
+    }
+
+    else {
+      selectedId.value = 'freedom'
     }
   }
 })
