@@ -1,25 +1,55 @@
 <script lang='ts' setup>
 import { useToggle } from '@vueuse/core'
-import { ref } from 'vue'
-import WH from './WH.vue'
-// import { useElement } from '../../composables/exports/element'
+import { computed, onMounted, ref } from 'vue'
+import { useElement } from '../../composables/exports/element'
+import FlexCol from './FlexCol.vue'
+import FlexRow from './FlexRow.vue'
+import Freedom from './Freedom.vue'
+import Grid from './Grid.vue'
 
-// const { element, updateTrigger } = useElement()
+const { element } = useElement()
 
 const list = ref([
-  { id: 'freedom', icon: 'i-custom:freedom?mask' },
-  { id: 'horizontal', icon: 'i-custom:horizontal?mask' },
-  { id: 'vertical', icon: 'i-custom:vertical?mask' },
-  { id: 'grid', icon: 'i-hugeicons:dashboard-square-03?mask' },
+  { id: 'freedom', icon: 'i-custom:freedom?mask', component: Freedom },
+  { id: 'horizontal', icon: 'i-custom:horizontal?mask', component: FlexRow },
+  { id: 'vertical', icon: 'i-custom:vertical?mask', component: FlexCol },
+  { id: 'grid', icon: 'i-hugeicons:dashboard-square-03?mask', component: Grid },
 ])
 
-const selected = ref(list.value[0])
+const selectedId = ref(list.value[0].id)
+const selected = computed(() => list.value.find(i => i.id === selectedId.value) || list.value[0])
 
-function handleSelect(item: any) {
-  selected.value = item
+function handleSelect(id: string) {
+  selectedId.value = id
 }
 
 const [openWrap, toggleWrap] = useToggle(false)
+
+onMounted(() => {
+  if (element.value) {
+    const style = window.getComputedStyle(element.value)
+    if (style.flexWrap === 'wrap') {
+      openWrap.value = true
+    }
+    else {
+      openWrap.value = false
+    }
+
+    if (style.display.includes('flex')) {
+      const direction = style.flexDirection
+      if (direction === 'column') {
+        selectedId.value = 'vertical'
+      }
+      else {
+        selectedId.value = 'horizontal'
+      }
+    }
+
+    if (style.display.includes('grid')) {
+      selectedId.value = 'grid'
+    }
+  }
+})
 </script>
 
 <template>
@@ -49,14 +79,19 @@ const [openWrap, toggleWrap] = useToggle(false)
         v-for="item in list" :key="item.id"
         :class="{ active: selected.id === item.id }"
         :title="item.id"
-        @click="handleSelect(item)"
+        @click="handleSelect(item.id)"
       >
         <div :class="item.icon" />
       </div>
     </div>
-    <div>
-      <WH />
-      <div h-40 />
+    <div min-h-40>
+      <Transition
+        enter-active-class="animate-fade-in animate-duration-200"
+        leave-active-class="animate-fade-out animate-duration-200"
+        mode="out-in"
+      >
+        <component :is="selected.component" />
+      </Transition>
     </div>
   </section>
 </template>

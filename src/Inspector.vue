@@ -399,7 +399,7 @@ useMagicKey(() => {
 /* 确保传送到 body 的元素样式正确 */
 body .uno-inspect-controls {
   position: fixed !important;
-  z-index: 1002 !important;
+  z-index: 1000 !important;
   pointer-events: auto !important;
 }
 
