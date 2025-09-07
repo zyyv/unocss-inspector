@@ -4,7 +4,7 @@ import { useElement } from '../../composables/exports/element'
 import { pxToRem, remToPx, round } from '../../utils'
 import Select from '../basic/Select.vue'
 
-const { element, updateTrigger } = useElement()
+const { element, tracking, triggering } = useElement()
 
 const isRemUnit = ref(false)
 const isRatioLocked = ref(false)
@@ -31,7 +31,7 @@ const w = computed({
     if (!element.value)
       return ''
 
-    void updateTrigger.value
+    tracking()
 
     let value = element.value.style.width
 
@@ -65,7 +65,7 @@ const w = computed({
     if (element.value && value) {
       if (value === 'auto' || String(value).includes('%')) {
         element.value.style.width = String(value)
-        updateTrigger.value++
+        triggering()
         return
       }
 
@@ -86,7 +86,7 @@ const w = computed({
         element.value.style.height = formatValue(newHeight, heightUnit)
       }
 
-      updateTrigger.value++
+      triggering()
     }
   },
 })
@@ -96,7 +96,7 @@ const h = computed({
     if (!element.value)
       return ''
 
-    void updateTrigger.value
+    tracking()
 
     let value = element.value.style.height
 
@@ -130,7 +130,7 @@ const h = computed({
     if (element.value && value) {
       if (value === 'auto' || String(value).includes('%')) {
         element.value.style.height = String(value)
-        updateTrigger.value++
+        triggering()
         return
       }
 
@@ -151,7 +151,7 @@ const h = computed({
         element.value.style.width = formatValue(newWidth, widthUnit)
       }
 
-      updateTrigger.value++
+      triggering()
     }
   },
 })
@@ -167,7 +167,7 @@ watch([w, h], ([newW, newH]) => {
 }, { immediate: true })
 
 watch(isRemUnit, () => {
-  updateTrigger.value++
+  triggering()
 })
 
 function toggleUnit() {
@@ -179,7 +179,7 @@ function swapWidthHeight() {
     const tempWidth = element.value.style.width
     element.value.style.width = element.value.style.height
     element.value.style.height = tempWidth
-    updateTrigger.value++
+    triggering()
   }
 }
 

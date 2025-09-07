@@ -2,10 +2,10 @@
 import { computed } from 'vue'
 import { useElement } from '../../src'
 
-const { element, updateTrigger } = useElement()
+const { element, tracking } = useElement()
 
 const elementTag = computed(() => {
-  void updateTrigger.value
+  tracking()
   return element.value?.tagName.toLowerCase() || 'No element selected'
 })
 </script>

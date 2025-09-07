@@ -4,12 +4,12 @@ import { computed, ref } from 'vue'
 import { useElement } from '../composables/exports/element'
 import { round } from '../utils'
 
-const { element, updateTrigger } = useElement()
+const { element, tracking } = useElement()
 const showRem = ref(false)
 const showFontRem = ref(false)
 
 const basicInfo = computed(() => {
-  void updateTrigger.value
+  tracking()
 
   if (!element.value) {
     return null

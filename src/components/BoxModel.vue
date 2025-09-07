@@ -2,10 +2,10 @@
 import { computed } from 'vue'
 import { useElement } from '../composables/exports/element'
 
-const { element, updateTrigger } = useElement()
+const { element, tracking } = useElement()
 
 const boxModel = computed(() => {
-  void updateTrigger.value
+  tracking()
 
   if (!element.value) {
     return null

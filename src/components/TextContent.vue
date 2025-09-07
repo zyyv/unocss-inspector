@@ -4,7 +4,7 @@ import { useElement } from '../composables/exports/element'
 import FormControl from './basic/FormControl.vue'
 import FormControlGroup from './basic/FormControlGroup.vue'
 
-const { element, updateTrigger } = useElement()
+const { element, tracking, triggering } = useElement()
 
 // 内容类型选择
 type ContentType = 'innerText' | 'innerHTML'
@@ -13,7 +13,7 @@ const content = ref('')
 
 // 获取不同类型的元素内容
 const elementContent = computed(() => {
-  void updateTrigger.value
+  tracking()
 
   if (!element.value) {
     return ''
@@ -74,7 +74,7 @@ function updateElementContent() {
         element.value.innerHTML = content.value
         break
     }
-    updateTrigger.value++
+    triggering()
   }
 }
 

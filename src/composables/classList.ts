@@ -2,13 +2,13 @@ import { computed, ref, watch } from 'vue'
 import { useElement } from './exports/element'
 
 export function useClassList() {
-  const { element, updateTrigger } = useElement()
+  const { element, tracking, triggering } = useElement()
 
   const allClasses = ref<Set<string>>(new Set())
   const originalClassOrder = ref<string[]>([])
 
   const activeClasses = computed(() => {
-    void updateTrigger.value
+    tracking()
 
     if (!element.value) {
       return []
@@ -65,15 +65,7 @@ export function useClassList() {
 
       element.value.className = finalList.join(' ')
 
-      const computedStyle = window.getComputedStyle(element.value)
-      const transitionTime = Number.parseFloat(computedStyle.transitionDuration) + Number.parseFloat(computedStyle.transitionDelay)
-      const animateTime = Number.parseFloat(computedStyle.animationDuration) + Number.parseFloat(computedStyle.animationDelay)
-
-      const maxTime = Math.max(transitionTime, animateTime)
-
-      setTimeout(() => {
-        updateTrigger.value++
-      }, maxTime * 1000 + 50)
+      triggering()
     },
   })
 
