@@ -1,7 +1,7 @@
 <script lang='ts' setup>
 import { computed, ref, watch } from 'vue'
 import { useElement } from '../../composables/exports/element'
-import { pxToRem, remToPx } from '../../utils'
+import { pxToRem, remToPx, round } from '../../utils'
 import Select from '../basic/Select.vue'
 
 const { element, updateTrigger } = useElement()
@@ -54,12 +54,12 @@ const w = computed({
 
     const { num, unit } = parseValue(value)
     if (isRemUnit.value && unit === 'px') {
-      return String(Math.round(pxToRem(num) * 100) / 100)
+      return String(pxToRem(num))
     }
     else if (!isRemUnit.value && unit === 'rem') {
-      return String(Math.round(remToPx(num)))
+      return String(remToPx(num))
     }
-    return String(num)
+    return round(num)
   },
   set: (value) => {
     if (element.value && value) {
@@ -119,12 +119,12 @@ const h = computed({
 
     const { num, unit } = parseValue(value)
     if (isRemUnit.value && unit === 'px') {
-      return String(Math.round(pxToRem(num) * 100) / 100)
+      return String(pxToRem(num))
     }
     else if (!isRemUnit.value && unit === 'rem') {
-      return String(Math.round(remToPx(num)))
+      return String(remToPx(num))
     }
-    return String(num)
+    return round(num)
   },
   set: (value) => {
     if (element.value && value) {
