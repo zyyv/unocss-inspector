@@ -1,13 +1,15 @@
 <script lang='ts' setup>
 import { useToggle } from '@vueuse/core'
-import { computed, ref, watchEffect } from 'vue'
+import { computed, onMounted, ref, watch, watchEffect } from 'vue'
 import { useElement } from '../../composables/exports/element'
 import FlexCol from './FlexCol.vue'
 import FlexRow from './FlexRow.vue'
 import Freedom from './Freedom.vue'
 import Grid from './Grid.vue'
 
-const { element } = useElement()
+const { element, setElementStyle } = useElement()
+const originDisplay = ref('')
+const isInlineElement = ref(false)
 
 const list = ref([
   { id: 'freedom', icon: 'i-custom:freedom?mask', component: Freedom },
@@ -24,6 +26,15 @@ function handleSelect(id: string) {
 }
 
 const [openWrap, toggleWrap] = useToggle(false)
+
+onMounted(() => {
+  if (element.value) {
+    const computedStyle = window.getComputedStyle(element.value)
+    originDisplay.value = computedStyle.display
+
+    isInlineElement.value = originDisplay.value.startsWith('inline')
+  }
+})
 
 watchEffect(() => {
   if (element.value) {
@@ -53,6 +64,60 @@ watchEffect(() => {
     else {
       selectedId.value = 'freedom'
     }
+
+    // flex-wrap
+    if (style.flexWrap === 'wrap') {
+      openWrap.value = true
+    }
+  }
+})
+
+watch([element, selected], () => {
+  if (selected.value && element.value) {
+    // 当 selected 布局改变时，更新元素的样式
+    const targetId = selected.value.id
+
+    if (targetId === 'freedom') {
+      // 切换到 freedom 时，恢复原始 display
+      setElementStyle({ display: originDisplay.value || '' })
+    }
+    else if (targetId === 'horizontal') {
+      // 水平 flex 布局，保持 inline 特性
+      const displayValue = isInlineElement.value ? 'inline-flex' : 'flex'
+      const styles: Partial<CSSStyleDeclaration> = {
+        display: displayValue,
+        flexDirection: 'row',
+      }
+
+      // 如果开启了 wrap，添加 flexWrap 属性
+      if (openWrap.value) {
+        styles.flexWrap = 'wrap'
+      }
+
+      setElementStyle(styles)
+    }
+    else if (targetId === 'vertical') {
+      // 垂直 flex 布局，保持 inline 特性
+      const displayValue = isInlineElement.value ? 'inline-flex' : 'flex'
+      setElementStyle({
+        display: displayValue,
+        flexDirection: 'column',
+      })
+    }
+    else if (targetId === 'grid') {
+      // Grid 布局，保持 inline 特性
+      const displayValue = isInlineElement.value ? 'inline-grid' : 'grid'
+      setElementStyle({ display: displayValue })
+    }
+  }
+})
+
+// 单独处理 wrap 切换
+watchEffect(() => {
+  if (element.value && selected.value?.id === 'horizontal') {
+    setElementStyle({
+      flexWrap: openWrap.value ? 'wrap' : 'nowrap',
+    })
   }
 })
 </script>
