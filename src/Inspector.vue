@@ -2,7 +2,7 @@
 import type { TabPanel } from './types'
 import { useToggle, useWindowSize } from '@vueuse/core'
 import { computed, onUnmounted, ref } from 'vue'
-import { provideCurrentElement } from './composables/exports/element'
+import { useTracker } from './composables/exports/element'
 import { useMagicKey } from './composables/magickey'
 import ElementInfo from './ElementInfo.vue'
 import { round } from './utils'
@@ -18,13 +18,11 @@ const [isDraggingControl, _toggleDraggingControl] = useToggle(false)
 const { width: windowWidth, height: windowHeight } = useWindowSize()
 
 const hoveredElement = ref<HTMLElement | null>(null)
-const updateTrigger = ref(0) // 用于强制重新计算样式
-
 const currentElement = computed(() => {
   return showSelectedOverlay.value ? selectedElement.value : hoveredElement.value
 })
 
-provideCurrentElement(currentElement, updateTrigger)
+const { tracking, triggering } = useTracker(currentElement)
 
 // 控制面板拖拽相关状态
 const controlPosition = ref({ x: 20, y: 20 })
@@ -34,7 +32,7 @@ const hasMoved = ref(false)
 
 const highlightStyle = computed(() => {
   // 触发重新计算（当窗口大小或滚动位置改变时）
-  void updateTrigger.value
+  tracking()
 
   const element = currentElement.value
 
@@ -81,7 +79,7 @@ const highlightStyle = computed(() => {
 
 // 方法
 function updateHighlight() {
-  updateTrigger.value++
+  triggering()
 }
 
 function startSelecting() {
@@ -399,19 +397,19 @@ useMagicKey(() => {
 /* 确保传送到 body 的元素样式正确 */
 body .uno-inspect-controls {
   position: fixed !important;
-  z-index: 10002 !important;
+  z-index: 1000 !important;
   pointer-events: auto !important;
 }
 
 body .uno-inspect-element-info {
   position: fixed !important;
-  z-index: 10001 !important;
+  z-index: 1001 !important;
   pointer-events: auto !important;
 }
 
 body .box-model-overlay {
   position: fixed !important;
-  z-index: 9999 !important;
+  z-index: 999 !important;
   pointer-events: none !important;
 }
 </style>

@@ -15,8 +15,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-// 使用 inject 获取 element 和 updateTrigger
-const { element, updateTrigger } = useElement()
+const { element, triggering } = useElement()
 
 const { width: windowWidth, height: windowHeight } = useWindowSize()
 const { x: mouseX, y: mouseY } = useMouse()
@@ -98,12 +97,12 @@ const panelPosition = computed(() => {
     position: 'fixed' as const,
     left: `${baseX}px`,
     top: `${baseY}px`,
-    zIndex: '10001',
+    zIndex: '1001',
   }
 })
 
 function updateElementInfo() {
-  updateTrigger.value++
+  triggering()
 }
 
 // 拖动相关函数

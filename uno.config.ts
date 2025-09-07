@@ -1,4 +1,5 @@
 import type { Theme } from '@unocss/preset-wind4'
+import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
 import { symbols } from '@unocss/core'
 import { defineConfig, presetAttributify, presetIcons, presetWebFonts, presetWind4 } from 'unocss'
 
@@ -69,9 +70,13 @@ export default defineConfig<Theme>({
       },
     }),
     presetAttributify(),
-    presetIcons(),
+    presetIcons({
+      collections: {
+        custom: FileSystemIconLoader('./src/icons'),
+      },
+    }),
     presetWebFonts({
-      provider: 'fontsource',
+      // provider: 'fontsource',
       fonts: {
         dm: ['DM Sans', 'DM Sans:400,700'],
       },

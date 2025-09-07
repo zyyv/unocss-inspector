@@ -4,14 +4,14 @@ import { useElement } from './exports/element'
 const FILTERED_ATTRIBUTES = ['class', 'id', 'href', 'src']
 
 export function useAttributes() {
-  const { element, updateTrigger } = useElement()
+  const { element, tracking, triggering } = useElement()
 
   const allAttributes = ref<Map<string, Set<string>>>(new Map())
   const originalAttributeOrder = ref<string[]>([])
   const originalValueOrder = ref<Map<string, string[]>>(new Map())
 
   const activeAttributes = computed(() => {
-    void updateTrigger.value
+    tracking()
 
     if (!element.value) {
       return new Map<string, Set<string>>()
@@ -131,7 +131,7 @@ export function useAttributes() {
         element.value.setAttribute(attrName, finalValues.join(' '))
       }
     }
-    updateTrigger.value++
+    triggering()
   }
 
   return {
