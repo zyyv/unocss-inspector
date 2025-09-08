@@ -8,13 +8,10 @@
   "scripts": {
     "lint": "eslint --cache .",
     "lint:fix": "pnpm lint --fix",
-    "build": "tsdown",
-    "dev": "tsdown --watch",
-    "play": "vite",
-    "play:build": "vite build",
+    "play": "pnpm --filter ./playground dev",
+    "play:build": "pnpm --filter ./playground build",
     "test": "vitest",
-    "typecheck": "vue-tsc --noEmit",
-    "prepublishOnly": "pnpm run build"
+    "typecheck": "vue-tsc --noEmit"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^5.2.2",
