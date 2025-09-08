@@ -12,6 +12,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@uno-inspect/inspector": "workspace:*",
     "@vueuse/core": "^13.9.0"
   },
   "devDependencies": {

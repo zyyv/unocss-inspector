@@ -15,6 +15,5 @@
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true
-  },
-  "include": ["packages/inspector/src", "playground/src/FormControlExample.vue"]
+  }
 }

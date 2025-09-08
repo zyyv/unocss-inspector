@@ -70,15 +70,14 @@ function handleLabelClick(event: Event) {
         :checked="checked"
         :type="type"
         :disabled="disabled"
-        class="btn-clear peer size-4"
+        class="btn-clear peer size-4 checked:b-$checked-context/50"
         :class="shape === 'square' ? 'rd-sm' : 'rd-full'"
         style="--webkit-appearance: none; -moz-appearance: none; appearance: none;"
-        b="~ solid white/50 checked:$checked-context/50"
+        b="~ solid white/50"
       >
       <div
-        class="pos-center transition-all size-0"
+        class="pos-center transition-all size-0 peer-checked:size-58% peer-checked:bg-$checked-context"
         :class="shape === 'square' ? 'rd-2px' : 'rd-full'"
-        peer-checked="size-58% bg-$checked-context"
       />
     </div>
     <label v-if="label" transition-opacity :class="{ 'op-50': !checked }" :for="realId" class="text-3.25 whitespace-nowrap" @click="handleLabelClick">{{ label }}</label>

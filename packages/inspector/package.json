@@ -17,7 +17,14 @@
     "typescript"
   ],
   "exports": {
-    ".": "./dist/index.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts"
+    },
+    "./css": "./dist/index.css"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -29,14 +36,12 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsdown",
+    "build": "vite build",
     "dev": "tsdown --watch"
   },
   "peerDependencies": {
+    "@vueuse/core": "^13.9.0",
     "vue": "^3.0.0"
-  },
-  "dependencies": {
-    "@vueuse/core": "^13.9.0"
   },
   "devDependencies": {
     "@iconify-json/catppuccin": "^1.2.16",
@@ -47,11 +52,14 @@
     "@unocss/preset-web-fonts": "^66.5.1",
     "@unocss/preset-wind4": "^66.5.1",
     "@vitejs/plugin-vue": "^6.0.1",
+    "@vueuse/core": "^13.9.0",
+    "tinyglobby": "^0.2.14",
     "tsdown": "^0.14.2",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
     "unocss": "^66.5.1",
     "vite": "^7.1.4",
+    "vite-plugin-dts": "^4.4.0",
     "vue": "^3.5.21",
     "vue-tsc": "^3.0.6"
   }

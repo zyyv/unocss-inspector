@@ -3,8 +3,7 @@ import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  root: './playground',
-  plugins: [vue(), UnoCSS()],
+  plugins: [vue(), UnoCSS('../uno.config.ts')],
   define: {
     'process.env.BABEL_TYPES_8_BREAKING': 'false',
   },

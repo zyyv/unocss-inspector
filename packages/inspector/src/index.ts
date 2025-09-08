@@ -6,7 +6,6 @@ import Inspector from './Inspector.vue'
 
 export { FormControl, FormControlGroup, Inspector, Select }
 export * from './composables/exports'
-export * from './types'
 
 export default {
   install: (app: App) => {
