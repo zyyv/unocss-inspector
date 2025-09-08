@@ -1,6 +1,6 @@
 <script lang='ts' setup>
 import { computed } from 'vue'
-import { useElement } from '../../src'
+import { useElement } from '../../packages/inspector/src'
 
 const { element, tracking } = useElement()
 

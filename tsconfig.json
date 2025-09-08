@@ -16,5 +16,5 @@
     "verbatimModuleSyntax": true,
     "skipLibCheck": true
   },
-  "include": ["src", "playground/src/FormControlExample.vue"]
+  "include": ["packages/inspector/src", "playground/src/FormControlExample.vue"]
 }

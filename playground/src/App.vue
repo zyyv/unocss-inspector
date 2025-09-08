@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { TabPanel } from '../../src'
+import type { TabPanel } from '../../packages/inspector/src'
 import { ref, watchEffect } from 'vue'
-import { Inspector } from '../../src'
+import { Inspector } from '../../packages/inspector/src'
 import CustomPanel from './CustomPanel.vue'
 import FormControlExample from './FormControlExample.vue'
 import SelectDemo from './SelectDemo.vue'

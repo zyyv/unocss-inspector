@@ -1,13 +1,13 @@
 <script lang='ts' setup>
 import { useToggle } from '@vueuse/core'
-import { computed, onMounted, ref, watch, watchEffect } from 'vue'
+import { computed, onMounted, ref, watchEffect } from 'vue'
 import { useElement } from '../../composables/exports/element'
 import FlexCol from './FlexCol.vue'
 import FlexRow from './FlexRow.vue'
 import Freedom from './Freedom.vue'
 import Grid from './Grid.vue'
 
-const { element, setElementStyle } = useElement()
+const { element } = useElement()
 const originDisplay = ref('')
 const isInlineElement = ref(false)
 

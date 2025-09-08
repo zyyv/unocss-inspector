@@ -1,6 +1,6 @@
 <script lang='ts' setup>
 import { ref } from 'vue'
-import { Select } from '../../src'
+import { Select } from '../../packages/inspector/src'
 
 const selectedTheme = ref('')
 const selectedLanguage = ref('zh')

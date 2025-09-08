@@ -1,23 +1,44 @@
 {
-  "name": "@unoc-inspect/monorepo",
+  "name": "@uno-inspect/inspector",
   "type": "module",
   "version": "0.1.0",
   "packageManager": "pnpm@10.15.1",
+  "description": "Interactive dynamic review elements for UnoCSS",
   "author": "Chris",
   "license": "MIT",
+  "keywords": [
+    "vue",
+    "vue3",
+    "inspector",
+    "unocss",
+    "element-inspector",
+    "dom-inspector",
+    "component",
+    "typescript"
+  ],
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
-    "lint": "eslint --cache .",
-    "lint:fix": "pnpm lint --fix",
     "build": "tsdown",
-    "dev": "tsdown --watch",
-    "play": "vite",
-    "play:build": "vite build",
-    "test": "vitest",
-    "typecheck": "vue-tsc --noEmit",
-    "prepublishOnly": "pnpm run build"
+    "dev": "tsdown --watch"
+  },
+  "peerDependencies": {
+    "vue": "^3.0.0"
+  },
+  "dependencies": {
+    "@vueuse/core": "^13.9.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^5.2.2",
     "@iconify-json/catppuccin": "^1.2.16",
     "@iconify-json/hugeicons": "^1.2.14",
     "@iconify/utils": "^3.0.1",
@@ -26,7 +47,6 @@
     "@unocss/preset-web-fonts": "^66.5.1",
     "@unocss/preset-wind4": "^66.5.1",
     "@vitejs/plugin-vue": "^6.0.1",
-    "eslint": "^9.35.0",
     "tsdown": "^0.14.2",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",

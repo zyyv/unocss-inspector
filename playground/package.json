@@ -1,20 +1,18 @@
 {
-  "name": "@unoc-inspect/monorepo",
+  "name": "@uno-inspect/playground",
   "type": "module",
   "version": "0.1.0",
+  "private": true,
   "packageManager": "pnpm@10.15.1",
+  "description": "Interactive dynamic review elements for UnoCSS",
   "author": "Chris",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint --cache .",
-    "lint:fix": "pnpm lint --fix",
-    "build": "tsdown",
-    "dev": "tsdown --watch",
-    "play": "vite",
-    "play:build": "vite build",
-    "test": "vitest",
-    "typecheck": "vue-tsc --noEmit",
-    "prepublishOnly": "pnpm run build"
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@vueuse/core": "^13.9.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^5.2.2",

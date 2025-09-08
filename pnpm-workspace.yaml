@@ -1,0 +1,15 @@
+packages:
+  - playground
+  - packages/*
+
+autoInstallPeers: true
+
+ignoreWorkspaceRootCheck: true
+
+onlyBuiltDependencies:
+  - core-js
+  - esbuild
+
+shamefullyHoist: true
+
+strictPeerDependencies: false
