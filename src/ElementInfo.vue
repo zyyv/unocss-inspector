@@ -39,28 +39,45 @@ function calculatePanelPosition(mouseX: number, mouseY: number) {
   const panelHeight = panelRef.value?.offsetHeight || 350
   const minMargin = 10
 
+  const availableWidth = windowWidth.value - minMargin * 2
+  const availableHeight = windowHeight.value - minMargin * 2
+
+  if (availableWidth < panelWidth || availableHeight < panelHeight) {
+    return {
+      x: Math.max(minMargin, Math.min(mouseX, windowWidth.value - panelWidth)),
+      y: Math.max(minMargin, Math.min(mouseY, windowHeight.value - panelHeight)),
+    }
+  }
+
   let left = mouseX + offsetX
   let top = mouseY + offsetY
 
-  // 避免超出右边界
-  if (left + panelWidth > windowWidth.value) {
+  const positions = [
+    { x: mouseX + offsetX, y: mouseY + offsetY },
+    { x: mouseX - panelWidth - offsetX, y: mouseY + offsetY },
+    { x: mouseX + offsetX, y: mouseY - panelHeight - offsetY },
+    { x: mouseX - panelWidth - offsetX, y: mouseY - panelHeight - offsetY },
+  ]
+
+  for (const pos of positions) {
+    if (pos.x >= minMargin
+      && pos.x + panelWidth <= windowWidth.value - minMargin
+      && pos.y >= minMargin
+      && pos.y + panelHeight <= windowHeight.value - minMargin) {
+      return { x: pos.x, y: pos.y }
+    }
+  }
+
+  if (left + panelWidth > windowWidth.value - minMargin) {
     left = mouseX - panelWidth - offsetX
   }
 
-  // 避免超出下边界
-  if (top + panelHeight > windowHeight.value) {
+  if (top + panelHeight > windowHeight.value - minMargin) {
     top = mouseY - panelHeight - offsetY
   }
 
-  // 避免超出左边界
-  if (left < minMargin) {
-    left = minMargin
-  }
-
-  // 避免超出上边界
-  if (top < minMargin) {
-    top = minMargin
-  }
+  left = Math.max(minMargin, Math.min(left, windowWidth.value - panelWidth - minMargin))
+  top = Math.max(minMargin, Math.min(top, windowHeight.value - panelHeight - minMargin))
 
   return { x: left, y: top }
 }
@@ -103,6 +120,58 @@ const panelPosition = computed(() => {
 
 function updateElementInfo() {
   triggering()
+}
+
+function adjustPanelPositionToViewport(currentX: number, currentY: number) {
+  const panelWidth = 300
+  const panelHeight = panelRef.value?.offsetHeight || 350
+  const minMargin = 10
+
+  let adjustedX = currentX
+  let adjustedY = currentY
+
+  if (adjustedX + panelWidth > windowWidth.value - minMargin) {
+    adjustedX = windowWidth.value - panelWidth - minMargin
+  }
+
+  if (adjustedY + panelHeight > windowHeight.value - minMargin) {
+    adjustedY = windowHeight.value - panelHeight - minMargin
+  }
+
+  if (adjustedX < minMargin) {
+    adjustedX = minMargin
+  }
+
+  if (adjustedY < minMargin) {
+    adjustedY = minMargin
+  }
+
+  return { x: adjustedX, y: adjustedY }
+}
+
+function handleWindowResize() {
+  updateElementInfo()
+
+  if (props.isSelected) {
+    if (isDragging.value) {
+      const currentX = dragPosition.value.x
+      const currentY = dragPosition.value.y
+      const adjustedPosition = adjustPanelPositionToViewport(currentX, currentY)
+
+      if (adjustedPosition.x !== currentX || adjustedPosition.y !== currentY) {
+        dragPosition.value = adjustedPosition
+      }
+    }
+    else if (finalPosition.value.x !== 0 || finalPosition.value.y !== 0) {
+      const currentX = finalPosition.value.x
+      const currentY = finalPosition.value.y
+      const adjustedPosition = adjustPanelPositionToViewport(currentX, currentY)
+
+      if (adjustedPosition.x !== currentX || adjustedPosition.y !== currentY) {
+        finalPosition.value = adjustedPosition
+      }
+    }
+  }
 }
 
 // 拖动相关函数
@@ -182,7 +251,7 @@ watch(() => props.isSelected, (isSelected) => {
   }
 })
 
-useEventListener('resize', updateElementInfo)
+useEventListener('resize', handleWindowResize)
 useEventListener('scroll', updateElementInfo, { capture: true })
 </script>
 
