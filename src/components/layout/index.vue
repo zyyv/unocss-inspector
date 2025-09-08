@@ -72,54 +72,54 @@ watchEffect(() => {
   }
 })
 
-watch([element, selected], () => {
-  if (selected.value && element.value) {
-    // 当 selected 布局改变时，更新元素的样式
-    const targetId = selected.value.id
+// watch([element, selected], () => {
+//   if (selected.value && element.value) {
+//     // 当 selected 布局改变时，更新元素的样式
+//     const targetId = selected.value.id
 
-    if (targetId === 'freedom') {
-      // 切换到 freedom 时，恢复原始 display
-      setElementStyle({ display: originDisplay.value || '' })
-    }
-    else if (targetId === 'horizontal') {
-      // 水平 flex 布局，保持 inline 特性
-      const displayValue = isInlineElement.value ? 'inline-flex' : 'flex'
-      const styles: Partial<CSSStyleDeclaration> = {
-        display: displayValue,
-        flexDirection: 'row',
-      }
+//     if (targetId === 'freedom') {
+//       // 切换到 freedom 时，恢复原始 display
+//       setElementStyle({ display: originDisplay.value || '' })
+//     }
+//     else if (targetId === 'horizontal') {
+//       // 水平 flex 布局，保持 inline 特性
+//       const displayValue = isInlineElement.value ? 'inline-flex' : 'flex'
+//       const styles: Partial<CSSStyleDeclaration> = {
+//         display: displayValue,
+//         flexDirection: 'row',
+//       }
 
-      // 如果开启了 wrap，添加 flexWrap 属性
-      if (openWrap.value) {
-        styles.flexWrap = 'wrap'
-      }
+//       // 如果开启了 wrap，添加 flexWrap 属性
+//       if (openWrap.value) {
+//         styles.flexWrap = 'wrap'
+//       }
 
-      setElementStyle(styles)
-    }
-    else if (targetId === 'vertical') {
-      // 垂直 flex 布局，保持 inline 特性
-      const displayValue = isInlineElement.value ? 'inline-flex' : 'flex'
-      setElementStyle({
-        display: displayValue,
-        flexDirection: 'column',
-      })
-    }
-    else if (targetId === 'grid') {
-      // Grid 布局，保持 inline 特性
-      const displayValue = isInlineElement.value ? 'inline-grid' : 'grid'
-      setElementStyle({ display: displayValue })
-    }
-  }
-})
+//       setElementStyle(styles)
+//     }
+//     else if (targetId === 'vertical') {
+//       // 垂直 flex 布局，保持 inline 特性
+//       const displayValue = isInlineElement.value ? 'inline-flex' : 'flex'
+//       setElementStyle({
+//         display: displayValue,
+//         flexDirection: 'column',
+//       })
+//     }
+//     else if (targetId === 'grid') {
+//       // Grid 布局，保持 inline 特性
+//       const displayValue = isInlineElement.value ? 'inline-grid' : 'grid'
+//       setElementStyle({ display: displayValue })
+//     }
+//   }
+// })
 
 // 单独处理 wrap 切换
-watchEffect(() => {
-  if (element.value && selected.value?.id === 'horizontal') {
-    setElementStyle({
-      flexWrap: openWrap.value ? 'wrap' : 'nowrap',
-    })
-  }
-})
+// watchEffect(() => {
+//   if (element.value && selected.value?.id === 'horizontal') {
+//     setElementStyle({
+//       flexWrap: openWrap.value ? 'wrap' : 'nowrap',
+//     })
+//   }
+// })
 </script>
 
 <template>
