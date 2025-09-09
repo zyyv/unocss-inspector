@@ -70,10 +70,9 @@ function handleLabelClick(event: Event) {
         :checked="checked"
         :type="type"
         :disabled="disabled"
-        class="btn-clear peer size-4 checked:b-$checked-context/50"
+        class="btn-clear peer size-4 checked:b-$checked-context/50 b b-solid b-white/30"
         :class="shape === 'square' ? 'rd-sm' : 'rd-full'"
         style="--webkit-appearance: none; -moz-appearance: none; appearance: none;"
-        b="~ solid white/50"
       >
       <div
         class="pos-center transition-all size-0 peer-checked:size-58% peer-checked:bg-$checked-context"

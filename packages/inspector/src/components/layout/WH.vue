@@ -273,7 +273,7 @@ const widthOptions = [
         cursor-pointer
         op-50
         hover:op-100
-        :class="{ 'op-100 text-blue-500': isRatioLocked }"
+        :class="{ 'op-100! text-blue-500': isRatioLocked }"
         @click="toggleRatioLock"
       />
     </div>

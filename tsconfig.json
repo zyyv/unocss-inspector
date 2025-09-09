@@ -5,6 +5,9 @@
     "moduleDetection": "force",
     "module": "preserve",
     "moduleResolution": "bundler",
+    "paths": {
+      "@uno-inspect/inspector": ["./packages/inspector/src/index.ts"]
+    },
     "resolveJsonModule": true,
     "types": ["node"],
     "strict": true,

@@ -201,7 +201,11 @@ useEventListener('scroll', updateElementInfo, { capture: true })
     >
       <div i-catppuccin:unocss class="header-logo" :class="{ draggable: isSelected, dragging: isDragging }" @mousedown="startDrag" />
       <div class="flex items-center gap-2">
-        <div i-hugeicons:cursor-magic-selection-02 class="select-btn cursor-pointer opacity-70 transition-all duration-200 hover:opacity-100" :class="{ selecting: !isSelected }" @click.stop="action.start()" />
+        <div
+          i-hugeicons:cursor-magic-selection-02 class="select-btn cursor-pointer opacity-70 transition-all duration-200 hover:opacity-100"
+          :class="{ selecting: !isSelected }" title="Click to select an element"
+          @click.stop="action.start()"
+        />
         <div
           v-show="isSelected" i-hugeicons:cancel-01
           class="cursor-pointer opacity-70 transition-all duration-200 hover:opacity-100 text-base"

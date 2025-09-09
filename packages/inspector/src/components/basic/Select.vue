@@ -175,9 +175,8 @@ useEventListener('click', handleClickOutside)
           p="x2 y1.5"
           cursor-pointer
           flex="~ items-center gap-1.5"
-          text="white op-80 2.75"
           transition-all duration-150
-          hover="bg-white/5 text-op-100"
+          class="text-white text-2.75 text-op-80 hover:bg-white/5 hover:text-op-100"
           @click="selectOption(option)"
         >
           <span v-if="option.icon" :class="option.icon" />

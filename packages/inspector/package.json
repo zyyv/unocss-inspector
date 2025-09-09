@@ -37,7 +37,7 @@
   },
   "scripts": {
     "build": "vite build",
-    "dev": "tsdown --watch"
+    "dev": "vite build --watch"
   },
   "peerDependencies": {
     "@vueuse/core": "^13.9.0",
