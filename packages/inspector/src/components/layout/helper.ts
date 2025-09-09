@@ -1,3 +1,4 @@
+// @unocss-include
 // flex flex-row
 export const flexRowList = [
   // 1st row
@@ -118,4 +119,18 @@ export const flexColList = [
     label: 'Align Bottom Right',
     class: 'justify-end items-end',
   },
+]
+
+export const gapList = [
+  { value: 'auto', label: 'Auto' },
+  { value: '0', label: '0' },
+  { value: '0.5', label: '0.5' },
+  { value: '1', label: '1' },
+  { value: '2', label: '2' },
+  { value: '3', label: '3' },
+  { value: '4', label: '4' },
+  { value: '6', label: '6' },
+  { value: '8', label: '8' },
+  { value: '12', label: '12' },
+  { value: '24', label: '24' },
 ]

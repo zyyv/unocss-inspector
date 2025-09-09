@@ -62,7 +62,11 @@ export default defineConfig<Theme>({
     'colors:inspect-border',
     'colors:sky-DEFAULT',
     'colors:teal-DEFAULT',
-  ],
+    ['start', 'center', 'end'].map(i => `justify-${i}`),
+    ['start', 'center', 'end'].map(i => `items-${i}`),
+    ['row', 'col'].map(i => `flex-${i}`),
+    ['gap-auto', 'gap-x-auto', 'gap-y-auto'],
+  ].flat(),
   presets: [
     presetWind4({
       preflights: {
