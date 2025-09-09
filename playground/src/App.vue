@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { TabPanel } from '@uno-inspect/inspector/types'
 import { ref, watchEffect } from 'vue'
 import CustomPanel from './CustomPanel.vue'
 import FormControlExample from './FormControlExample.vue'
@@ -13,7 +12,7 @@ watchEffect(() => {
   }
 })
 
-const userPanels: TabPanel[] = [
+const userPanels = [
   {
     id: 'custom',
     label: 'Custom Panel',

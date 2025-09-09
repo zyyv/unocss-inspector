@@ -160,7 +160,7 @@ watchEffect(() => {
         leave-active-class="animate-fade-out animate-duration-200"
         mode="out-in"
       >
-        <component :is="selected.component" />
+        <component :is="selected.component" :wrap="openWrap" />
       </Transition>
     </div>
   </section>

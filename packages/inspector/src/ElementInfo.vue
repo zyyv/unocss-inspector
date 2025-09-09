@@ -260,6 +260,10 @@ useEventListener('scroll', updateElementInfo, { capture: true })
   flex-direction: column;
 }
 
+.uno-inspect-element-info  * {
+  box-sizing: border-box;
+}
+
 @keyframes color-flashing {
   0% {
     color: var(--colors-inspect-margin);
