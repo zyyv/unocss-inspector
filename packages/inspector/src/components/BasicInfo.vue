@@ -153,7 +153,7 @@ function copyToClipboard(text: string) {
         </div>
         <div class="flex-1 font-medium flex justify-end">
           <div flex="~ items-center">
-            <div flex="~ items-center gap-1" class="hover:bg-white/10 cursor-pointer group px-1 py-0.5 rounded" @click="copyToClipboard(basicInfo.color.text)">
+            <div title="Click to copy text color" flex="~ items-center gap-1" class="hover:bg-white/10 cursor-pointer group px-1 py-0.5 rounded" @click="copyToClipboard(basicInfo.color.text)">
               <span>Text:</span>
               <div
                 class="inline-block size-3.5 rounded group-hover:rounded-50% transition-all"
@@ -164,7 +164,7 @@ function copyToClipboard(text: string) {
 
             <span class="mx-1 text-white/10">|</span>
 
-            <div flex="~ items-center gap-1" class="hover:bg-white/10 cursor-pointer group px-1 py-0.5 rounded" @click="copyToClipboard(basicInfo.color.background)">
+            <div title="Click to copy background color" flex="~ items-center gap-1" class="hover:bg-white/10 cursor-pointer group px-1 py-0.5 rounded" @click="copyToClipboard(basicInfo.color.background)">
               <span>Background:</span>
               <div
                 class="inline-block size-3.5 rounded group-hover:rounded-50% transition-all"
