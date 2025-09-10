@@ -23,16 +23,16 @@ function shouldFilterElement(el: Element): boolean {
 const latestSelected = ref<Element | null>(element.value)
 const debouncedHover = useDebounceFn((el: Element | null) => {
   if (el) {
-    element.value = el
+    element.value = el as HTMLElement
   }
   else {
-    element.value = latestSelected.value
+    element.value = latestSelected.value as any
   }
 }, 250)
 
 function handleSelected(el: Element) {
   latestSelected.value = el
-  element.value = el
+  element.value = el as HTMLElement
 }
 
 onMounted(() => {

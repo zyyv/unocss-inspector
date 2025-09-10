@@ -6,7 +6,7 @@ const SELECTED_ELEMENT_INJECTION_KEY = 'selected-element'
 const UPDATE_TRIGGER_INJECTION_KEY = 'update-trigger'
 
 const STATE = ref(0) // 用于强制重新计算样式
-const SELECTED_ELEMENT = ref<HTMLElement | Element | null>(null)
+const SELECTED_ELEMENT = ref<HTMLElement | null>(null)
 // const CURRENT_ELEMENT = ref<HTMLElement | null>(null)
 
 function tracking() {
@@ -47,7 +47,7 @@ export function useTracker() {
 }
 
 export function useElement() {
-  const element = inject(SELECTED_ELEMENT_INJECTION_KEY) as Ref<HTMLElement | Element | null> | undefined
+  const element = inject(SELECTED_ELEMENT_INJECTION_KEY) as Ref<HTMLElement | null> | undefined
   // const currentElement = inject(SELECTED_ELEMENT_INJECTION_KEY) as Ref<HTMLElement | null> | undefined
 
   if (!element) {

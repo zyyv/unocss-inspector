@@ -8,8 +8,10 @@
   "scripts": {
     "lint": "eslint --cache .",
     "lint:fix": "pnpm lint --fix",
+    "build": "pnpm -r --filter=./packages/* run build",
     "play": "pnpm --filter ./playground dev",
     "play:build": "pnpm --filter ./playground build",
+    "deploy": "pnpm build && pnpm play:build",
     "test": "vitest",
     "typecheck": "vue-tsc --noEmit"
   },

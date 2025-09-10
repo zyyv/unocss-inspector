@@ -1,6 +1,6 @@
 [build]
 publish = "playground/dist"
-command = "pnpm run play:build"
+command = "pnpm run deploy"
 
 [build.environment]
 NODE_VERSION = "22"
