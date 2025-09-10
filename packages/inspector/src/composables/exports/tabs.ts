@@ -5,6 +5,7 @@ import { computed, ref } from 'vue'
 import BasicInfo from '../../components/BasicInfo.vue'
 import BoxModel from '../../components/BoxModel.vue'
 import ClassList from '../../components/ClassList.vue'
+import DomTree from '../../components/DomTree.vue'
 import StylesInfo from '../../components/InlineStyles.vue'
 import Layout from '../../components/layout/index.vue'
 // import Settings from '../../components/Settings.vue'
@@ -25,13 +26,13 @@ const defaultPanels: TabPanel[] = [
   { id: 'colors', label: 'Colors', icon: 'i-hugeicons:biscuit', component: StylesInfo },
   { id: 'box', label: 'Box Model', icon: 'i-hugeicons:package-dimensions-02', component: BoxModel },
   { id: 'text', label: 'Text', icon: 'i-hugeicons:text-footnote', component: TextContent },
-  { id: 'dom-tree', label: 'Dom Tree', icon: 'i-hugeicons:crowdfunding', component: TextContent },
+  { id: 'dom-tree', label: 'Dom Tree', icon: 'i-hugeicons:crowdfunding', component: DomTree },
   // { id: 'setting', label: 'Setting', icon: 'i-hugeicons:ai-setting', component: Settings },
 ]
 
 export function useTabs(userPanels: TabPanel[] = []): UseTabsReturn {
   const tabs = ref<TabPanel[]>([...defaultPanels, ...userPanels])
-  const activeTabId = ref<string>(tabs.value[3].id)
+  const activeTabId = ref<string>(tabs.value[7].id)
   const slideDirection = ref<'left' | 'right'>('right')
 
   function setActiveTab(id: string) {

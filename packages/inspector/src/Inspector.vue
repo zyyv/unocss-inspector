@@ -238,8 +238,7 @@ useMagicKey(() => {
       </button>
     </div>
 
-    <!-- 高亮遮罩 - 盒模型显示 -->
-    <div v-if="(isSelecting && highlightStyle.containerTop !== undefined) || showSelectedOverlay" class="fixed pointer-events-none z-9999 font-dm">
+    <div v-if="(isSelecting && highlightStyle.containerTop !== undefined) || showSelectedOverlay" class="uno-inspect-controls-overlay fixed pointer-events-none z-9999 font-dm">
       <!-- Margin 层 -->
       <div
         v-if="highlightStyle.margin && highlightStyle.padding"
