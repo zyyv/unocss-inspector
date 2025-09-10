@@ -44,7 +44,7 @@ function isExpanded(element: Element): boolean {
     <template v-for="child in elements" :key="child">
       <div :style="{ paddingLeft: `${props.depth * 2}px` }" class="">
         <div
-          class="flex items-center gap-1 w-full hover:bg-white/10 px-1.5 py-1 my-1 group rounded-2px"
+          class="flex items-center gap-1 w-full hover:bg-white/10 px-1.5 py-1 my-1 group rounded-sm"
           :class="{ 'important:bg-white/10': checkedElement === child }"
           @click="getChildElements(child).length > 0 && toggleExpanded(child)"
           @mouseenter="handleHover(child)"
