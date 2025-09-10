@@ -27,5 +27,5 @@ jobs:
       - name: 📝 Lint
         run: pnpm lint
 
-      - name: build playground
-        run: pnpm play:build
+      - name: build
+        run: pnpm build
