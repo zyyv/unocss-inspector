@@ -142,6 +142,7 @@ function useRecommendedType() {
             :label="type"
             type="radio"
             shape="round"
+            :size="2.8"
           />
           <div
             v-if="type === recommendedType"
