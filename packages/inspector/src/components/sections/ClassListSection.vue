@@ -17,7 +17,7 @@ defineEmits<Emits>()
 
 <template>
   <div
-    v-if="displayClasses.length" p="x4 y2"
+    v-if="displayClasses.length"
     class="flex flex-wrap gap-1"
     style="--context-color: var(--colors-sky-DEFAULT)"
   >
@@ -36,6 +36,7 @@ defineEmits<Emits>()
         :model-value="className"
         :label="`.${className}`"
         type="checkbox"
+        :size="3.8"
       />
     </FormControlGroup>
   </div>

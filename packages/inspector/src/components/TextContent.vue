@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { useElement } from '../composables/exports/element'
 import FormControl from './basic/FormControl.vue'
 import FormControlGroup from './basic/FormControlGroup.vue'
+import PanelTitle from './sections/PanelTitle.vue'
 
 const { element, tracking, triggering } = useElement()
 
@@ -92,12 +93,7 @@ function useRecommendedType() {
     v-if="elementContent"
     class="p-3 no-scrollbar"
   >
-    <h5 m0 mb-2 flex="~ items-center justify-between">
-      <div flex="~ items-center gap-1">
-        <div i-hugeicons:quill-write-01 />
-        <span>Element Content</span>
-      </div>
-
+    <PanelTitle icon="i-hugeicons:quill-write-01" title="Element Content">
       <div flex="~ items-center gap-2">
         <div
           v-if="recommendedType !== contentType"
@@ -121,7 +117,7 @@ function useRecommendedType() {
           cursor-pointer @click="updateElementContent"
         />
       </div>
-    </h5>
+    </PanelTitle>
 
     <div class="mb-1 flex items-center gap-2 text-xs">
       <span text="white/60">Type:</span>

@@ -229,7 +229,7 @@ useMagicKey(() => {
       </button>
     </div>
 
-    <div v-if="highlightStyle" class="uno-inspect-controls-overlay fixed pointer-events-none z-9999 font-dm">
+    <div v-if="highlightStyle" class="uno-inspect-controls-overlay fixed pointer-events-none font-dm">
       <!-- Margin 层 -->
       <div
         v-if="highlightStyle.margin && highlightStyle.padding"
@@ -242,7 +242,6 @@ useMagicKey(() => {
           width: `${highlightStyle.containerWidth}px`,
           height: `${highlightStyle.containerHeight}px`,
           pointerEvents: 'none',
-          zIndex: '9999',
         }"
       >
         <!-- Margin 数值标签 -->
@@ -381,27 +380,6 @@ useMagicKey(() => {
     />
   </Teleport>
 </template>
-
-<style>
-/* 确保传送到 body 的元素样式正确 */
-body .uno-inspect-controls {
-  position: fixed !important;
-  z-index: 1000 !important;
-  pointer-events: auto !important;
-}
-
-body .uno-inspect-element-info {
-  position: fixed !important;
-  z-index: 1001 !important;
-  pointer-events: auto !important;
-}
-
-body .box-model-overlay {
-  position: fixed !important;
-  z-index: 999 !important;
-  pointer-events: none !important;
-}
-</style>
 
 <style scoped>
 .uno-inspect-controls {

@@ -57,7 +57,7 @@ function isExpanded(element: Element): boolean {
             i-hugeicons:arrow-down-01
           />
           <div class="flex-1 of-hidden whitespace-nowrap text-xs cursor-pointer select-none">
-            <span :class="getElementColor(child.tagName.toLowerCase())">
+            <span :class="[getElementColor(child.tagName.toLowerCase()), checkedElement === child ? 'fw-bold' : '']">
               {{ child.tagName.toLowerCase() }}
             </span>
             <span v-if="child.id" class="text-yellow-400 op-72 text-2.75 ml-1">#{{ child.id }}</span>

@@ -20,7 +20,7 @@ defineEmits<Emits>()
 </script>
 
 <template>
-  <div v-if="attributes?.size" p="x4 y2" class="flex flex-col gap-1">
+  <div v-if="attributes?.size" class="flex flex-col gap-1">
     <h5 m0>
       Attributes
     </h5>
@@ -30,7 +30,7 @@ defineEmits<Emits>()
         :key="key"
         class="flex gap-2"
       >
-        <span class="text-sm">{{ key }}</span>
+        <span class="text-sm" :class="{ 'op-50': attrData.active.length === 0 }">{{ key }}</span>
         <div
           v-if="attrData.all.length"
           flex="1 ~ justify-end gap-1.5"
@@ -50,6 +50,7 @@ defineEmits<Emits>()
               :label="value"
               type="checkbox"
               shape="round"
+              :size="3.8"
             />
           </FormControlGroup>
         </div>

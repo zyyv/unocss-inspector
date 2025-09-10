@@ -3,6 +3,8 @@ import { useClipboard } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useElement } from '../composables/exports/element'
 import { round } from '../utils'
+import Cell from './sections/Cell.vue'
+import ColorDot from './sections/ColorDot.vue'
 
 const { element, tracking } = useElement()
 const showRem = ref(false)
@@ -59,155 +61,80 @@ function copyToClipboard(text: string) {
 </script>
 
 <template>
-  <div v-if="basicInfo" p-4>
+  <div v-if="basicInfo" p-3>
     <div class="flex flex-col gap-2">
       <!-- Tag Name -->
-      <div
-        b-b="~ solid white/10"
-        class="text-3.25 flex items-center pb-2"
-      >
-        <div class="w-4.5 text-center text-base">
-          <div i-hugeicons:discount-tag-01 />
+      <Cell label="Tag" icon="i-hugeicons:discount-tag-01">
+        <div p="x1.5 y0.5" class="bg-purple/30 text-purple rd w-fit">
+          {{ basicInfo.tagName }}
         </div>
-        <div class="mx-1 font-medium whitespace-nowrap ">
-          Tag
-        </div>
-        <div class="flex-1 font-medium flex justify-end">
-          <div p="x1.5 y0.5" bg-purple bg-op-30 text-purple rd w-fit>
-            {{ basicInfo.tagName }}
-          </div>
-        </div>
-      </div>
+      </Cell>
       <!-- ID -->
-      <div
-        v-if="basicInfo.id"
-        b-b="~ solid white/10"
-        class="text-3.25 flex items-center pb-2"
-      >
-        <div class="w-4.5 text-center text-base">
-          <div i-hugeicons:pin-code />
+      <Cell v-if="basicInfo.id" label="ID" icon="i-hugeicons:pin-code">
+        <div>
+          <span class="mr-0.25 text-white/64 text-10px">#</span>
+          {{ basicInfo.id }}
         </div>
-        <div class="mx-1 font-medium whitespace-nowrap ">
-          ID
-        </div>
-        <div class="flex-1 font-medium flex justify-end">
-          <div>
-            <span class="mr-0.25 text-white/64 text-10px">#</span>
-            {{ basicInfo.id }}
-          </div>
-        </div>
-      </div>
+      </Cell>
       <!-- Position -->
-      <div
-        b-b="~ solid white/10"
-        class="text-3.25 flex items-center pb-2"
-      >
-        <div class="w-4.5 text-center text-base">
-          <div i-hugeicons:location-09 />
+      <Cell label="Position" icon="i-hugeicons:location-09">
+        <div>
+          <span op-50>X:</span> {{ basicInfo.rect.x }} <span class="mx-1 text-white/10">|</span> <span op-50>Y:</span> {{ basicInfo.rect.y }}
         </div>
-        <div class="mx-1 font-medium whitespace-nowrap ">
-          Position
+      </Cell>
+      <!-- Size -->
+      <Cell label="Size" icon="i-hugeicons:image-actual-size">
+        <div
+          class="cursor-pointer hover:bg-white/10 px-1 py-0.5 rounded transition-colors select-none"
+          :title="`Click to switch to ${showRem ? 'px' : 'rem'}`"
+          @click="toggleUnit"
+        >
+          <template v-if="showRem">
+            <span op-50>W:</span> {{ pxToRem(basicInfo.rect.width) }}<span class="mx-1 op-50">rem</span> <span class="mx-1 text-white/10">|</span> <span op-50>H:</span> {{ pxToRem(basicInfo.rect.height) }}<span class="mx-1 op-50">rem</span>
+          </template>
+          <template v-else>
+            <span op-50>W:</span> {{ basicInfo.rect.width }}<span class="mx-1 op-50">px</span> <span class="mx-1 text-white/10">|</span> <span op-50>H:</span> {{ basicInfo.rect.height }}<span class="mx-1 op-50">px</span>
+          </template>
         </div>
-        <div class="flex-1 font-medium flex justify-end">
-          <div>
-            X: {{ basicInfo.rect.x }} <span class="mx-1 text-white/10">|</span> Y: {{ basicInfo.rect.y }}
+      </Cell>
+      <!-- Color -->
+      <Cell label="Color" icon="i-hugeicons:color-picker">
+        <div flex="~ items-center">
+          <div title="Click to copy text color" flex="~ items-center gap-1" class="hover:bg-white/10 cursor-pointer group px-1 py-0.5 rounded" @click="copyToClipboard(basicInfo.color.text)">
+            <span>Text:</span>
+            <ColorDot :color="basicInfo.color.text" />
+          </div>
+
+          <span class="mx-1 text-white/10">|</span>
+
+          <div title="Click to copy background color" flex="~ items-center gap-1" class="hover:bg-white/10 cursor-pointer group px-1 py-0.5 rounded" @click="copyToClipboard(basicInfo.color.background)">
+            <span>Background:</span>
+            <ColorDot :color="basicInfo.color.background" />
           </div>
         </div>
-      </div>
-      <!-- Size -->
-      <div
-        b-b="~ solid white/10"
-        class="text-3.25 flex items-center pb-2"
-      >
-        <div class="w-4.5 text-center text-base">
-          <div i-hugeicons:image-actual-size />
-        </div>
-        <div class="mx-1 font-medium whitespace-nowrap ">
-          Size
-        </div>
-        <div class="flex-1 font-medium flex justify-end">
+      </Cell>
+      <!-- Font -->
+      <Cell label="Font" icon="i-hugeicons:text">
+        <div flex="~ items-center">
           <div
-            class="cursor-pointer hover:bg-white/10 px-1 py-0.5 rounded transition-colors select-none"
-            :title="`Click to switch to ${showRem ? 'px' : 'rem'}`"
-            @click="toggleUnit"
+            flex="~ items-center gap-1"
+            class="hover:bg-white/10 cursor-pointer px-1 py-0.5 rounded transition-colors select-none"
+            :title="`Click to switch to ${showFontRem ? 'px' : 'rem'}`"
+            @click="toggleFontUnit"
           >
-            <template v-if="showRem">
-              W: {{ pxToRem(basicInfo.rect.width) }}<span class="mx-1 text-white/50">rem</span> <span class="mx-1 text-white/10">|</span> H: {{ pxToRem(basicInfo.rect.height) }}<span class="mx-1 text-white/50">rem</span>
+            <template v-if="showFontRem">
+              <span>{{ pxToRem(parseFloat(basicInfo.font.size)) }}<span class="mx-1 text-white/50">rem</span></span>
             </template>
             <template v-else>
-              W: {{ basicInfo.rect.width }}<span class="mx-1 text-white/50">px</span> <span class="mx-1 text-white/10">|</span> H: {{ basicInfo.rect.height }}<span class="mx-1 text-white/50">px</span>
+              <span>{{ basicInfo.font.size }}</span>
             </template>
           </div>
-        </div>
-      </div>
-      <!-- Color -->
-      <div
-        b-b="~ solid white/10"
-        class="text-3.25 flex items-center pb-2"
-      >
-        <div class="w-4.5 text-center text-base">
-          <div i-hugeicons:color-picker />
-        </div>
-        <div class="mx-1 font-medium whitespace-nowrap ">
-          Color
-        </div>
-        <div class="flex-1 font-medium flex justify-end">
-          <div flex="~ items-center">
-            <div title="Click to copy text color" flex="~ items-center gap-1" class="hover:bg-white/10 cursor-pointer group px-1 py-0.5 rounded" @click="copyToClipboard(basicInfo.color.text)">
-              <span>Text:</span>
-              <div
-                class="inline-block size-3.5 rounded group-hover:rounded-50% transition-all"
-                :style="{ backgroundColor: basicInfo.color.text }"
-                :title="basicInfo.color.text"
-              />
-            </div>
 
-            <span class="mx-1 text-white/10">|</span>
-
-            <div title="Click to copy background color" flex="~ items-center gap-1" class="hover:bg-white/10 cursor-pointer group px-1 py-0.5 rounded" @click="copyToClipboard(basicInfo.color.background)">
-              <span>Background:</span>
-              <div
-                class="inline-block size-3.5 rounded group-hover:rounded-50% transition-all"
-                :style="{ backgroundColor: basicInfo.color.background }"
-                :title="basicInfo.color.background"
-              />
-            </div>
+          <span class="mx-1 text-white/10">|</span>            <div flex-1 line-clamp-1 break-all :title="basicInfo.font.family">
+            <span>{{ basicInfo.font.family }}</span>
           </div>
         </div>
-      </div>
-      <!-- Font -->
-      <div
-        b-b="~ solid white/10"
-        class="text-3.25 flex items-center pb-2"
-      >
-        <div class="w-4.5 text-center text-base">
-          <div i-hugeicons:text-font />
-        </div>
-        <div class="mx-1 font-medium whitespace-nowrap ">
-          Font
-        </div>
-        <div class="flex-1 font-medium flex justify-end">
-          <div flex="~ items-center">
-            <div
-              flex="~ items-center gap-1"
-              class="hover:bg-white/10 cursor-pointer px-1 py-0.5 rounded transition-colors select-none"
-              :title="`Click to switch to ${showFontRem ? 'px' : 'rem'}`"
-              @click="toggleFontUnit"
-            >
-              <template v-if="showFontRem">
-                <span>{{ pxToRem(parseFloat(basicInfo.font.size)) }}<span class="mx-1 text-white/50">rem</span></span>
-              </template>
-              <template v-else>
-                <span>{{ basicInfo.font.size }}</span>
-              </template>
-            </div>
-
-            <span class="mx-1 text-white/10">|</span>            <div flex-1 line-clamp-1 break-all :title="basicInfo.font.family">
-              <span>{{ basicInfo.font.family }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      </Cell>
     </div>
   </div>
 </template>

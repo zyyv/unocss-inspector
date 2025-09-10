@@ -85,6 +85,6 @@ function handleLabelClick(event: Event) {
         :class="shape === 'square' ? 'rd-2px' : 'rd-full'"
       />
     </div>
-    <label v-if="label" transition-opacity :class="{ 'op-50': !checked }" :for="realId" class="text-3.25 whitespace-nowrap" @click="handleLabelClick">{{ label }}</label>
+    <label v-if="label" transition-opacity :class="{ 'op-50': !checked }" :for="realId" class="text-3.25 leading-normal whitespace-nowrap" @click="handleLabelClick">{{ label }}</label>
   </div>
 </template>

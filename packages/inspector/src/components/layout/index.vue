@@ -2,6 +2,7 @@
 import { useToggle } from '@vueuse/core'
 import { computed, onMounted, ref, watchEffect } from 'vue'
 import { useElement } from '../../composables/exports/element'
+import PanelTitle from '../sections/PanelTitle.vue'
 import FlexCol from './FlexCol.vue'
 import FlexRow from './FlexRow.vue'
 import Freedom from './Freedom.vue'
@@ -111,24 +112,11 @@ watchEffect(() => {
 //     }
 //   }
 // })
-
-// 单独处理 wrap 切换
-// watchEffect(() => {
-//   if (element.value && selected.value?.id === 'horizontal') {
-//     setElementStyle({
-//       flexWrap: openWrap.value ? 'wrap' : 'nowrap',
-//     })
-//   }
-// })
 </script>
 
 <template>
   <section p-2>
-    <h5 m0 mb-2 flex="~ items-center justify-between">
-      <div flex="~ items-center gap-1">
-        <div i-hugeicons:dashboard-square-02 />
-        <span>Auto Layout</span>
-      </div>
+    <PanelTitle title="Auto Layout" icon="i-hugeicons:dashboard-square-02">
       <div flex="~ items-center gap-1">
         <div
           v-if="selected.id === 'horizontal'"
@@ -138,7 +126,8 @@ watchEffect(() => {
           @click="toggleWrap()"
         />
       </div>
-    </h5>
+    </PanelTitle>
+
     <div
       flex="~ items-center gap-2"
       bg="white/10"
