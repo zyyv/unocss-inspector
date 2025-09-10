@@ -28,7 +28,7 @@ const clip = computed({
     <FormControl
       v-model="clip"
       mt-2
-      style="--checked-context: var(--colors-sky-DEFAULT)"
+      style="--context-color: var(--colors-sky-DEFAULT)"
       label="Clip Content"
     />
   </div>

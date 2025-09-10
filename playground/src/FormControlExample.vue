@@ -14,7 +14,7 @@ const colors = ['red', 'green', 'blue']
 </script>
 
 <template>
-  <div class="p-4 space-y-6" style="--checked-context: var(--colors-sky-DEFAULT)">
+  <div class="p-4 space-y-6" style="--context-color: var(--colors-sky-DEFAULT)">
     <h2 class="text-xl font-bold">
       通用表单控件示例
     </h2>

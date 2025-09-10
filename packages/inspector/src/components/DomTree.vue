@@ -5,12 +5,14 @@ import Tree from './sections/Tree.vue'
 const rootElements = ref<Element[]>([])
 
 function shouldFilterElement(el: Element): boolean {
-  if (el.tagName.toLowerCase() === 'script' || el.tagName.toLowerCase() === 'style') {
+  if (
+    ['style', 'script', 'link', 'meta', 'title', 'noscript', 'template'].includes(el.tagName.toLowerCase())
+    || Array.from(el.classList).some(cls => cls.startsWith('uno-inspect'))
+    || getComputedStyle(el).pointerEvents === 'none'
+  ) {
     return true
   }
-  if (Array.from(el.classList).some(cls => cls.startsWith('uno-inspect'))) {
-    return true
-  }
+
   return false
 }
 
@@ -20,7 +22,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div p-2 h-60>
+  <div p-2 h-60 of-y-auto no-scrollbar>
     <Tree :elements="rootElements" />
   </div>
 </template>

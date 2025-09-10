@@ -129,7 +129,7 @@ function useRecommendedType() {
         v-model="contentType"
         type="radio"
         class="flex items-center gap-3"
-        style="--checked-context: var(--colors-yellow-DEFAULT)"
+        style="--context-color: var(--colors-yellow-DEFAULT)"
       >
         <div
           v-for="type in ['innerText', 'innerHTML'] as ContentType[]"

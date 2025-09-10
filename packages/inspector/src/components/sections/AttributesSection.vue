@@ -34,7 +34,7 @@ defineEmits<Emits>()
         <div
           v-if="attrData.all.length"
           flex="1 ~ justify-end gap-1.5"
-          style="--checked-context: var(--colors-teal-DEFAULT)"
+          style="--context-color: var(--colors-teal-DEFAULT)"
         >
           <FormControlGroup
             :model-value="attrData.active"

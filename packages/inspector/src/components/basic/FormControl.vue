@@ -8,9 +8,11 @@ const props = withDefaults(defineProps<{
   modelValue?: string | boolean
   shape?: 'square' | 'round'
   type?: 'checkbox' | 'radio'
+  size?: number
 }>(), {
   shape: 'square',
   type: 'checkbox',
+  size: 4,
 })
 
 const model = defineModel<boolean | string>()
@@ -70,12 +72,16 @@ function handleLabelClick(event: Event) {
         :checked="checked"
         :type="type"
         :disabled="disabled"
-        class="btn-clear peer size-4 checked:b-$checked-context/50 b b-solid b-white/30"
+        class="btn-clear peer checked:b-$context-color/50 b b-solid b-white/30"
         :class="shape === 'square' ? 'rd-sm' : 'rd-full'"
         style="--webkit-appearance: none; -moz-appearance: none; appearance: none;"
+        :style="{
+          width: `calc(var(--spacing) * ${props.size})`,
+          height: `calc(var(--spacing) * ${props.size})`,
+        }"
       >
       <div
-        class="pos-center transition-all size-0 peer-checked:size-58% peer-checked:bg-$checked-context"
+        class="pos-center transition-all size-0 peer-checked:size-58% peer-checked:bg-$context-color"
         :class="shape === 'square' ? 'rd-2px' : 'rd-full'"
       />
     </div>
