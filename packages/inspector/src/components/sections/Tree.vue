@@ -4,16 +4,24 @@ import { getElementColor } from '../../utils'
 import FormControl from '../basic/FormControl.vue'
 
 interface Props {
-  elements?: Element[]
+  elements: Element[]
   depth?: number
   elFilter?: (el: Element) => boolean
+  checkedElement: Element | null
+  onHover?: (el: Element | null) => void
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  elements: undefined,
   depth: 0,
-  elFilter: undefined,
 })
+
+const emit = defineEmits<{
+  (e: 'change', el: Element): void
+}>()
+
+function handleHover(el: Element | null) {
+  props.onHover?.(el)
+}
 
 const expandedStates = ref<Map<Element, boolean>>(new Map())
 
@@ -36,8 +44,11 @@ function isExpanded(element: Element): boolean {
     <template v-for="child in elements" :key="child">
       <div :style="{ paddingLeft: `${props.depth * 2}px` }" class="">
         <div
-          class="flex items-center gap-1 w-full hover:bg-white/10 p-1 group rounded-2px"
+          class="flex items-center gap-1 w-full hover:bg-white/10 px-1.5 py-1 my-1 group rounded-2px"
+          :class="{ 'important:bg-white/10': checkedElement === child }"
           @click="getChildElements(child).length > 0 && toggleExpanded(child)"
+          @mouseenter="handleHover(child)"
+          @mouseleave="handleHover(null)"
         >
           <div
             v-if="getChildElements(child).length > 0"
@@ -50,22 +61,31 @@ function isExpanded(element: Element): boolean {
               {{ child.tagName.toLowerCase() }}
             </span>
             <span v-if="child.id" class="text-yellow-400 op-72 text-2.75 ml-1">#{{ child.id }}</span>
-            <span class="group-hover:op-100 op-0">
+            <span class="group-hover:op-100 op-0" :class="{ 'op-100!': checkedElement === child }">
               <template v-for="cls in Array.from(child.classList)" :key="cls">
                 <span class="text-green-400 op-72 text-2.75 ml-1">.{{ cls }}</span>
               </template>
             </span>
           </div>
-          <div class="ml-1 op-0 group-hover:op-100" @click.stop>
-            <FormControl shape="round" :size="3" style="--context-color: var(--colors-purple-DEFAULT)" />
+          <div class="ml-1 h-4 flex items-center op-0 group-hover:op-100" :class="{ 'op-100!': checkedElement === child }" @click.stop="emit('change', child)">
+            <FormControl
+              type="radio"
+              shape="round"
+              :size="3"
+              style="--context-color: var(--colors-purple-DEFAULT)"
+              :model-value="checkedElement === child"
+            />
           </div>
         </div>
 
         <Tree
           v-if="getChildElements(child).length > 0 && isExpanded(child)"
           :elements="getChildElements(child)"
-          :depth="props.depth + 1"
-          :el-filter="props.elFilter"
+          :depth="depth + 1"
+          :el-filter="elFilter"
+          :checked-element="checkedElement"
+          :on-hover="onHover"
+          @change="(el) => emit('change', el)"
         />
       </div>
     </template>

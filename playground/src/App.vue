@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
+import { ref, watch } from 'vue'
 import CustomPanel from './CustomPanel.vue'
 import FormControlExample from './FormControlExample.vue'
 import SelectDemo from './SelectDemo.vue'
 
-const selectedElement = ref(null)
+const selectedElement = ref<HTMLElement | null>(null)
 
-watchEffect(() => {
-  if (selectedElement.value) {
-    // Element selected for inspection
-  }
+watch(selectedElement, (newElement) => {
+  // eslint-disable-next-line no-console
+  console.log(newElement)
 })
 
 const userPanels = [

@@ -1,6 +1,10 @@
 <script lang='ts' setup>
+import { useDebounceFn } from '@vueuse/core'
 import { onMounted, ref } from 'vue'
+import { useElement } from '../composables/exports'
 import Tree from './sections/Tree.vue'
+
+const { element } = useElement()
 
 const rootElements = ref<Element[]>([])
 
@@ -16,6 +20,21 @@ function shouldFilterElement(el: Element): boolean {
   return false
 }
 
+const latestSelected = ref<Element | null>(element.value)
+const debouncedHover = useDebounceFn((el: Element | null) => {
+  if (el) {
+    element.value = el
+  }
+  else {
+    element.value = latestSelected.value
+  }
+}, 250)
+
+function handleSelected(el: Element) {
+  latestSelected.value = el
+  element.value = el
+}
+
 onMounted(() => {
   rootElements.value = Array.from(document.body.children).filter(el => !shouldFilterElement(el))
 })
@@ -23,6 +42,11 @@ onMounted(() => {
 
 <template>
   <div p-2 h-60 of-y-auto no-scrollbar>
-    <Tree :elements="rootElements" />
+    <Tree
+      :elements="rootElements"
+      :checked-element="latestSelected"
+      :on-hover="debouncedHover"
+      @change="handleSelected"
+    />
   </div>
 </template>

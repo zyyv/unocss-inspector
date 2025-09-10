@@ -32,7 +32,7 @@ const defaultPanels: TabPanel[] = [
 
 export function useTabs(userPanels: TabPanel[] = []): UseTabsReturn {
   const tabs = ref<TabPanel[]>([...defaultPanels, ...userPanels])
-  const activeTabId = ref<string>(tabs.value[7].id)
+  const activeTabId = ref<string>(tabs.value[0].id)
   const slideDirection = ref<'left' | 'right'>('right')
 
   function setActiveTab(id: string) {

@@ -1,4 +1,5 @@
 <script lang='ts' setup>
+import type { TabPanel } from './types'
 import { useEventListener, useMouse, useToggle, useWindowSize } from '@vueuse/core'
 import { computed, ref, watch } from 'vue'
 import { useElement } from './composables/exports/element'
@@ -10,7 +11,7 @@ interface Props {
     start: () => void
     stop: () => void
   }
-  userPanels?: import('./types').TabPanel[]
+  userPanels?: TabPanel[]
 }
 
 const props = defineProps<Props>()

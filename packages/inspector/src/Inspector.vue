@@ -11,18 +11,12 @@ defineProps<{
   panels?: TabPanel[]
 }>()
 
-const selectedElement = defineModel<HTMLElement | null>({ default: null })
+const { tracking, triggering, element: selectedElement } = useTracker()
+
+const modelValueElement = defineModel<HTMLElement | null>({ default: null })
 const [isSelecting, _toggleSelecting] = useToggle(false)
-const [showSelectedOverlay, _toggleSelectedOverlay] = useToggle(false)
 const [isDraggingControl, _toggleDraggingControl] = useToggle(false)
 const { width: windowWidth, height: windowHeight } = useWindowSize()
-
-const hoveredElement = ref<HTMLElement | null>(null)
-const currentElement = computed(() => {
-  return showSelectedOverlay.value ? selectedElement.value : hoveredElement.value
-})
-
-const { tracking, triggering } = useTracker(currentElement)
 
 // 控制面板拖拽相关状态
 const controlPosition = ref({ x: 20, y: 20 })
@@ -34,10 +28,10 @@ const highlightStyle = computed(() => {
   // 触发重新计算（当窗口大小或滚动位置改变时）
   tracking()
 
-  const element = currentElement.value
+  const element = selectedElement.value
 
-  if (!element || (!isSelecting.value && !showSelectedOverlay.value))
-    return { display: 'none' }
+  if (!element)
+    return
 
   const rect = element.getBoundingClientRect()
   const computedStyle = window.getComputedStyle(element)
@@ -84,7 +78,6 @@ function updateHighlight() {
 
 function startSelecting() {
   isSelecting.value = true
-  showSelectedOverlay.value = false
 
   // 确保在 body 元素上监听事件，因为检查器组件已经传送到 body
   document.body.addEventListener('mouseover', handleMouseOver, { capture: true })
@@ -98,8 +91,6 @@ function startSelecting() {
 
 function stopSelecting() {
   isSelecting.value = false
-  hoveredElement.value = null
-  showSelectedOverlay.value = false
   selectedElement.value = null
 
   document.body.removeEventListener('mouseover', handleMouseOver, { capture: true })
@@ -118,7 +109,7 @@ function handleMouseOver(event: MouseEvent) {
   const target = event.target as HTMLElement
   // Exclude some dom elements
   if (target && !target.closest('.uno-inspect-controls') && !target.closest('.uno-inspect-element-info')) {
-    hoveredElement.value = target
+    selectedElement.value = target
   }
 }
 
@@ -133,7 +124,7 @@ function handleClick(event: MouseEvent) {
   const target = event.target as HTMLElement
   if (target && !target.closest('.uno-inspect-controls') && !target.closest('.uno-inspect-element-info')) {
     selectedElement.value = target
-    showSelectedOverlay.value = true
+    modelValueElement.value = target
     isSelecting.value = false
 
     document.body.removeEventListener('mouseover', handleMouseOver, { capture: true })
@@ -238,7 +229,7 @@ useMagicKey(() => {
       </button>
     </div>
 
-    <div v-if="(isSelecting && highlightStyle.containerTop !== undefined) || showSelectedOverlay" class="uno-inspect-controls-overlay fixed pointer-events-none z-9999 font-dm">
+    <div v-if="highlightStyle" class="uno-inspect-controls-overlay fixed pointer-events-none z-9999 font-dm">
       <!-- Margin 层 -->
       <div
         v-if="highlightStyle.margin && highlightStyle.padding"
@@ -252,7 +243,6 @@ useMagicKey(() => {
           height: `${highlightStyle.containerHeight}px`,
           pointerEvents: 'none',
           zIndex: '9999',
-
         }"
       >
         <!-- Margin 数值标签 -->
@@ -384,8 +374,8 @@ useMagicKey(() => {
 
     <!-- ElementInfo 组件 -->
     <ElementInfo
-      v-if="(isSelecting && hoveredElement) || showSelectedOverlay"
-      :is-selected="showSelectedOverlay"
+      v-if="selectedElement"
+      :is-selected="!isSelecting"
       :action="{ start: startSelecting, stop: stopSelecting }"
       :user-panels="panels"
     />
