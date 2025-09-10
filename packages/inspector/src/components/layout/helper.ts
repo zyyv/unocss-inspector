@@ -1,6 +1,6 @@
 // @unocss-include
 // flex flex-row
-export const flexRowList = [
+export const flexRowList: FlexListOption[] = [
   // 1st row
   {
     id: 'top-left',
@@ -61,7 +61,7 @@ export const flexRowList = [
 ]
 
 // flex flex-col
-export const flexColList = [
+export const flexColList: FlexListOption[] = [
   // 1st row
   {
     id: 'top-left',
@@ -121,16 +121,29 @@ export const flexColList = [
   },
 ]
 
-export const gapList = [
+export const gapList: GapOption[] = [
   { value: 'auto', label: 'Auto' },
   { value: '0', label: '0' },
-  { value: '0.5', label: '0.5' },
-  { value: '1', label: '1' },
-  { value: '2', label: '2' },
-  { value: '3', label: '3' },
-  { value: '4', label: '4' },
-  { value: '6', label: '6' },
-  { value: '8', label: '8' },
-  { value: '12', label: '12' },
-  { value: '24', label: '24' },
+  { value: '0.5', label: '0.5', desc: '2px' },
+  { value: '1', label: '1', desc: '4px' },
+  { value: '2', label: '2', desc: '8px' },
+  { value: '3', label: '3', desc: '12px' },
+  { value: '4', label: '4', desc: '16px' },
+  { value: '6', label: '6', desc: '24px' },
+  { value: '8', label: '8', desc: '32px' },
+  { value: '12', label: '12', desc: '48px' },
+  { value: '24', label: '24', desc: '96px' },
 ]
+
+export interface FlexListOption {
+  id: string
+  icon: string
+  label: string
+  class: string
+}
+
+export interface GapOption {
+  label: string
+  value: string
+  desc?: string
+}

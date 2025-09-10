@@ -65,7 +65,7 @@ export default defineConfig<Theme>({
     ['start', 'center', 'end'].map(i => `justify-${i}`),
     ['start', 'center', 'end'].map(i => `items-${i}`),
     ['row', 'col'].map(i => `flex-${i}`),
-    ['gap-auto', 'gap-x-auto', 'gap-y-auto'],
+    ['auto', 0, 0.5, 1, 2, 3, 4, 5, 6, 8, 12, 16, 20, 24].flatMap(i => ['', '-x', '-y'].map(j => `gap${j}-${i}`)),
   ].flat(),
   presets: [
     presetWind4({

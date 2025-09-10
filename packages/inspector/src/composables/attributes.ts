@@ -1,7 +1,7 @@
 import { computed, ref, watch } from 'vue'
 import { useElement } from './exports/element'
 
-const FILTERED_ATTRIBUTES = ['class', 'id', 'href', 'src']
+const FILTERED_ATTRIBUTES = ['class', 'id', 'href', 'src', 'style']
 
 export function useAttributes() {
   const { element, tracking, triggering } = useElement()

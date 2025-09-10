@@ -1,4 +1,5 @@
 <script lang='ts' setup>
+import type { FlexListOption } from './helper'
 import { computed, ref, watch } from 'vue'
 import { useClassList } from '../../composables/classList'
 import Select from '../basic/Select.vue'
@@ -21,7 +22,6 @@ const selectedGap = ref('auto')
 const selectedGapX = ref('auto')
 const selectedGapY = ref('auto')
 
-// 根据方向选择对应的列表
 const flexList = computed(() => {
   return props.direction === 'row' ? flexRowList : flexColList
 })
@@ -85,7 +85,7 @@ watch(computedGapY, (val) => {
   selectedGapY.value = val
 }, { immediate: true })
 
-function setFlexAlignment(item: typeof flexRowList[0]) {
+function setFlexAlignment(item: FlexListOption) {
   const currentClasses = classList.value.filter((cls) => {
     // 移除旧的 justify 和 items 类
     return !cls.startsWith('justify-') && !cls.startsWith('items-')
@@ -142,7 +142,7 @@ function setGapY(value: string | number) {
           @click="setFlexAlignment(item)"
         >
           <div
-            :class="[item.icon, activeFlexAlignment === item.id ? 'text-blue-500 op-100' : '']"
+            :class="[item.icon, activeFlexAlignment === item.id ? 'text-yellow-500 op-100' : '']"
             class="op-0 transition-opacity group-hover:op-100"
           />
           <div
@@ -152,16 +152,14 @@ function setGapY(value: string | number) {
         </div>
       </div>
       <div flex="1 ~ col gap-2">
-        <!-- 当不显示 wrap 输入框时，只显示一个 Gap 输入框 -->
         <template v-if="!showWrapInputs">
           <Select v-model="selectedGap" placeholder="Gap" :options="gapList" inputable @update:model-value="setGap">
             <template #prefix>
-              <div i-hugeicons:paragraph-spacing />
+              <div i-hugeicons:paragraph-spacing rotate-90 />
             </template>
           </Select>
         </template>
 
-        <!-- 当显示 wrap 输入框时，显示 Gap X 和 Gap Y 输入框 -->
         <template v-else>
           <!-- Gap X -->
           <Select v-model="selectedGapX" placeholder="Gap X" :options="gapList" inputable @update:model-value="setGapX">

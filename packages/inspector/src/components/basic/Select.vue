@@ -6,6 +6,7 @@ interface Option {
   value: string | number
   label: string
   icon?: string
+  desc?: string
 }
 
 interface Props {
@@ -181,6 +182,7 @@ useEventListener('click', handleClickOutside)
         >
           <span v-if="option.icon" :class="option.icon" />
           <span>{{ option.label }}</span>
+          <sub v-if="option.desc" class="text-2.25 text-white/50 self-end">{{ option.desc }}</sub>
           <div
             v-if="option.value === modelValue"
             i-hugeicons:tick-01
