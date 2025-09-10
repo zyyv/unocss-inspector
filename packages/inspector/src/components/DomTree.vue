@@ -1,6 +1,6 @@
 <script lang='ts' setup>
 import { useDebounceFn } from '@vueuse/core'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useElement } from '../composables/exports'
 import Tree from './sections/Tree.vue'
 
@@ -20,6 +20,7 @@ function shouldFilterElement(el: Element): boolean {
   return false
 }
 
+const updateInSelf = ref(false)
 const latestSelected = ref<Element | null>(element.value)
 const debouncedHover = useDebounceFn((el: Element | null) => {
   if (el) {
@@ -28,15 +29,29 @@ const debouncedHover = useDebounceFn((el: Element | null) => {
   else {
     element.value = latestSelected.value as any
   }
-}, 250)
+  updateInSelf.value = true
+  setTimeout(() => {
+    updateInSelf.value = false
+  }, 100)
+}, 150)
 
 function handleSelected(el: Element) {
   latestSelected.value = el
   element.value = el as HTMLElement
+  updateInSelf.value = true
+  setTimeout(() => {
+    updateInSelf.value = false
+  }, 100)
 }
 
 onMounted(() => {
   rootElements.value = Array.from(document.body.children).filter(el => !shouldFilterElement(el))
+})
+
+watch(element, (newEl) => {
+  if (!updateInSelf.value) {
+    latestSelected.value = newEl
+  }
 })
 </script>
 
