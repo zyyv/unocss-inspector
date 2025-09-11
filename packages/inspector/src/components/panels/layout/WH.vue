@@ -1,8 +1,8 @@
 <script lang='ts' setup>
 import { computed, ref, watch } from 'vue'
-import { useElement } from '../../composables/exports/element'
-import { pxToRem, remToPx, round } from '../../utils'
-import Select from '../basic/Select.vue'
+import { useElement } from '../../../composables/exports/element'
+import { pxToRem, remToPx, round } from '../../../utils'
+import Select from '../../basic/Select.vue'
 
 const { element, tracking, triggering } = useElement()
 

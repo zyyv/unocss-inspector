@@ -1,9 +1,9 @@
 <script lang='ts' setup>
 import { computed, ref, watch } from 'vue'
-import { useElement } from '../composables/exports/element'
-import FormControl from './basic/FormControl.vue'
-import FormControlGroup from './basic/FormControlGroup.vue'
-import PanelTitle from './sections/PanelTitle.vue'
+import { useElement } from '../../composables/exports/element'
+import FormControl from '../basic/FormControl.vue'
+import FormControlGroup from '../basic/FormControlGroup.vue'
+import PanelTitle from '../sections/PanelTitle.vue'
 
 const { element, tracking, triggering } = useElement()
 

@@ -21,8 +21,9 @@ defineEmits<Emits>()
 
 <template>
   <div v-if="attributes?.size" class="flex flex-col gap-1">
-    <h5 m0>
-      Attributes
+    <h5 class="text-teal/80 m0 flex items-center gap-1">
+      <div i-hugeicons:leaf-01 />
+      <span>Attributes</span>
     </h5>
     <div class="flex flex-col gap-2">
       <div

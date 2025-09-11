@@ -1,8 +1,8 @@
 <script lang='ts' setup>
 import { useDebounceFn } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue'
-import { useElement } from '../composables/exports'
-import Tree from './sections/Tree.vue'
+import { useElement } from '../../composables/exports'
+import Tree from '../sections/Tree.vue'
 
 const { element } = useElement()
 

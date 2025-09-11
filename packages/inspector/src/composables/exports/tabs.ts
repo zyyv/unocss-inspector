@@ -2,14 +2,14 @@
 import type { ComputedRef, Ref } from 'vue'
 import type { TabPanel } from '../../types'
 import { computed, ref } from 'vue'
-import BasicInfo from '../../components/BasicInfo.vue'
-import BoxModel from '../../components/BoxModel.vue'
-import ClassList from '../../components/ClassList.vue'
-import DomTree from '../../components/DomTree.vue'
-import StylesInfo from '../../components/InlineStyles.vue'
-import Layout from '../../components/layout/index.vue'
+import BasicInfo from '../../components/panels/BasicInfo.vue'
+import BoxModel from '../../components/panels/BoxModel.vue'
+import ClassList from '../../components/panels/ClassList.vue'
+import DomTree from '../../components/panels/DomTree.vue'
+import StylesInfo from '../../components/panels/InlineStyles.vue'
+import Layout from '../../components/panels/layout/index.vue'
 // import Settings from '../../components/Settings.vue'
-import TextContent from '../../components/TextContent.vue'
+import TextContent from '../../components/panels/TextContent.vue'
 
 interface UseTabsReturn {
   tabs: Ref<TabPanel[]>

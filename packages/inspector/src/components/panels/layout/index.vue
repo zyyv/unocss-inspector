@@ -1,8 +1,8 @@
 <script lang='ts' setup>
 import { useToggle } from '@vueuse/core'
 import { computed, onMounted, ref, watchEffect } from 'vue'
-import { useElement } from '../../composables/exports/element'
-import PanelTitle from '../sections/PanelTitle.vue'
+import { useElement } from '../../../composables/exports/element'
+import PanelTitle from '../../sections/PanelTitle.vue'
 import FlexCol from './FlexCol.vue'
 import FlexRow from './FlexRow.vue'
 import Freedom from './Freedom.vue'

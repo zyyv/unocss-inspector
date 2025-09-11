@@ -1,6 +1,6 @@
 <script lang='ts' setup>
 import { ref } from 'vue'
-import { useUno } from '../composables/exports/uno'
+import { useUno } from '../../composables/exports/uno'
 
 const { uno } = useUno()
 const result = ref('')

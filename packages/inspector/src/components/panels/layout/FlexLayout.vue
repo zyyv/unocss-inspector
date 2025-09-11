@@ -1,8 +1,8 @@
 <script lang='ts' setup>
 import type { FlexListOption } from './helper'
 import { computed, ref, watch } from 'vue'
-import { useClassList } from '../../composables/classList'
-import Select from '../basic/Select.vue'
+import { useClassList } from '../../../composables/classList'
+import Select from '../../basic/Select.vue'
 import { flexColList, flexRowList, gapList } from './helper'
 import WH from './WH.vue'
 

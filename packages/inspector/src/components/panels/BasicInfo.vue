@@ -1,10 +1,10 @@
 <script lang='ts' setup>
 import { useClipboard } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import { useElement } from '../composables/exports/element'
-import { round } from '../utils'
-import Cell from './sections/Cell.vue'
-import ColorDot from './sections/ColorDot.vue'
+import { useElement } from '../../composables/exports/element'
+import { round } from '../../utils'
+import Cell from '../sections/Cell.vue'
+import ColorDot from '../sections/ColorDot.vue'
 
 const { element, tracking } = useElement()
 const showRem = ref(false)

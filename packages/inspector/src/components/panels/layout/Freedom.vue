@@ -1,7 +1,7 @@
 <script lang='ts' setup>
 import { computed } from 'vue'
-import { useElement } from '../../composables/exports'
-import FormControl from '../basic/FormControl.vue'
+import { useElement } from '../../../composables/exports'
+import FormControl from '../../basic/FormControl.vue'
 import WH from './WH.vue'
 
 const { element, tracking, setElementStyle } = useElement()

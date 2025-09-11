@@ -1,8 +1,8 @@
 <script lang='ts' setup>
 import type { VNode } from 'vue'
 import { computed } from 'vue'
-import { useElement } from '../composables/exports/element'
-import PanelTitle from './sections/PanelTitle.vue'
+import { useElement } from '../../composables/exports/element'
+import PanelTitle from '../sections/PanelTitle.vue'
 
 const { element, tracking } = useElement()
 
@@ -51,7 +51,7 @@ const stylesInfo = computed(() => {
 
 <template>
   <div p-3>
-    <PanelTitle title="Styles" />
+    <PanelTitle title="Styles" icon="i-hugeicons:drawing-mode" />
     <div v-if="stylesInfo" class="flex flex-col gap-4 max-h-[280px] overflow-y-auto flex-1">
       <!-- 行内样式 -->
       <div v-if="Object.keys(stylesInfo.inline).length > 0" class="flex flex-col gap-2">

@@ -19,14 +19,15 @@ defineEmits<Emits>()
   <div
     v-if="displayClasses.length"
     class="flex flex-wrap gap-1"
-    style="--context-color: var(--colors-sky-DEFAULT)"
   >
-    <h5 m0>
+    <h5 class="text-sky/80 m0 flex items-center gap-1">
+      <div i-hugeicons:leaf-04 />
       Class List
     </h5>
     <FormControlGroup
       :model-value="classList"
       type="checkbox"
+      style="--context-color: var(--colors-sky-DEFAULT)"
       @update:model-value="$emit('update:classList', ($event as string[]) || [])"
     >
       <FormControl
