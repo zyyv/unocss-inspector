@@ -58,7 +58,7 @@ provide('controlGroup', {
 </script>
 
 <template>
-  <div class="flex flex-wrap gap-2">
+  <div>
     <slot />
   </div>
 </template>

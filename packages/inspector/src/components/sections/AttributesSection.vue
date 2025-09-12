@@ -39,6 +39,7 @@ defineEmits<Emits>()
         >
           <FormControlGroup
             :model-value="attrData.active"
+            class="flex flex-wrap gap-2"
             type="checkbox"
             justify-end
             @update:model-value="(newValues) => $emit('updateAttribute', key, (newValues as string[]) || [])"

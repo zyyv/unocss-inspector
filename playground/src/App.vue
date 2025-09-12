@@ -40,6 +40,7 @@ const userPanels = [
         <p
           class="opacity-90 mx-auto leading-relaxed" max-w-2xl text="xl red hover:blue sad asdqwe adqws asdqwgfd"
           custom="foo bar" dark:hover="baz text-foo"
+          style="display: block; max-width: 600px; margin-top: 0.5rem; font-size: 1.125rem;"
         >
           Explore and inspect CSS properties with interactive element selection
         </p>

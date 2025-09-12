@@ -14,6 +14,8 @@ interface Props {
   placeholder?: string
   disabled?: boolean
   inputable?: boolean
+  borderable?: boolean
+  inputClass?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -21,6 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
   placeholder: 'Please select...',
   disabled: false,
   inputable: false,
+  borderable: true,
 })
 
 const modelValue = defineModel<string | number>({ default: '' })
@@ -29,10 +32,8 @@ const isOpen = ref(false)
 const selectRef = ref<HTMLElement>()
 const inputRef = ref<HTMLInputElement>()
 
-// 添加一个临时输入值的ref
 const tempInputValue = ref('')
 
-// 同步tempInputValue和modelValue
 watch(modelValue, (newVal: string | number) => {
   tempInputValue.value = String(newVal || '')
 }, { immediate: true })
@@ -40,12 +41,10 @@ watch(modelValue, (newVal: string | number) => {
 const inputValue = computed({
   get: () => props.inputable ? tempInputValue.value : '',
   set: (value: string) => {
-    // 直接更新临时输入值
     tempInputValue.value = value
   },
 })
 
-// 处理输入框失焦和Enter键
 function handleInputChange(event: Event) {
   if (!props.inputable)
     return
@@ -105,7 +104,8 @@ useEventListener('click', handleClickOutside)
       p="x2 y1.5"
       cursor-pointer
       flex="~ justify-between items-center"
-      b="~ solid white/10 hover:dashed"
+      b="solid white/10 hover:dashed"
+      :class="borderable ? 'b-1' : 'b-0'"
       rd-md
       transition-all
       duration-200
@@ -128,6 +128,7 @@ useEventListener('click', handleClickOutside)
           bg-transparent
           border-none
           outline-none
+          :class="inputClass"
           @click.stop
           @blur="handleInputChange"
           @keydown="handleKeydown"
@@ -137,6 +138,7 @@ useEventListener('click', handleClickOutside)
       <div flex="~ items-center gap-1">
         <slot name="suffix" />
         <div
+          v-if="options.length > 0"
           :class="{ 'rotate-180': isOpen }"
           i-hugeicons:arrow-down-01
           transition-transform
@@ -154,7 +156,7 @@ useEventListener('click', handleClickOutside)
       leave-to-class="opacity-0 translate-y-[-8px] scale-95"
     >
       <div
-        v-if="isOpen"
+        v-if="isOpen && options.length > 0"
         absolute
         top-full
         left-0

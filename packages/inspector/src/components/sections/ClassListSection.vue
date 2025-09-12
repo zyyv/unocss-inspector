@@ -25,6 +25,7 @@ defineEmits<Emits>()
       Class List
     </h5>
     <FormControlGroup
+      class="flex flex-wrap gap-2"
       :model-value="classList"
       type="checkbox"
       style="--context-color: var(--colors-sky-DEFAULT)"
