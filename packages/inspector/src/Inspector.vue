@@ -212,104 +212,44 @@ useMagicKey(() => {
 
 <template>
   <Teleport to="body">
-    <!-- 控制按钮 -->
-    <div
-      class="uno-inspect-controls p-1 cursor-move select-none"
-      :class="{ 'cursor-grabbing': isDraggingControl }"
-      :style="{
-        position: 'fixed',
-        top: `${controlPosition.y}px`,
-        left: `${controlPosition.x}px`,
-        zIndex: '10002',
-      }"
-      @mousedown="startControlDrag"
-    >
-      <button class="border-none bg-transparent cursor-move">
-        <div text-xl i-catppuccin:unocss />
-      </button>
-    </div>
-
-    <div v-if="highlightStyle" class="uno-inspect-controls-overlay fixed pointer-events-none font-dm">
-      <!-- Margin 层 -->
+    <div id="__uno-inspector">
+      <!-- 控制按钮 -->
       <div
-        v-if="highlightStyle.margin && highlightStyle.padding"
-        b="~ dashed inspect-margin/50"
-        class="rd-md bg-inspect-margin/25 overflow-hidden transition-all duration-100 relative"
+        class="uno-inspect-controls p-1 cursor-move select-none"
+        :class="{ 'cursor-grabbing': isDraggingControl }"
         :style="{
           position: 'fixed',
-          top: `${highlightStyle.containerTop}px`,
-          left: `${highlightStyle.containerLeft}px`,
-          width: `${highlightStyle.containerWidth}px`,
-          height: `${highlightStyle.containerHeight}px`,
-          pointerEvents: 'none',
+          top: `${controlPosition.y}px`,
+          left: `${controlPosition.x}px`,
+          zIndex: '10002',
         }"
+        @mousedown="startControlDrag"
       >
-        <!-- Margin 数值标签 -->
-        <div class="absolute text-10px font-medium text-inspect-margin inset-0 pointer-events-none">
-          <!-- Margin Top -->
-          <div
-            v-if="highlightStyle.margin.top > 0"
-            class="absolute"
-            :style="{
-              top: '0',
-              left: '50%',
-              transform: 'translateX(-50%)',
-            }"
-          >
-            mt-{{ round(highlightStyle.margin.top / 4) }}
-          </div>
-          <!-- Margin Right -->
-          <div
-            v-if="highlightStyle.margin.right > 0"
-            class="absolute"
-            :style="{
-              top: '50%',
-              right: `0`,
-              transform: 'translateY(-50%)',
-            }"
-          >
-            mr-{{ round(highlightStyle.margin.right / 4) }}
-          </div>
-          <!-- Margin Bottom -->
-          <div
-            v-if="highlightStyle.margin.bottom > 0"
-            class="absolute"
-            :style="{
-              bottom: '0',
-              left: '50%',
-              transform: 'translateX(-50%)',
-            }"
-          >
-            mb-{{ round(highlightStyle.margin.bottom / 4) }}
-          </div>
-          <!-- Margin Left -->
-          <div
-            v-if="highlightStyle.margin.left > 0"
-            class="absolute"
-            :style="{
-              top: '50%',
-              left: '0',
-              transform: 'translateY(-50%)',
-            }"
-          >
-            ml-{{ round(highlightStyle.margin.left / 4) }}
-          </div>
-        </div>
+        <button class="border-none bg-transparent cursor-move">
+          <div text-xl i-catppuccin:unocss />
+        </button>
+      </div>
 
+      <div v-if="highlightStyle" class="uno-inspect-controls-overlay fixed pointer-events-none font-dm">
+        <!-- Margin 层 -->
         <div
-          class="absolute bg-inspect-padding/30 transition-all duration-100 relative"
+          v-if="highlightStyle.margin && highlightStyle.padding"
+          b="~ dashed inspect-margin/50"
+          class="rd-md bg-inspect-margin/25 overflow-hidden transition-all duration-100 relative"
           :style="{
-            top: `${highlightStyle.margin.top}px`,
-            left: `${highlightStyle.margin.left}px`,
-            width: `${highlightStyle.elementWidth}px`,
-            height: `${highlightStyle.elementHeight}px`,
+            position: 'fixed',
+            top: `${highlightStyle.containerTop}px`,
+            left: `${highlightStyle.containerLeft}px`,
+            width: `${highlightStyle.containerWidth}px`,
+            height: `${highlightStyle.containerHeight}px`,
+            pointerEvents: 'none',
           }"
         >
-          <!-- Padding 数值标签 -->
-          <div class="absolute text-10px font-medium inset-0 text-inspect-padding pointer-events-none">
-            <!-- Padding Top -->
+          <!-- Margin 数值标签 -->
+          <div class="absolute text-10px font-medium text-inspect-margin inset-0 pointer-events-none">
+            <!-- Margin Top -->
             <div
-              v-if="highlightStyle.padding.top > 0"
+              v-if="highlightStyle.margin.top > 0"
               class="absolute"
               :style="{
                 top: '0',
@@ -317,23 +257,23 @@ useMagicKey(() => {
                 transform: 'translateX(-50%)',
               }"
             >
-              pt-{{ round(highlightStyle.padding.top / 4) }}
+              mt-{{ round(highlightStyle.margin.top / 4) }}
             </div>
-            <!-- Padding Right -->
+            <!-- Margin Right -->
             <div
-              v-if="highlightStyle.padding.right > 0"
+              v-if="highlightStyle.margin.right > 0"
               class="absolute"
               :style="{
                 top: '50%',
-                right: '0',
+                right: `0`,
                 transform: 'translateY(-50%)',
               }"
             >
-              pr-{{ round(highlightStyle.padding.right / 4) }}
+              mr-{{ round(highlightStyle.margin.right / 4) }}
             </div>
-            <!-- Padding Bottom -->
+            <!-- Margin Bottom -->
             <div
-              v-if="highlightStyle.padding.bottom > 0"
+              v-if="highlightStyle.margin.bottom > 0"
               class="absolute"
               :style="{
                 bottom: '0',
@@ -341,11 +281,11 @@ useMagicKey(() => {
                 transform: 'translateX(-50%)',
               }"
             >
-              pb-{{ round(highlightStyle.padding.bottom / 4) }}
+              mb-{{ round(highlightStyle.margin.bottom / 4) }}
             </div>
-            <!-- Padding Left -->
+            <!-- Margin Left -->
             <div
-              v-if="highlightStyle.padding.left > 0"
+              v-if="highlightStyle.margin.left > 0"
               class="absolute"
               :style="{
                 top: '50%',
@@ -353,31 +293,93 @@ useMagicKey(() => {
                 transform: 'translateY(-50%)',
               }"
             >
-              pl-{{ round(highlightStyle.padding.left / 4) }}
+              ml-{{ round(highlightStyle.margin.left / 4) }}
             </div>
           </div>
 
-          <!-- Content 层 -->
           <div
-            class="absolute bg-inspect-content/15 transition-all duration-100"
+            class="absolute bg-inspect-padding/30 transition-all duration-100 relative"
             :style="{
-              top: `${highlightStyle.padding.top}px`,
-              left: `${highlightStyle.padding.left}px`,
-              width: `${highlightStyle.contentWidth}px`,
-              height: `${highlightStyle.contentHeight}px`,
+              top: `${highlightStyle.margin.top}px`,
+              left: `${highlightStyle.margin.left}px`,
+              width: `${highlightStyle.elementWidth}px`,
+              height: `${highlightStyle.elementHeight}px`,
             }"
-          />
+          >
+            <!-- Padding 数值标签 -->
+            <div class="absolute text-10px font-medium inset-0 text-inspect-padding pointer-events-none">
+              <!-- Padding Top -->
+              <div
+                v-if="highlightStyle.padding.top > 0"
+                class="absolute"
+                :style="{
+                  top: '0',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                }"
+              >
+                pt-{{ round(highlightStyle.padding.top / 4) }}
+              </div>
+              <!-- Padding Right -->
+              <div
+                v-if="highlightStyle.padding.right > 0"
+                class="absolute"
+                :style="{
+                  top: '50%',
+                  right: '0',
+                  transform: 'translateY(-50%)',
+                }"
+              >
+                pr-{{ round(highlightStyle.padding.right / 4) }}
+              </div>
+              <!-- Padding Bottom -->
+              <div
+                v-if="highlightStyle.padding.bottom > 0"
+                class="absolute"
+                :style="{
+                  bottom: '0',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                }"
+              >
+                pb-{{ round(highlightStyle.padding.bottom / 4) }}
+              </div>
+              <!-- Padding Left -->
+              <div
+                v-if="highlightStyle.padding.left > 0"
+                class="absolute"
+                :style="{
+                  top: '50%',
+                  left: '0',
+                  transform: 'translateY(-50%)',
+                }"
+              >
+                pl-{{ round(highlightStyle.padding.left / 4) }}
+              </div>
+            </div>
+
+            <!-- Content 层 -->
+            <div
+              class="absolute bg-inspect-content/15 transition-all duration-100"
+              :style="{
+                top: `${highlightStyle.padding.top}px`,
+                left: `${highlightStyle.padding.left}px`,
+                width: `${highlightStyle.contentWidth}px`,
+                height: `${highlightStyle.contentHeight}px`,
+              }"
+            />
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- ElementInfo 组件 -->
-    <ElementInfo
-      v-if="selectedElement"
-      :is-selected="!isSelecting"
-      :action="{ start: startSelecting, stop: stopSelecting }"
-      :user-panels="panels"
-    />
+      <!-- ElementInfo 组件 -->
+      <ElementInfo
+        v-if="selectedElement"
+        :is-selected="!isSelecting"
+        :action="{ start: startSelecting, stop: stopSelecting }"
+        :user-panels="panels"
+      />
+    </div>
   </Teleport>
 </template>
 
