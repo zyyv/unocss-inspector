@@ -26,11 +26,14 @@
     "@unocss/preset-wind4": "catalog:unocss",
     "@vitejs/plugin-vue": "catalog:vue",
     "eslint": "catalog:lint",
+    "esno": "catalog:utils",
+    "tinyglobby": "catalog:utils",
     "tsdown": "catalog:build",
     "tsx": "catalog:build",
     "typescript": "catalog:build",
     "unocss": "catalog:unocss",
     "vite": "catalog:build",
+    "vite-plugin-dts": "catalog:build",
     "vue": "catalog:vue",
     "vue-tsc": "catalog:vue"
   }

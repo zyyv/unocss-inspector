@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import CustomPanel from './CustomPanel.vue'
-import FormControlExample from './FormControlExample.vue'
-import SelectDemo from './SelectDemo.vue'
+// import CustomPanel from './CustomPanel.vue'
+// import FormControlExample from './FormControlExample.vue'
+// import SelectDemo from './SelectDemo.vue'
 
 const selectedElement = ref<HTMLElement | null>(null)
 
@@ -11,14 +11,14 @@ watch(selectedElement, (newElement) => {
   console.log(newElement)
 })
 
-const userPanels = [
-  {
-    id: 'custom',
-    label: 'Custom Panel',
-    icon: 'i-hugeicons:confused',
-    component: CustomPanel,
-  },
-]
+// const userPanels = [
+//   {
+//     id: 'custom',
+//     label: 'Custom Panel',
+//     icon: 'i-hugeicons:confused',
+//     component: CustomPanel,
+//   },
+// ]
 </script>
 
 <template>
@@ -241,23 +241,23 @@ const userPanels = [
       </section>
 
       <!-- Form Controls Demo -->
-      <section>
+      <!-- <section>
         <h3 class="text-2xl font-bold text-gray-100 mb-6">
           Form Controls Demo
         </h3>
         <div class="bg-dark-200 text-gray-100 rounded-xl p-6 border border-gray-700">
           <FormControlExample />
         </div>
-      </section>
+      </section> -->
 
-      <section>
+      <!-- <section>
         <h3 class="text-2xl font-bold text-gray-100 mb-6">
           Select Component Demo
         </h3>
         <div class="bg-dark-200 text-gray-100 rounded-xl border border-gray-700 flex justify-center">
           <SelectDemo />
         </div>
-      </section>
+      </section> -->
     </main>
 
     <!-- Footer -->
@@ -273,5 +273,5 @@ const userPanels = [
     </footer>
   </div>
 
-  <Inspector v-model="selectedElement" :panels="userPanels" />
+  <!-- <Inspector v-model="selectedElement" :panels="userPanels" /> -->
 </template>

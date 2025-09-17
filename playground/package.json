@@ -14,5 +14,8 @@
   "dependencies": {
     "@uno-inspect/inspector": "workspace:*",
     "@vueuse/core": "catalog:vue"
+  },
+  "devDependencies": {
+    "unplugin-uno-inspector": "workspace:*"
   }
 }

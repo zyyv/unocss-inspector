@@ -21,12 +21,11 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: ['vue', '@vueuse/core'],
+      external: ['vue'],
       output: {
         exports: 'named',
         globals: {
-          'vue': 'Vue',
-          '@vueuse/core': 'VueUse',
+          vue: 'Vue',
         },
       },
     },

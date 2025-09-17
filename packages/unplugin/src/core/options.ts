@@ -19,12 +19,6 @@ export interface Options {
   panels?: Panel[]
 
   /**
-   * Position of the inspector
-   * @default 'bottom-right'
-   */
-  position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
-
-  /**
    * Custom CSS styles to inject
    */
   customStyles?: string
@@ -40,7 +34,6 @@ export function resolveOptions(options: Options = {}): Required<Options> {
   return {
     enabled: options.enabled ?? true,
     panels: options.panels ?? [],
-    position: options.position ?? 'bottom-right',
     customStyles: options.customStyles ?? '',
     shortcut: options.shortcut ?? 'Cmd+U',
   }
