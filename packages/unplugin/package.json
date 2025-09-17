@@ -1,10 +1,10 @@
 {
   "name": "unplugin-uno-inspector",
-  "version": "0.0.0",
-  "description": "UnoCSS inspector plugin for various bundlers",
   "type": "module",
-  "license": "MIT",
+  "version": "0.0.0",
   "packageManager": "pnpm@10.16.1",
+  "description": "UnoCSS inspector plugin for various bundlers",
+  "license": "MIT",
   "keywords": [
     "unplugin",
     "unocss",
@@ -17,15 +17,6 @@
     "esbuild",
     "farm"
   ],
-  "engines": {
-    "node": ">=20.19.0"
-  },
-  "files": [
-    "dist"
-  ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "exports": {
     ".": "./dist/index.js",
     "./vite": "./dist/vite.js",
@@ -38,6 +29,9 @@
     "./api": "./dist/api.js",
     "./*": "./*"
   },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "typesVersions": {
     "*": {
       "*": [
@@ -46,11 +40,18 @@
       ]
     }
   },
+  "files": [
+    "README.md",
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "tsdown",
+    "build": "tsdown && cp -r src/ui dist/ui",
     "dev": "tsdown --watch",
     "prepublishOnly": "pnpm run build"
   },

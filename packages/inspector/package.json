@@ -37,6 +37,7 @@
   },
   "scripts": {
     "build": "vite build",
+    "postbuild": "node scripts/copy-to-unplugin.js",
     "dev": "vite build --watch"
   },
   "peerDependencies": {
