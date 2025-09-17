@@ -1,6 +1,3 @@
-import type { Theme } from '@unocss/preset-wind4'
-import type { UnocssPluginContext } from 'unocss'
-import type { UnocssVitePluginAPI, VitePluginConfig } from 'unocss/vite'
 import type { UnpluginInstance } from 'unplugin'
 import type { Options } from './core/options'
 import { readFileSync } from 'node:fs'
@@ -16,25 +13,13 @@ const VIRTUALURL = 'virtual:unocss-inspector-path'
 
 export const Starter: UnpluginInstance<Options | undefined, false> = createUnplugin((rawOptions = {}) => {
   const options = resolveOptions(rawOptions)
-  let _ctx: UnocssPluginContext<VitePluginConfig<Theme>>
+  // let _ctx: UnocssPluginContext<VitePluginConfig<Theme>>
 
   return {
     name: 'unplugin-unocss-inspector',
     enforce: 'pre',
     apply: 'serve',
     vite: {
-      configResolved(config) {
-        if (!options.enabled) {
-          return
-        }
-
-        const api = config.plugins.find(i => i.name === 'unocss:api')?.api as UnocssVitePluginAPI | undefined
-        if (!api) {
-          throw new Error('UnoCSS plugin not found')
-        }
-
-        _ctx = api.getContext()
-      },
       transformIndexHtml(html) {
         if (!options.enabled) {
           return html

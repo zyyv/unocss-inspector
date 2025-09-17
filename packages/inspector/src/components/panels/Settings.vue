@@ -1,25 +1,36 @@
 <script lang='ts' setup>
-import { ref } from 'vue'
-import { useUno } from '../../composables/exports/uno'
+import type { ClientFunctions, ServerFunctions } from '../../../../unplugin/src/types'
+import { createRPCClient } from 'vite-dev-rpc'
 
-const { uno } = useUno()
-const result = ref('')
+import { ref } from 'vue'
+
+let rpc: ReturnType<typeof createRPCClient<ServerFunctions, ClientFunctions>> | undefined
+
+if (import.meta.hot) {
+  rpc = createRPCClient<ServerFunctions, ClientFunctions>('demo', import.meta.hot, {
+    alert(message) {
+      return message
+    },
+  })
+}
+
+const version = ref('')
 
 async function test() {
-  if (!uno.value)
+  if (!rpc)
     return
-
-  const { css } = await uno.value?.generate('text-2xl font-bold text-red-500', { preflights: false, safelist: false })
-  result.value = css
+  const v = await rpc.version()
+  version.value = v
 }
 </script>
 
 <template>
-  <!-- TODO: UnoCSS Setting panel -->
-  <div @click="test">
-    {{ uno?.version }}
-  </div>
-  <div>
-    {{ result }}
+  <div class="p-4">
+    <button @click="test">
+      Get UnoCSS Version
+    </button>
+    <div v-if="version">
+      UnoCSS Version: {{ version }}
+    </div>
   </div>
 </template>

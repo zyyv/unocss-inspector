@@ -45,5 +45,8 @@
   },
   "dependencies": {
     "@vueuse/core": "catalog:vue"
+  },
+  "devDependencies": {
+    "vite-dev-rpc": "catalog:plugins"
   }
 }

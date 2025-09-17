@@ -66,6 +66,7 @@
     "tsx": "catalog:build",
     "typescript": "catalog:build",
     "vite": "catalog:build",
+    "vite-dev-rpc": "catalog:plugins",
     "vitest": "catalog:test"
   }
 }

@@ -8,7 +8,7 @@ import ClassList from '../../components/panels/ClassList.vue'
 import DomTree from '../../components/panels/DomTree.vue'
 import StylesInfo from '../../components/panels/InlineStyles.vue'
 import Layout from '../../components/panels/layout/index.vue'
-// import Settings from '../../components/Settings.vue'
+import Settings from '../../components/panels/Settings.vue'
 import TextContent from '../../components/panels/TextContent.vue'
 
 interface UseTabsReturn {
@@ -27,7 +27,7 @@ const defaultPanels: TabPanel[] = [
   { id: 'box', label: 'Box Model', icon: 'i-hugeicons:package-dimensions-02', component: BoxModel },
   { id: 'text', label: 'Text', icon: 'i-hugeicons:text-footnote', component: TextContent },
   { id: 'dom-tree', label: 'Dom Tree', icon: 'i-hugeicons:crowdfunding', component: DomTree },
-  // { id: 'setting', label: 'Setting', icon: 'i-hugeicons:ai-setting', component: Settings },
+  { id: 'setting', label: 'Setting', icon: 'i-hugeicons:ai-setting', component: Settings },
 ]
 
 export function useTabs(userPanels: TabPanel[] = []): UseTabsReturn {

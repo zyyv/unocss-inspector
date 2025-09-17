@@ -44,6 +44,10 @@ catalogs:
     eslint:
       specifier: ^9.35.0
       version: 9.35.0
+  plugins:
+    vite-dev-rpc:
+      specifier: ^1.1.0
+      version: 1.1.0
   test:
     vitest:
       specifier: ^3.2.4
@@ -158,6 +162,10 @@ importers:
       vue:
         specifier: catalog:vue
         version: 3.5.21(typescript@5.9.2)
+    devDependencies:
+      vite-dev-rpc:
+        specifier: catalog:plugins
+        version: 1.1.0(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(tsx@4.20.5)(yaml@2.8.1))
 
   packages/unplugin:
     dependencies:
@@ -186,6 +194,9 @@ importers:
       vite:
         specifier: catalog:build
         version: 7.1.5(@types/node@24.5.1)(jiti@2.5.1)(tsx@4.20.5)(yaml@2.8.1)
+      vite-dev-rpc:
+        specifier: catalog:plugins
+        version: 1.1.0(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(tsx@4.20.5)(yaml@2.8.1))
       vitest:
         specifier: catalog:test
         version: 3.2.4(@types/debug@4.1.12)(@types/node@24.5.1)(jiti@2.5.1)(tsx@4.20.5)(yaml@2.8.1)
@@ -2531,6 +2542,16 @@ packages:
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+
+  vite-dev-rpc@1.1.0:
+    resolution: {integrity: sha512-pKXZlgoXGoE8sEKiKJSng4hI1sQ4wi5YT24FCrwrLt6opmkjlqPPVmiPWWJn8M8byMxRGzp1CrFuqQs4M/Z39A==}
+    peerDependencies:
+      vite: ^2.9.0 || ^3.0.0-0 || ^4.0.0-0 || ^5.0.0-0 || ^6.0.1 || ^7.0.0-0
+
+  vite-hot-client@2.1.0:
+    resolution: {integrity: sha512-7SpgZmU7R+dDnSmvXE1mfDtnHLHQSisdySVR7lO8ceAXvM0otZeuQQ6C8LrS5d/aYyP/QZ0hI0L+dIPrm4YlFQ==}
+    peerDependencies:
+      vite: ^2.6.0 || ^3.0.0 || ^4.0.0 || ^5.0.0-0 || ^6.0.0-0 || ^7.0.0-0
 
   vite-node@3.2.4:
     resolution: {integrity: sha512-EbKSKh+bh1E1IFxeO0pg1n4dvoOTt0UDiXMd/qn++r98+jPO1xtJilvXldeuQ8giIB5IkpjCgMleHMNEsGH6pg==}
@@ -5282,6 +5303,16 @@ snapshots:
       punycode: 2.3.1
 
   util-deprecate@1.0.2: {}
+
+  vite-dev-rpc@1.1.0(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(tsx@4.20.5)(yaml@2.8.1)):
+    dependencies:
+      birpc: 2.5.0
+      vite: 7.1.5(@types/node@24.5.1)(jiti@2.5.1)(tsx@4.20.5)(yaml@2.8.1)
+      vite-hot-client: 2.1.0(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(tsx@4.20.5)(yaml@2.8.1))
+
+  vite-hot-client@2.1.0(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(tsx@4.20.5)(yaml@2.8.1)):
+    dependencies:
+      vite: 7.1.5(@types/node@24.5.1)(jiti@2.5.1)(tsx@4.20.5)(yaml@2.8.1)
 
   vite-node@3.2.4(@types/node@24.5.1)(jiti@2.5.1)(tsx@4.20.5)(yaml@2.8.1):
     dependencies:

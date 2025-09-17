@@ -52,3 +52,6 @@ catalogs:
     
   test:
     vitest: ^3.2.4
+
+  plugins:
+    vite-dev-rpc: ^1.1.0
