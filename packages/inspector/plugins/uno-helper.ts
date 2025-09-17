@@ -57,9 +57,9 @@ export default function UnoPlugin(): Plugin {
             }
           }
 
-          console.log('✅ UnoCSS styles generated')
-          console.log(`📄 Scanned ${files.length} files`)
-          console.log(`🎨 Generated ${generatedCSS.split('\n').length} lines of CSS and ${matched.size} utilities`)
+          console.log('[uno-inspector]: ✅ UnoCSS styles generated')
+          console.log(`[uno-inspector]: 📄 Scanned ${files.length} files`)
+          console.log(`[uno-inspector]: 🎨 Generated ${generatedCSS.split('\n').length} lines of CSS and ${matched.size} utilities`)
         }
       }
       catch (error) {

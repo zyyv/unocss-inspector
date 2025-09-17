@@ -1,8 +1,8 @@
 {
   "name": "@unoc-inspect/monorepo",
   "type": "module",
-  "version": "0.1.0",
-  "packageManager": "pnpm@10.15.1",
+  "version": "0.0.0",
+  "packageManager": "pnpm@10.16.1",
   "author": "Chris",
   "license": "MIT",
   "scripts": {
@@ -13,25 +13,25 @@
     "play:build": "pnpm --filter ./playground build",
     "deploy": "pnpm build && pnpm play:build",
     "test": "vitest",
-    "typecheck": "vue-tsc --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^5.2.2",
-    "@iconify-json/catppuccin": "^1.2.16",
-    "@iconify-json/hugeicons": "^1.2.14",
-    "@iconify/utils": "^3.0.1",
-    "@types/node": "^24.3.1",
-    "@unocss/core": "^66.5.1",
-    "@unocss/preset-web-fonts": "^66.5.1",
-    "@unocss/preset-wind4": "^66.5.1",
-    "@vitejs/plugin-vue": "^6.0.1",
-    "eslint": "^9.35.0",
-    "tsdown": "^0.14.2",
-    "tsx": "^4.20.5",
-    "typescript": "^5.9.2",
-    "unocss": "^66.5.1",
-    "vite": "^7.1.4",
-    "vue": "^3.5.21",
-    "vue-tsc": "^3.0.6"
+    "@antfu/eslint-config": "catalog:lint",
+    "@iconify-json/catppuccin": "catalog:icons",
+    "@iconify-json/hugeicons": "catalog:icons",
+    "@iconify/utils": "catalog:icons",
+    "@types/node": "catalog:utils",
+    "@unocss/core": "catalog:unocss",
+    "@unocss/preset-web-fonts": "catalog:unocss",
+    "@unocss/preset-wind4": "catalog:unocss",
+    "@vitejs/plugin-vue": "catalog:vue",
+    "eslint": "catalog:lint",
+    "tsdown": "catalog:build",
+    "tsx": "catalog:build",
+    "typescript": "catalog:build",
+    "unocss": "catalog:unocss",
+    "vite": "catalog:build",
+    "vue": "catalog:vue",
+    "vue-tsc": "catalog:vue"
   }
 }

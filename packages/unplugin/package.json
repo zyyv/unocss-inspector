@@ -1,0 +1,70 @@
+{
+  "name": "unplugin-uno-inspector",
+  "version": "0.0.0",
+  "description": "UnoCSS inspector plugin for various bundlers",
+  "type": "module",
+  "license": "MIT",
+  "packageManager": "pnpm@10.16.1",
+  "keywords": [
+    "unplugin",
+    "unocss",
+    "inspector",
+    "vite",
+    "webpack",
+    "rspack",
+    "rollup",
+    "rolldown",
+    "esbuild",
+    "farm"
+  ],
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./vite": "./dist/vite.js",
+    "./webpack": "./dist/webpack.js",
+    "./rspack": "./dist/rspack.js",
+    "./rollup": "./dist/rollup.js",
+    "./rolldown": "./dist/rolldown.js",
+    "./esbuild": "./dist/esbuild.js",
+    "./farm": "./dist/farm.js",
+    "./api": "./dist/api.js",
+    "./*": "./*"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*",
+        "./*"
+      ]
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "prepublishOnly": "pnpm run build"
+  },
+  "dependencies": {
+    "unplugin": "catalog:build",
+    "unplugin-utils": "catalog:build"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:utils",
+    "eslint": "catalog:lint",
+    "tsdown": "catalog:build",
+    "tsx": "catalog:build",
+    "typescript": "catalog:build",
+    "vite": "catalog:build",
+    "vitest": "catalog:test"
+  }
+}

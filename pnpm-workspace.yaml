@@ -13,3 +13,41 @@ onlyBuiltDependencies:
 shamefullyHoist: true
 
 strictPeerDependencies: false
+
+catalogs:
+  vue:
+    vue: ^3.5.21
+    "@vueuse/core": ^13.9.0
+    "@vitejs/plugin-vue": ^6.0.1
+    vue-tsc: ^3.0.6
+
+  unocss:
+    unocss: ^66.5.1
+    "@unocss/core": ^66.5.1
+    "@unocss/preset-web-fonts": ^66.5.1
+    "@unocss/preset-wind4": ^66.5.1
+
+  icons:
+    "@iconify-json/catppuccin": ^1.2.16
+    "@iconify-json/hugeicons": ^1.2.14
+    "@iconify/utils": ^3.0.1
+
+  build:
+    vite: ^7.1.5
+    typescript: ^5.9.2
+    tsdown: ^0.15.1
+    tsx: ^4.20.5
+    vite-plugin-dts: ^4.4.0
+    unplugin: ^2.3.10
+    unplugin-utils: ^0.3.0
+    
+  lint:
+    eslint: ^9.35.0
+    "@antfu/eslint-config": ^5.2.2
+
+  utils:
+    "@types/node": ^24.4.0
+    tinyglobby: ^0.2.14
+    
+  test:
+    vitest: ^3.2.4
