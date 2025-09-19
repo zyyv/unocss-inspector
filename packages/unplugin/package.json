@@ -51,7 +51,7 @@
   },
   "scripts": {
     "build": "tsdown && esno scripts/copy-from-inspector.ts",
-    "dev": "tsdown --watch && esno scripts/copy-from-inspector.ts",
+    "dev": "tsdown --watch",
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {

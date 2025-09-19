@@ -1,10 +1,9 @@
 import type { UnpluginInstance } from 'unplugin'
 import type { Options } from './core/options'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createUnplugin } from 'unplugin'
-import { log } from './core/debug'
 import { resolveOptions } from './core/options'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -25,26 +24,45 @@ export const Starter: UnpluginInstance<Options | undefined, false> = createUnplu
           return html
         }
 
+        const inspectorCssPath = resolve(__dirname, './ui/inspector.css')
+        let cssContent = ''
+        try {
+          if (existsSync(inspectorCssPath)) {
+            cssContent = readFileSync(inspectorCssPath, 'utf-8')
+          }
+        }
+        catch (error) {
+          console.warn('failed to load CSS for inline injection:', error)
+        }
+
+        if (options.customStyles) {
+          cssContent += `\n/* Custom user styles */\n${options.customStyles}\n`
+        }
+
+        const tags = [
+          ...(cssContent
+            ? [{
+                tag: 'style' as const,
+                attrs: {
+                  type: 'text/css',
+                },
+                children: cssContent,
+                injectTo: 'head' as const,
+              }]
+            : []),
+          {
+            tag: 'script',
+            attrs: {
+              type: 'module',
+              src: `/@id/${VIRTUALURL}:app.js`,
+            },
+            injectTo: 'head' as const,
+          },
+        ]
+
         return {
           html,
-          tags: [
-            {
-              tag: 'link',
-              attrs: {
-                rel: 'stylesheet',
-                href: `/@id/${VIRTUALURL}:inspector.css`,
-              },
-              injectTo: 'head',
-            },
-            {
-              tag: 'script',
-              attrs: {
-                type: 'module',
-                src: `/@id/${VIRTUALURL}:app.js`,
-              },
-              injectTo: 'head',
-            },
-          ],
+          tags,
         }
       },
       resolveId(id) {
@@ -56,13 +74,9 @@ export const Starter: UnpluginInstance<Options | undefined, false> = createUnplu
           return id
         }
 
-        if (id === `${VIRTUALURL}:inspector.css`) {
-          log('resolving css id', id)
-          return id
-        }
-        // Handle inspector component imports
         if (id === '@uno-inspect/inspector') {
-          return resolve(__dirname, './ui/inspector.js')
+          const inspectorPath = resolve(__dirname, './ui/inspector.js')
+          return inspectorPath
         }
       },
       load(id) {
@@ -84,31 +98,13 @@ export const Starter: UnpluginInstance<Options | undefined, false> = createUnplu
             console.warn(`Could not load app.js from ${appJsPath}`, error)
           }
         }
-        if (id === `${VIRTUALURL}:inspector.css`) {
-          const inspectorCssPath = resolve(__dirname, './ui/inspector.css')
-          try {
-            const cssContent = readFileSync(inspectorCssPath, 'utf-8')
-            // Add custom styles if provided
-            const customStylesContent = options.customStyles
-              ? `\n/* Custom user styles */\n${options.customStyles}\n`
-              : ''
-            return cssContent + customStylesContent
-          }
-          catch (error) {
-            console.warn(`Could not load inspector CSS from ${inspectorCssPath}:`, error)
-            return options.customStyles || ''
-          }
-        }
       },
     },
   }
 })
 
-// Legacy export for backward compatibility
 export const unpluginUnoInspector: UnpluginInstance<Options | undefined, false> = Starter
 
-// Default export
 export default Starter
 
-// Export types
 export type { Options, Panel } from './core/options'
