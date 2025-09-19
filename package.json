@@ -9,8 +9,8 @@
     "lint": "eslint --cache .",
     "lint:fix": "pnpm lint --fix",
     "build": "pnpm -r --filter=./packages/* run build",
-    "play": "pnpm --filter ./playground dev",
-    "play:build": "pnpm --filter ./playground build",
+    "play": "pnpm --filter ./playground/use-plugin dev",
+    "play:build": "pnpm --filter ./playground/use-plugin build",
     "deploy": "pnpm build && pnpm play:build",
     "test": "vitest",
     "typecheck": "tsc --noEmit"
@@ -25,6 +25,7 @@
     "@unocss/preset-web-fonts": "catalog:unocss",
     "@unocss/preset-wind4": "catalog:unocss",
     "@vitejs/plugin-vue": "catalog:vue",
+    "debug": "catalog:utils",
     "eslint": "catalog:lint",
     "esno": "catalog:utils",
     "tinyglobby": "catalog:utils",

@@ -22,12 +22,6 @@ export interface Options {
    * Custom CSS styles to inject
    */
   customStyles?: string
-
-  /**
-   * Keyboard shortcut to toggle inspector
-   * @default 'Cmd+U' | 'Ctrl+U'
-   */
-  shortcut?: string
 }
 
 export function resolveOptions(options: Options = {}): Required<Options> {
@@ -35,6 +29,5 @@ export function resolveOptions(options: Options = {}): Required<Options> {
     enabled: options.enabled ?? true,
     panels: options.panels ?? [],
     customStyles: options.customStyles ?? '',
-    shortcut: options.shortcut ?? 'Cmd+U',
   }
 }

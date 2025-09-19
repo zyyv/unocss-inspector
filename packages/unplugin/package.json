@@ -41,7 +41,6 @@
     }
   },
   "files": [
-    "README.md",
     "dist"
   ],
   "engines": {
@@ -51,11 +50,12 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsdown && cp -r src/ui dist/ui",
-    "dev": "tsdown --watch",
+    "build": "tsdown && esno scripts/copy-from-inspector.ts",
+    "dev": "tsdown --watch && esno scripts/copy-from-inspector.ts",
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
+    "@uno-inspect/inspector": "workspace:*",
     "unplugin": "catalog:build",
     "unplugin-utils": "catalog:build"
   },

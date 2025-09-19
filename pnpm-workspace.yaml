@@ -1,5 +1,5 @@
 packages:
-  - playground
+  - playground/*
   - packages/*
 
 autoInstallPeers: true
@@ -49,6 +49,7 @@ catalogs:
     "@types/node": ^24.4.0
     tinyglobby: ^0.2.14
     esno: ^4.8.0
+    debug: ^4.4.3
     
   test:
     vitest: ^3.2.4

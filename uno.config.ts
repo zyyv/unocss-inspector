@@ -51,7 +51,7 @@ export default defineConfig<Theme>({
     'box-model-labels': 'absolute top-0 left-0 size-full text-8px pointer-events-none',
     'box-model-text': 'absolute px-1 text-dark/80',
     // clear default button styles
-    'btn-clear': 'm0 p0 text-inherit bg-transparent border-none outline-none cursor-pointer rd-0',
+    'btn-clear': 'm0 p0 text-inherit bg-transparent border-none outline-none! cursor-pointer rd-0',
 
     'divided': 'h-1px b-b-(~ dashed white/10)',
   },

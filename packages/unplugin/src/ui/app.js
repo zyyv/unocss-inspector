@@ -1,4 +1,4 @@
-import Inspector from '@uno-inspect/inspector'
+import { Inspector } from '@uno-inspect/inspector'
 import { createApp, h } from 'vue'
 
 function initializeInspector() {

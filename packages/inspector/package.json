@@ -24,7 +24,7 @@
     "./types": {
       "types": "./dist/types.d.ts"
     },
-    "./css": "./dist/index.css"
+    "./index.css": "./dist/index.css"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -37,7 +37,6 @@
   },
   "scripts": {
     "build": "vite build",
-    "postbuild": "esno scripts/copy-to-unplugin.ts",
     "dev": "vite build --watch"
   },
   "peerDependencies": {

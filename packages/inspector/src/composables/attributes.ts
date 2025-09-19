@@ -1,7 +1,7 @@
 import { computed, ref, watch } from 'vue'
 import { useElement } from './exports/element'
 
-const FILTERED_ATTRIBUTES = ['class', 'id', 'href', 'src', 'style']
+const FILTERED_ATTRIBUTES = ['class', 'id', 'href', 'src', 'style', 'alt', 'data-v-']
 
 export function useAttributes() {
   const { element, tracking, triggering } = useElement()
@@ -20,7 +20,7 @@ export function useAttributes() {
     const attrs = new Map<string, Set<string>>()
     for (let i = 0; i < element.value.attributes.length; i++) {
       const attr = element.value.attributes[i]
-      if (!FILTERED_ATTRIBUTES.includes(attr.name)) {
+      if (!FILTERED_ATTRIBUTES.some(i => attr.name.startsWith(i))) {
         const list = attr.value.split(' ').filter(Boolean)
         attrs.set(attr.name, new Set(list.length > 0 ? list : ['~']))
       }
@@ -38,7 +38,7 @@ export function useAttributes() {
       if (newElement) {
         for (let i = 0; i < newElement.attributes.length; i++) {
           const attr = newElement.attributes[i]
-          if (!FILTERED_ATTRIBUTES.includes(attr.name)) {
+          if (!FILTERED_ATTRIBUTES.some(i => attr.name.startsWith(i))) {
             originalAttributeOrder.value.push(attr.name)
 
             const values = attr.value.split(' ').filter(Boolean)

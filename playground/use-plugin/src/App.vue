@@ -1,24 +1,5 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-// import CustomPanel from './CustomPanel.vue'
-// import FormControlExample from './FormControlExample.vue'
-// import SelectDemo from './SelectDemo.vue'
-
-const selectedElement = ref<HTMLElement | null>(null)
-
-watch(selectedElement, (newElement) => {
-  // eslint-disable-next-line no-console
-  console.log(newElement)
-})
-
-// const userPanels = [
-//   {
-//     id: 'custom',
-//     label: 'Custom Panel',
-//     icon: 'i-hugeicons:confused',
-//     component: CustomPanel,
-//   },
-// ]
 </script>
 
 <template>
@@ -239,25 +220,6 @@ watch(selectedElement, (newElement) => {
           </div>
         </div>
       </section>
-
-      <!-- Form Controls Demo -->
-      <!-- <section>
-        <h3 class="text-2xl font-bold text-gray-100 mb-6">
-          Form Controls Demo
-        </h3>
-        <div class="bg-dark-200 text-gray-100 rounded-xl p-6 border border-gray-700">
-          <FormControlExample />
-        </div>
-      </section> -->
-
-      <!-- <section>
-        <h3 class="text-2xl font-bold text-gray-100 mb-6">
-          Select Component Demo
-        </h3>
-        <div class="bg-dark-200 text-gray-100 rounded-xl border border-gray-700 flex justify-center">
-          <SelectDemo />
-        </div>
-      </section> -->
     </main>
 
     <!-- Footer -->
@@ -272,6 +234,4 @@ watch(selectedElement, (newElement) => {
       </div>
     </footer>
   </div>
-
-  <!-- <Inspector v-model="selectedElement" :panels="userPanels" /> -->
 </template>

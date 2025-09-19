@@ -7,8 +7,8 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 // Paths
-const inspectorDistPath = resolve(__dirname, '../dist')
-const unpluginSrcUiPath = resolve(__dirname, '../../unplugin/src/ui')
+const inspectorDistPath = resolve(__dirname, '../../inspector/dist')
+const unpluginSrcUiPath = resolve(__dirname, '../dist/ui')
 
 if (!existsSync(unpluginSrcUiPath)) {
   mkdirSync(unpluginSrcUiPath, { recursive: true })
@@ -25,9 +25,9 @@ try {
     resolve(unpluginSrcUiPath, 'inspector.css'),
   )
 
-  console.log('[@uno-inspect/inspector]: ✅ Successfully copied inspector UI files to unplugin package')
+  console.log('[unplugin-uno-inspector]: ✅ Successfully copied inspector UI files from inspector package')
 }
 catch (error: any) {
-  console.error('[@uno-inspect/inspector]: ❌ Failed to copy inspector UI files:', error.message)
+  console.error('[unplugin-uno-inspector]: ❌ Failed to copy inspector UI files:', error.message)
   process.exit(1)
 }

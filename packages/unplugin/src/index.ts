@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createUnplugin } from 'unplugin'
+import { log } from './core/debug'
 import { resolveOptions } from './core/options'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -13,7 +14,6 @@ const VIRTUALURL = 'virtual:unocss-inspector-path'
 
 export const Starter: UnpluginInstance<Options | undefined, false> = createUnplugin((rawOptions = {}) => {
   const options = resolveOptions(rawOptions)
-  // let _ctx: UnocssPluginContext<VitePluginConfig<Theme>>
 
   return {
     name: 'unplugin-unocss-inspector',
@@ -55,7 +55,9 @@ export const Starter: UnpluginInstance<Options | undefined, false> = createUnplu
         if (id === `${VIRTUALURL}:app.js`) {
           return id
         }
+
         if (id === `${VIRTUALURL}:inspector.css`) {
+          log('resolving css id', id)
           return id
         }
         // Handle inspector component imports

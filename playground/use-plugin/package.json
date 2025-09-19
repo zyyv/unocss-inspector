@@ -1,5 +1,5 @@
 {
-  "name": "@uno-inspect/playground",
+  "name": "@uno-inspect/playground-component",
   "type": "module",
   "version": "0.1.0",
   "private": true,
@@ -8,12 +8,8 @@
   "author": "Chris",
   "license": "MIT",
   "scripts": {
-    "dev": "vite",
+    "dev": "DEBUG=inspect:* vite",
     "build": "vite build"
-  },
-  "dependencies": {
-    "@uno-inspect/inspector": "workspace:*",
-    "@vueuse/core": "catalog:vue"
   },
   "devDependencies": {
     "unplugin-uno-inspector": "workspace:*"
