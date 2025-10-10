@@ -13,7 +13,6 @@ function initializeInspector() {
   const app = createApp({
     setup() {
       return () => h(Inspector, {
-        modelValue: null,
         panels: [],
       })
     },

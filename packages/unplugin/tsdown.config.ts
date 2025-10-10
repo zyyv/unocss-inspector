@@ -1,5 +1,5 @@
 import { defineConfig } from 'tsdown'
 
 export default defineConfig({
-  entry: ['./src/*.ts', './src/ui/app.js'],
+  entry: ['./src/*.ts'],
 })
