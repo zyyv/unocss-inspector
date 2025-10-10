@@ -9,6 +9,7 @@ const __dirname = dirname(__filename)
 // Paths
 const inspectorDistPath = resolve(__dirname, '../../inspector/dist')
 const unpluginSrcUiPath = resolve(__dirname, '../dist/ui')
+const unpluginSrcAppPath = resolve(__dirname, '../src/ui')
 
 if (!existsSync(unpluginSrcUiPath)) {
   mkdirSync(unpluginSrcUiPath, { recursive: true })
@@ -23,6 +24,11 @@ try {
   copyFileSync(
     resolve(inspectorDistPath, 'index.css'),
     resolve(unpluginSrcUiPath, 'inspector.css'),
+  )
+
+  copyFileSync(
+    resolve(unpluginSrcAppPath, 'app.js'),
+    resolve(unpluginSrcUiPath, 'app.js'),
   )
 
   console.log('[unplugin-uno-inspector]: ✅ Successfully copied inspector UI files from inspector package')
