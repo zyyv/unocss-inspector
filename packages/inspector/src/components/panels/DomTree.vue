@@ -8,16 +8,32 @@ const { element } = useElement()
 
 const rootElements = ref<Element[]>([])
 
-function shouldFilterElement(el: Element): boolean {
-  if (
-    ['style', 'script', 'link', 'meta', 'title', 'noscript', 'template'].includes(el.tagName.toLowerCase())
-    || Array.from(el.classList).some(cls => cls.startsWith('uno-inspect'))
-    || getComputedStyle(el).pointerEvents === 'none'
-  ) {
-    return true
+function useExcludes() {
+  const excludes = {
+    tags: ['style', 'script', 'link', 'meta', 'title', 'noscript', 'template'],
+    class: ['uno-inspect'],
+    id: ['__uno-inspector', 'unocss-inspector-root'],
   }
 
-  return false
+  function isExcluded(el: Element) {
+    if (excludes.tags.includes(el.tagName.toLowerCase()))
+      return true
+    if (excludes.id.includes(el.id))
+      return true
+    if (Array.from(el.classList).some(cls => excludes.class.includes(cls)))
+      return true
+    return false
+  }
+
+  return {
+    isExcluded,
+  }
+}
+
+const { isExcluded } = useExcludes()
+
+function shouldFilterElement(el: Element): boolean {
+  return isExcluded(el) || getComputedStyle(el).pointerEvents === 'none'
 }
 
 const updateInSelf = ref(false)
