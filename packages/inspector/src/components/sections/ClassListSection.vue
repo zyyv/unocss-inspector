@@ -36,7 +36,7 @@ defineEmits<Emits>()
         :id="`class-${className}`"
         :key="className"
         :model-value="className"
-        :label="`.${className}`"
+        :label="`${className}`"
         type="checkbox"
         :size="3.8"
       />
