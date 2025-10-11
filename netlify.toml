@@ -1,5 +1,5 @@
 [build]
-publish = "playground/dist"
+publish = "playground/use-plugin/dist"
 command = "pnpm run deploy"
 
 [build.environment]

@@ -10,7 +10,13 @@ export default defineConfig({
     UnoCSS('../../uno.config.ts'),
     UnoHelper(),
     dts({
-      include: ['src/index.ts', 'src/types.ts', 'src/composables/exports/*', 'src/components/basic/*', 'src/Inspector.vue'],
+      include: [
+        'src/index.ts',
+        'src/types.ts',
+        'src/composables/exports/*',
+        'src/components/basic/*',
+        'src/Inspector.vue',
+      ],
     }),
   ],
   build: {
