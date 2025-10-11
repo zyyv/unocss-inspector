@@ -8,6 +8,7 @@
   "scripts": {
     "lint": "eslint --cache .",
     "lint:fix": "pnpm lint --fix",
+    "dev": "pnpm -r --filter=./packages/inspector run play",
     "build": "pnpm -r --filter=./packages/* run build",
     "play": "pnpm --filter ./playground/use-plugin dev",
     "play:plugin": "pnpm --filter ./playground/use-plugin build",

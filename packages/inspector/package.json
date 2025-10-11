@@ -37,7 +37,8 @@
   },
   "scripts": {
     "build": "vite build",
-    "dev": "vite build --watch"
+    "dev": "vite build --watch",
+    "play": "vite dev playground --config ./vite.config.ts"
   },
   "peerDependencies": {
     "vue": "catalog:vue"
