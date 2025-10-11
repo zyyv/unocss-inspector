@@ -122,6 +122,7 @@ useEventListener('click', handleClickOutside)
           name="select-input"
           :placeholder="placeholder"
           text-size-inherit
+          text-inherit
           w-full
           flex-1
           min-w-0
