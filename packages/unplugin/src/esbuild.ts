@@ -13,7 +13,7 @@ import { Starter } from './index'
  * ```ts
  * import { build } from 'esbuild'
  * import Starter from 'unplugin-starter/esbuild'
- * 
+ *
  * build({ plugins: [Starter()] })
 ```
  */
