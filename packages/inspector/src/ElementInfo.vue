@@ -28,7 +28,6 @@ const [isDragging, _toggleDragging] = useToggle(false)
 const dragOffset = ref({ x: 0, y: 0 })
 const dragPosition = ref({ x: 0, y: 0 })
 const finalPosition = ref({ x: 0, y: 0 })
-const initialSelectedPosition = ref({ x: 0, y: 0 }) // 记录选中时的鼠标位置
 
 const { tabs, activeTab, slideDirection, setActiveTab } = useTabs(props.userPanels)
 
@@ -36,9 +35,10 @@ const { tabs, activeTab, slideDirection, setActiveTab } = useTabs(props.userPane
 function calculatePanelPosition(mouseX: number, mouseY: number) {
   const offsetX = 20
   const offsetY = 20
-  const panelWidth = 300
+  const panelWidth = panelRef.value?.offsetWidth || 300
   const panelHeight = panelRef.value?.offsetHeight || 350
   const minMargin = 10
+  const scrollTop = window.scrollY || document.documentElement.scrollTop
 
   let left = mouseX + offsetX
   let top = mouseY + offsetY
@@ -49,7 +49,7 @@ function calculatePanelPosition(mouseX: number, mouseY: number) {
   }
 
   // 避免超出下边界
-  if (top + panelHeight > windowHeight.value) {
+  if (top + panelHeight > windowHeight.value + scrollTop) {
     top = mouseY - panelHeight - offsetY
   }
 
@@ -59,11 +59,11 @@ function calculatePanelPosition(mouseX: number, mouseY: number) {
   }
 
   // 避免超出上边界
-  if (top < minMargin) {
+  if (top < minMargin + scrollTop) {
     top = minMargin
   }
 
-  return { x: left, y: top }
+  return { x: left, y: top - scrollTop }
 }
 
 const panelPosition = computed(() => {
@@ -75,16 +75,10 @@ const panelPosition = computed(() => {
       baseX = dragPosition.value.x
       baseY = dragPosition.value.y
     }
-    else if (finalPosition.value.x !== 0 || finalPosition.value.y !== 0) {
-      // 如果已经拖动过，使用最终位置
+    else {
+      // 使用选中时计算并固定的位置
       baseX = finalPosition.value.x
       baseY = finalPosition.value.y
-    }
-    else {
-      // 使用选中时记录的鼠标位置作为初始位置
-      const position = calculatePanelPosition(initialSelectedPosition.value.x, initialSelectedPosition.value.y)
-      baseX = position.x
-      baseY = position.y
     }
   }
   else {
@@ -140,7 +134,7 @@ function handleDrag(event: MouseEvent) {
   const newY = event.clientY - dragOffset.value.y
 
   // 限制在视口内
-  const panelWidth = 300 // 与 CSS 中的实际宽度一致
+  const panelWidth = panelRef.value?.offsetWidth || 300
   const panelHeight = panelRef.value?.offsetHeight || 350 // 使用真实DOM高度，fallback到max-height
   const maxX = windowWidth.value - panelWidth
   const maxY = windowHeight.value - panelHeight
@@ -173,12 +167,14 @@ watch(() => element.value, () => {
   }
 })
 
-// 监听选中状态变化，记录初始鼠标位置
+// 监听选中状态变化，计算并固定初始面板位置
 watch(() => props.isSelected, (isSelected) => {
   if (isSelected) {
-    initialSelectedPosition.value = {
-      x: mouseX.value,
-      y: mouseY.value,
+    // 立即计算面板的初始位置并固定
+    const position = calculatePanelPosition(mouseX.value, mouseY.value)
+    finalPosition.value = {
+      x: position.x,
+      y: position.y,
     }
   }
 })
