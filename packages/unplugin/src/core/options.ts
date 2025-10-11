@@ -6,6 +6,12 @@ export interface Panel {
 }
 
 export interface Options {
+
+  /**
+   * Apply the plugin to serve or build
+   */
+  apply?: 'serve' | 'build'
+
   /**
    * Whether to enable the inspector
    * @default true
@@ -26,6 +32,7 @@ export interface Options {
 
 export function resolveOptions(options: Options = {}): Required<Options> {
   return {
+    apply: options.apply || 'serve',
     enabled: options.enabled ?? true,
     panels: options.panels ?? [],
     customStyles: options.customStyles ?? '',

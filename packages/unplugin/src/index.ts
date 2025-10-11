@@ -17,7 +17,7 @@ export const Starter: UnpluginInstance<Options | undefined, false> = createUnplu
   return {
     name: 'unplugin-unocss-inspector',
     enforce: 'pre',
-    apply: 'serve',
+    apply: options.apply,
     vite: {
       transformIndexHtml(html) {
         if (!options.enabled) {
