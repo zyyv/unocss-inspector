@@ -17,13 +17,9 @@ export const Starter: UnpluginInstance<Options | undefined, false> = createUnplu
   return {
     name: 'unplugin-unocss-inspector',
     enforce: 'pre',
-    apply: options.apply,
+    apply: 'serve',
     vite: {
       transformIndexHtml(html) {
-        if (!options.enabled) {
-          return html
-        }
-
         const inspectorCssPath = resolve(__dirname, './ui/inspector.css')
         let cssContent = ''
         try {
@@ -66,10 +62,6 @@ export const Starter: UnpluginInstance<Options | undefined, false> = createUnplu
         }
       },
       resolveId(id) {
-        if (!options.enabled) {
-          return
-        }
-
         if (id === `${VIRTUALURL}:app.js`) {
           return id
         }
@@ -80,10 +72,6 @@ export const Starter: UnpluginInstance<Options | undefined, false> = createUnplu
         }
       },
       load(id) {
-        if (!options.enabled) {
-          return
-        }
-
         if (id === `${VIRTUALURL}:app.js`) {
           const appJsPath = resolve(__dirname, './ui/app.js')
           try {

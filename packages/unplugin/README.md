@@ -104,12 +104,6 @@ build({
 ```ts
 interface Options {
   /**
-   * Whether to enable the inspector
-   * @default true
-   */
-  enabled?: boolean
-
-  /**
    * Custom panels to add to the inspector
    * @default []
    */
@@ -154,8 +148,6 @@ export default defineConfig({
   plugins: [
     UnoCSS(),
     UnoInspector({
-      enabled: true,
-      position: 'top-left',
       customStyles: `
         #unocss-inspector-root {
           z-index: 999999;
@@ -171,7 +163,6 @@ export default defineConfig({
           component: CustomPanel,
         },
       ],
-      shortcut: 'Ctrl+I',
     }),
   ],
 })
