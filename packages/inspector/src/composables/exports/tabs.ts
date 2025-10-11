@@ -23,7 +23,7 @@ const defaultPanels: TabPanel[] = [
   { id: 'classes', label: 'Class', icon: 'i-hugeicons:colors', component: ClassList },
   { id: 'styles', label: 'Inline Styles', icon: 'i-hugeicons:left-to-right-list-star', component: StylesInfo },
   { id: 'layout', label: 'Layout', icon: 'i-hugeicons:layout-03', component: Layout },
-  { id: 'colors', label: 'Colors', icon: 'i-hugeicons:biscuit', component: StylesInfo },
+  // { id: 'colors', label: 'Colors', icon: 'i-hugeicons:biscuit', component: StylesInfo },
   { id: 'box', label: 'Box Model', icon: 'i-hugeicons:package-dimensions-02', component: BoxModel },
   { id: 'text', label: 'Text', icon: 'i-hugeicons:text-footnote', component: TextContent },
   { id: 'dom-tree', label: 'Dom Tree', icon: 'i-hugeicons:crowdfunding', component: DomTree },
