@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     vue(),
     UnoCSS('../../uno.config.ts'),
-    UnoInspector({ apply: 'build' }),
+    UnoInspector(),
   ],
   define: {
     'process.env.BABEL_TYPES_8_BREAKING': 'false',
