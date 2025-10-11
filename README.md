@@ -1,4 +1,4 @@
-# UnoCSS Inspector (WIP)
+# UnoCSS Inspector (WIP) [![Netlify Status](https://api.netlify.com/api/v1/badges/f9511a12-10e2-49e0-bf71-45beef793913/deploy-status)](https://app.netlify.com/projects/unocss-inspector/deploys)
 
 A UnoCSS-optimized element inspection tool, similar to browser developer tools' element inspector, for visual analysis of web element styles, box models, and property information.
 
