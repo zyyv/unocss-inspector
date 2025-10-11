@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TabPanel } from './types'
 import { useToggle, useWindowSize } from '@vueuse/core'
-import { computed, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useTracker } from './composables/exports/element'
 import { useMagicKey } from './composables/magickey'
 import ElementInfo from './ElementInfo.vue'
@@ -198,6 +198,12 @@ onUnmounted(() => {
   // 确保移除所有窗口事件监听
   window.removeEventListener('resize', updateHighlight)
   window.removeEventListener('scroll', updateHighlight, true)
+})
+
+onMounted(() => {
+  if (!document.body.classList.contains('virtual-inspector-injected')) {
+    document.body.classList.add('virtual-inspector-injected')
+  }
 })
 
 useMagicKey(() => {
