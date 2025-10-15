@@ -249,6 +249,7 @@ useEventListener('scroll', updateElementInfo, { capture: true })
   interpolate-size: allow-keywords;
   transition: height 0.3s ease-in-out;
 
+  color: #ccc;
   background: rgba(77, 77, 77, 0.4);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   overflow: hidden;
