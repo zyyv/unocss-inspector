@@ -2,7 +2,7 @@
   "name": "@unoc-inspect/monorepo",
   "type": "module",
   "version": "0.0.0",
-  "packageManager": "pnpm@10.16.1",
+  "packageManager": "pnpm@10.18.3",
   "author": "Chris",
   "license": "MIT",
   "scripts": {
@@ -15,7 +15,8 @@
     "play:component": "pnpm --filter ./playground/component build",
     "deploy": "pnpm build && pnpm play:component",
     "test": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "taze": "taze major -wIr"
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:lint",

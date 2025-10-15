@@ -2,7 +2,6 @@
   "name": "unplugin-uno-inspector",
   "type": "module",
   "version": "0.0.0",
-  "packageManager": "pnpm@10.16.1",
   "description": "UnoCSS inspector plugin for various bundlers",
   "license": "MIT",
   "keywords": [

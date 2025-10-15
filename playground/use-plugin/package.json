@@ -3,7 +3,6 @@
   "type": "module",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@10.15.1",
   "description": "Interactive dynamic review elements for UnoCSS",
   "author": "Chris",
   "license": "MIT",
