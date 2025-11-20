@@ -2,7 +2,7 @@
   "name": "@unoc-inspect/monorepo",
   "type": "module",
   "version": "0.0.0",
-  "packageManager": "pnpm@10.18.3",
+  "packageManager": "pnpm@10.23.0",
   "author": "Chris",
   "license": "MIT",
   "scripts": {
@@ -31,6 +31,7 @@
     "debug": "catalog:utils",
     "eslint": "catalog:lint",
     "esno": "catalog:utils",
+    "taze": "catalog:utils",
     "tinyglobby": "catalog:utils",
     "tsdown": "catalog:build",
     "tsx": "catalog:build",

@@ -1,45 +1,52 @@
 packages:
   - playground/*
   - packages/*
+
 autoInstallPeers: true
-ignoreWorkspaceRootCheck: true
+
 catalogs:
   build:
-    tsdown: ^0.15.7
+    tsdown: ^0.16.6
     tsx: ^4.20.6
     typescript: ^5.9.3
     unplugin: ^2.3.10
     unplugin-utils: ^0.3.1
-    vite: ^7.1.10
+    vite: ^7.2.4
     vite-plugin-dts: ^4.5.4
   icons:
     '@iconify-json/catppuccin': ^1.2.17
-    '@iconify-json/hugeicons': ^1.2.17
+    '@iconify-json/hugeicons': ^1.2.18
     '@iconify/utils': ^3.0.2
   lint:
-    '@antfu/eslint-config': ^6.0.0
-    eslint: ^9.37.0
+    '@antfu/eslint-config': ^6.2.0
+    eslint: ^9.39.1
   plugins:
     vite-dev-rpc: ^1.1.0
   test:
-    vitest: ^3.2.4
+    vitest: ^4.0.12
   unocss:
-    '@unocss/core': ^66.5.4
-    '@unocss/preset-web-fonts': ^66.5.4
-    '@unocss/preset-wind4': ^66.5.4
-    unocss: ^66.5.4
+    '@unocss/core': ^66.5.7
+    '@unocss/preset-web-fonts': ^66.5.7
+    '@unocss/preset-wind4': ^66.5.7
+    unocss: ^66.5.7
   utils:
     '@types/node': ^24.7.2
     debug: ^4.4.3
     esno: ^4.8.0
+    taze: ^19.9.0
     tinyglobby: ^0.2.15
   vue:
-    '@vitejs/plugin-vue': ^6.0.1
-    '@vueuse/core': ^13.9.0
-    vue: ^3.5.22
-    vue-tsc: ^3.1.1
+    '@vitejs/plugin-vue': ^6.0.2
+    '@vueuse/core': ^14.0.0
+    vue: ^3.5.24
+    vue-tsc: ^3.1.4
+
+ignoreWorkspaceRootCheck: true
+
 onlyBuiltDependencies:
   - core-js
   - esbuild
+
 shamefullyHoist: true
+
 strictPeerDependencies: false
