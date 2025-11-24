@@ -17,12 +17,12 @@ const VIRTUALURL = 'virtual:unocss-inspector-path'
 
 export const Starter: UnpluginInstance<Options | undefined, false> = createUnplugin((rawOptions = {}) => {
   const options = resolveOptions(rawOptions)
-  
+
   // Determine the correct UI directory path
   // In development mode (src/), use dist/ui
   // In production mode (dist/), use ui
-  const uiDir = __dirname.includes('/src') 
-    ? resolve(__dirname, '../dist/ui') 
+  const uiDir = __dirname.includes('/src')
+    ? resolve(__dirname, '../dist/ui')
     : resolve(__dirname, './ui')
 
   return {
