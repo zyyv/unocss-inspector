@@ -17,6 +17,13 @@ const VIRTUALURL = 'virtual:unocss-inspector-path'
 
 export const Starter: UnpluginInstance<Options | undefined, false> = createUnplugin((rawOptions = {}) => {
   const options = resolveOptions(rawOptions)
+  
+  // Determine the correct UI directory path
+  // In development mode (src/), use dist/ui
+  // In production mode (dist/), use ui
+  const uiDir = __dirname.includes('/src') 
+    ? resolve(__dirname, '../dist/ui') 
+    : resolve(__dirname, './ui')
 
   return {
     name: 'unplugin-unocss-inspector',
@@ -60,13 +67,13 @@ export const Starter: UnpluginInstance<Options | undefined, false> = createUnplu
       },
       resolveId(id) {
         if (id === '@uno-inspect/inspector') {
-          const inspectorPath = resolve(__dirname, './ui/inspector.js')
+          const inspectorPath = resolve(uiDir, 'inspector.js')
           return inspectorPath
         }
       },
       load(id) {
         if (id === `${VIRTUALURL}:app.js`) {
-          const appJsPath = resolve(__dirname, './ui/app.js')
+          const appJsPath = resolve(uiDir, 'app.js')
           try {
             let appCode = readFileSync(appJsPath, 'utf-8')
             appCode = appCode.replace(
@@ -81,7 +88,7 @@ export const Starter: UnpluginInstance<Options | undefined, false> = createUnplu
         }
 
         if (id === `${VIRTUALURL}:inspector.css?direct`) {
-          const inspectorCssPath = resolve(__dirname, './ui/inspector.css')
+          const inspectorCssPath = resolve(uiDir, 'inspector.css')
           try {
             if (existsSync(inspectorCssPath)) {
               return readFileSync(inspectorCssPath, 'utf-8')

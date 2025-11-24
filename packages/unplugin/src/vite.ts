@@ -7,30 +7,47 @@ import { createRPCServer } from 'vite-dev-rpc'
 import { Starter } from './index'
 
 function vite(options?: Options): ReturnType<typeof Starter.vite>[] {
-  let ctx: UnocssPluginContext<VitePluginConfig<Theme>>
+  let ctx: UnocssPluginContext<VitePluginConfig<Theme>> | undefined
 
   return [
     Starter.vite(options),
     {
       name: 'unplugin-unocss-inspector:rpc',
-      enforce: 'pre',
+      enforce: 'post',
       apply: 'serve',
       configResolved(config) {
-        const api = config.plugins.find(i => i.name === 'unocss:api')?.api as UnocssVitePluginAPI | undefined
-        if (!api) {
-          throw new Error('UnoCSS plugin not found')
+        const unocssPlugin = config.plugins.find(i => i.name === 'unocss:api')
+        if (unocssPlugin && 'api' in unocssPlugin) {
+          const api = unocssPlugin.api as UnocssVitePluginAPI
+          ctx = api.getContext()
         }
-        ctx = api.getContext()
       },
       async configureServer(server) {
+        if (!ctx) {
+          console.warn('[unplugin-unocss-inspector] UnoCSS context not found. Make sure UnoCSS plugin is loaded before this plugin.')
+          return
+        }
+
         await ctx.ready
 
-        const rpc = createRPCServer<ClientFunctions, ServerFunctions>('demo', server.ws, {
-          version() {
-            rpc.alert.asEvent(`Someone got!`)
-            return ctx.uno.version
+        createRPCServer<ClientFunctions, ServerFunctions>('unocss-inspector', server.ws, {
+          getUno() {
+            if (!ctx) {
+              throw new Error('UnoCSS context not found')
+            }
+
+            return ctx.uno
+          },
+          getCtx() {
+            if (!ctx) {
+              throw new Error('UnoCSS context not found')
+            }
+            return ctx
           },
           async generate(tokens, options) {
+            if (!ctx) {
+              throw new Error('UnoCSS context not found')
+            }
             const { css } = await ctx.uno.generate(tokens, options)
             return css
           },
