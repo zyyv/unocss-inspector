@@ -264,7 +264,7 @@ function vite(options?: Options): ReturnType<typeof Starter.vite>[] {
             const { css, matched } = await ctx.uno.generate(tokens, options)
             return {
               css: await formatCSS(css),
-              matched: Array.from(matched),
+              matched: Array.from(matched, ([token]) => token),
             }
           },
         })
