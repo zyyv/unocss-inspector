@@ -6,8 +6,17 @@ import { ref } from 'vue'
 
 const rpc = ref<ReturnType<typeof createRPCClient<ServerFunctions, ClientFunctions>>>()
 
-if (import.meta.hot) {
-  rpc.value = createRPCClient<ServerFunctions, ClientFunctions>('unocss-inspector', import.meta.hot, {})
+declare global {
+  // Provided by the Vite plugin injected app module. The inspector itself is
+  // library-built, so import.meta.hot is not always available inside this file.
+  // eslint-disable-next-line vars-on-top
+  var __UNOCSS_INSPECTOR_HOT__: ImportMeta['hot'] | undefined
+}
+
+const hot = globalThis.__UNOCSS_INSPECTOR_HOT__ || import.meta.hot
+
+if (hot) {
+  rpc.value = createRPCClient<ServerFunctions, ClientFunctions>('unocss-inspector', hot, {})
 }
 
 export function useUnoCSS() {
@@ -25,6 +34,12 @@ export function useUnoCSS() {
     return await rpc.value.getCtx()
   }
 
+  async function getSettings() {
+    if (!rpc.value)
+      return
+    return await rpc.value.getSettings()
+  }
+
   async function generate(tokens: string) {
     if (!rpc.value)
       return
@@ -35,6 +50,7 @@ export function useUnoCSS() {
     rpc: rpc as any,
     getUno,
     getCtx,
+    getSettings,
     generate,
   }
 }

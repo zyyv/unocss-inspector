@@ -1,22 +1,35 @@
 <script lang='ts' setup>
+import type { SerializedUnoCSSSettings } from '../../types'
 import { onMounted, ref } from 'vue'
 import { useUnoCSS } from '../../composables/unocss'
 import PanelTitle from '../sections/PanelTitle.vue'
 import SettingsLayers from './settings/SettingsLayers.vue'
 import SettingsLists from './settings/SettingsLists.vue'
 import SettingsOverview from './settings/SettingsOverview.vue'
-import SettingsPresets from './settings/SettingsPresets.vue'
 import SettingsRules from './settings/SettingsRules.vue'
 import SettingsShortcuts from './settings/SettingsShortcuts.vue'
 import SettingsTheme from './settings/SettingsTheme.vue'
-import SettingsTransformers from './settings/SettingsTransformers.vue'
 import SettingsVariants from './settings/SettingsVariants.vue'
 
-const { getUno } = useUnoCSS()
-const uno = ref<any>()
+const { getSettings } = useUnoCSS()
+const settings = ref<SerializedUnoCSSSettings>()
+const loading = ref(false)
+const error = ref<string>()
 
 onMounted(async () => {
-  uno.value = await getUno()
+  loading.value = true
+  error.value = undefined
+
+  try {
+    settings.value = await getSettings()
+    console.log('Fetched UnoCSS settings:', settings.value)
+  }
+  catch (err) {
+    error.value = err instanceof Error ? err.message : String(err)
+  }
+  finally {
+    loading.value = false
+  }
 })
 </script>
 
@@ -24,16 +37,26 @@ onMounted(async () => {
   <div class="p-3 no-scrollbar h-full overflow-auto">
     <PanelTitle icon="i-hugeicons:dashboard-circle-settings" title="Settings" />
 
-    <div v-if="uno" class="space-y-4 pb-4">
-      <SettingsOverview :uno="uno" />
-      <SettingsPresets :uno="uno" />
-      <SettingsTheme :uno="uno" />
-      <SettingsRules :uno="uno" />
-      <SettingsShortcuts :uno="uno" />
-      <SettingsVariants :uno="uno" />
-      <SettingsLists :uno="uno" />
-      <SettingsLayers :uno="uno" />
-      <SettingsTransformers :uno="uno" />
+    <div v-if="loading" class="mt-4 text-xs opacity-60">
+      Loading UnoCSS settings...
+    </div>
+
+    <div v-else-if="error" class="mt-4 rounded border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-200">
+      {{ error }}
+    </div>
+
+    <div v-else-if="settings" class="space-y-4 pb-4">
+      <SettingsOverview :uno="settings" />
+      <SettingsTheme :uno="settings" />
+      <SettingsRules :uno="settings" />
+      <SettingsShortcuts :uno="settings" />
+      <SettingsVariants :uno="settings" />
+      <SettingsLists :uno="settings" />
+      <SettingsLayers :uno="settings" />
+    </div>
+
+    <div v-else class="mt-4 text-xs opacity-60">
+      UnoCSS settings are unavailable.
     </div>
   </div>
 </template>

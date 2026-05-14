@@ -1,10 +1,13 @@
-import { Inspector } from '@uno-inspect/inspector'
 import { createApp, h } from 'vue'
 
-function initializeInspector() {
+async function initializeInspector() {
   if (document.querySelector('#unocss-inspector-root')) {
     return
   }
+
+  globalThis.__UNOCSS_INSPECTOR_HOT__ = import.meta.hot
+
+  const { Inspector } = await import('@uno-inspect/inspector')
 
   const container = document.createElement('div')
   container.id = 'unocss-inspector-root'
