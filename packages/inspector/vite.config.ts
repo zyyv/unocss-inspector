@@ -19,9 +19,6 @@ export default defineConfig({
       ],
     }),
   ],
-  define: {
-    'import.meta.hot': 'import.meta.hot',
-  },
   build: {
     lib: {
       entry: './src/index.ts',
