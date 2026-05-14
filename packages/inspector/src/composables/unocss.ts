@@ -52,6 +52,12 @@ export function useUnoCSS() {
     return await rpc.value.formatCSS(css)
   }
 
+  async function formatHTML(html: string) {
+    if (!rpc.value)
+      return
+    return await rpc.value.formatHTML(html)
+  }
+
   async function generateCSS(tokens: Parameters<ServerFunctions['generateCSS']>[0], options?: Parameters<ServerFunctions['generateCSS']>[1]) {
     if (!rpc.value)
       return
@@ -65,6 +71,7 @@ export function useUnoCSS() {
     getSettings,
     generate,
     formatCSS,
+    formatHTML,
     generateCSS,
   }
 }

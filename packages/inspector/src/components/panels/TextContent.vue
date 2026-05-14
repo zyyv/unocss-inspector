@@ -1,11 +1,13 @@
 <script lang='ts' setup>
 import { computed, ref, watch } from 'vue'
 import { useElement } from '../../composables/exports/element'
+import { useUnoCSS } from '../../composables/unocss'
 import FormControl from '../basic/FormControl.vue'
 import FormControlGroup from '../basic/FormControlGroup.vue'
 import PanelTitle from '../sections/PanelTitle.vue'
 
 const { element, tracking, triggering } = useElement()
+const { formatHTML } = useUnoCSS()
 
 // 内容类型选择
 type ContentType = 'innerText' | 'innerHTML'
@@ -55,14 +57,27 @@ const recommendedType = computed(() => {
   return 'innerText'
 })
 
-watch(elementContent, (newContent) => {
-  content.value = newContent
-}, { immediate: true })
+let formatVersion = 0
 
-// 当切换内容类型时，重新获取内容
-watch(contentType, () => {
-  content.value = elementContent.value
-})
+async function formatContent(value: string) {
+  if (contentType.value !== 'innerHTML' || !value)
+    return value
+
+  try {
+    return await formatHTML(value) || value
+  }
+  catch (error) {
+    console.warn('[unocss-inspector] Failed to format innerHTML', error)
+    return value
+  }
+}
+
+watch(elementContent, async (newContent) => {
+  const version = ++formatVersion
+  const formatted = await formatContent(newContent)
+  if (version === formatVersion)
+    content.value = formatted
+}, { immediate: true })
 
 function updateElementContent() {
   if (element.value) {
@@ -79,8 +94,8 @@ function updateElementContent() {
   }
 }
 
-function resetContent() {
-  content.value = elementContent.value
+async function resetContent() {
+  content.value = await formatContent(elementContent.value)
 }
 
 function useRecommendedType() {

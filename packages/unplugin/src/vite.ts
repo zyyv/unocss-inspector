@@ -188,6 +188,22 @@ async function formatCSS(css: string): Promise<string> {
   return result.code.trimEnd()
 }
 
+async function formatHTML(html: string): Promise<string> {
+  if (!html)
+    return ''
+
+  const result = await format('unocss-inspector.html', html, {
+    printWidth: 100,
+  })
+
+  if (result.errors.length) {
+    const message = result.errors.map(error => error.message).join('\n')
+    throw new Error(message || 'Failed to format HTML')
+  }
+
+  return result.code.trimEnd()
+}
+
 function vite(options?: Options): ReturnType<typeof Starter.vite>[] {
   let ctx: UnocssPluginContext<VitePluginConfig<Theme>> | undefined
 
@@ -233,6 +249,7 @@ function vite(options?: Options): ReturnType<typeof Starter.vite>[] {
             return serializeSettings(ctx)
           },
           formatCSS,
+          formatHTML,
           async generate(tokens, options) {
             if (!ctx) {
               throw new Error('UnoCSS context not found')
