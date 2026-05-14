@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@vueuse/core": "catalog:vue",
-    "shiki": "^4.0.2"
+    "shiki": "catalog:utils"
   },
   "devDependencies": {
     "vite-dev-rpc": "catalog:plugins"

@@ -10,9 +10,7 @@ const props = withDefaults(defineProps<{
 const model = defineModel<string[] | string>()
 
 watchEffect(() => {
-  if (model.value === undefined || model.value === null) {
-    model.value = props.type === 'checkbox' ? [] : ''
-  }
+  model.value ??= props.type === 'checkbox' ? [] : ''
 })
 
 function toggle(value: string) {

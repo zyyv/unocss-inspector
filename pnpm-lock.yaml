@@ -75,6 +75,12 @@ catalogs:
     esno:
       specifier: ^4.8.0
       version: 4.8.0
+    oxfmt:
+      specifier: ^0.49.0
+      version: 0.49.0
+    shiki:
+      specifier: ^4.0.2
+      version: 4.0.2
     taze:
       specifier: ^19.11.0
       version: 19.11.0
@@ -172,7 +178,7 @@ importers:
         specifier: catalog:vue
         version: 14.3.0(vue@3.5.34(typescript@6.0.3))
       shiki:
-        specifier: ^4.0.2
+        specifier: catalog:utils
         version: 4.0.2
       vue:
         specifier: catalog:vue
@@ -188,7 +194,7 @@ importers:
         specifier: workspace:*
         version: link:../inspector
       oxfmt:
-        specifier: ^0.49.0
+        specifier: catalog:utils
         version: 0.49.0
       unplugin:
         specifier: catalog:build

@@ -1,11 +1,21 @@
-packages:
-  - playground/*
-  - packages/*
-
 allowBuilds:
   esbuild: true
 
 autoInstallPeers: true
+
+ignoreWorkspaceRootCheck: true
+
+shamefullyHoist: true
+
+shellEmulator: true
+
+trustPolicy: no-downgrade
+
+packages:
+  - playground/*
+  - packages/*
+
+strictPeerDependencies: false
 
 catalogs:
   build:
@@ -36,6 +46,8 @@ catalogs:
     '@types/node': ^24.12.4
     debug: ^4.4.3
     esno: ^4.8.0
+    oxfmt: ^0.49.0
+    shiki: ^4.0.2
     taze: ^19.11.0
     tinyglobby: ^0.2.16
   vue:
@@ -43,13 +55,6 @@ catalogs:
     '@vueuse/core': ^14.3.0
     vue: ^3.5.34
     vue-tsc: ^3.2.9
-
-ignoreWorkspaceRootCheck: true
-
 onlyBuiltDependencies:
   - core-js
   - esbuild
-
-shamefullyHoist: true
-
-strictPeerDependencies: false

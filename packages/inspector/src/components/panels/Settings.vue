@@ -22,6 +22,7 @@ onMounted(async () => {
 
   try {
     settings.value = await getSettings()
+    // eslint-disable-next-line no-console
     console.log('Fetched UnoCSS settings:', settings.value)
   }
   catch (err) {
