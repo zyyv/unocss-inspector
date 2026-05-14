@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-defineProps<{
+const props = defineProps<{
   title: string
   count?: number
+  defaultCollapsed?: boolean
 }>()
 
-const collapsed = ref(false)
+const collapsed = ref(props.defaultCollapsed ?? props.title !== 'Overview')
 </script>
 
 <template>

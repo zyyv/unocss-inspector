@@ -20,7 +20,7 @@ function bodyTokens(body: string) {
 </script>
 
 <template>
-  <SettingsSection title="Shortcuts" :count="uno.config.shortcuts?.length">
+  <SettingsSection title="Shortcuts" :count="uno.config.shortcuts?.length" default-collapsed>
     <div class="flex flex-col gap-2">
       <div v-for="(shortcut, idx) in uno.config.shortcuts" :key="idx" class="font-mono text-xs">
         <div class="flex items-center gap-2 flex-wrap">

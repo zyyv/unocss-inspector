@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <SettingsSection title="Variants" :count="uno.config.variants?.length">
+  <SettingsSection title="Variants" :count="uno.config.variants?.length" default-collapsed>
     <div class="flex flex-col gap-1">
       <div v-for="(variant, idx) in uno.config.variants" :key="idx" class="font-mono opacity-75">
         {{ variant.name || 'Unnamed Variant' }}

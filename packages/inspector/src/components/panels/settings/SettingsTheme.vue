@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <SettingsSection title="Theme">
+  <SettingsSection title="Theme" default-collapsed>
     <pre class="font-mono text-xs opacity-75 overflow-auto max-h-60">{{ JSON.stringify(uno.config.theme, null, 2) }}</pre>
   </SettingsSection>
 </template>

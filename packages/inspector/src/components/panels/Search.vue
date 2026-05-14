@@ -4,13 +4,15 @@ import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
 import cssLang from 'shiki/langs/css.mjs'
 import vitesseDark from 'shiki/themes/vitesse-dark.mjs'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useInspectorSearch } from '../../composables/search'
 import { useUnoCSS } from '../../composables/unocss'
 import Empty from '../sections/Empty.vue'
 import PanelTitle from '../sections/PanelTitle.vue'
 
 const { generateCSS } = useUnoCSS()
+const { searchQuery } = useInspectorSearch()
 
-const query = ref('')
+const query = searchQuery
 const css = ref('')
 const highlightedCSS = ref('')
 const loading = ref(false)

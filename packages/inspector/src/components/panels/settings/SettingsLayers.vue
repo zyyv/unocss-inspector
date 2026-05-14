@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <SettingsSection title="Layers">
+  <SettingsSection title="Layers" default-collapsed>
     <div class="flex flex-col gap-1">
       <div v-for="(val, key) in uno.config.layers" :key="key" class="flex justify-between font-mono">
         <span class="text-blue-400">{{ key }}</span>

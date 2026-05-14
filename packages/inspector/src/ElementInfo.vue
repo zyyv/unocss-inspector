@@ -4,6 +4,7 @@ import { useEventListener, useMouse, useToggle, useWindowSize } from '@vueuse/co
 import { computed, ref, watch } from 'vue'
 import { useElement } from './composables/exports/element'
 import { useTabs } from './composables/exports/tabs'
+import { INSPECTOR_SEARCH_EVENT } from './composables/search'
 
 interface Props {
   isSelected: boolean
@@ -181,6 +182,7 @@ watch(() => props.isSelected, (isSelected) => {
 
 useEventListener('resize', updateElementInfo)
 useEventListener('scroll', updateElementInfo, { capture: true })
+useEventListener(window, INSPECTOR_SEARCH_EVENT, () => setActiveTab('search'))
 </script>
 
 <template>
