@@ -26,7 +26,9 @@ export interface ServerFunctions {
   getCtx: () => unknown
   getUno: () => UnoGenerator<import('@unocss/preset-wind4').Theme>
   getSettings: () => SerializedUnoCSSSettings
+  formatCSS: (css: string) => Promise<string>
   generate: (tokens: Parameters<UnoGenerator['generate']>[0], options?: Parameters<UnoGenerator['generate']>[1]) => Promise<string>
+  generateCSS: (tokens: Parameters<UnoGenerator['generate']>[0], options?: Parameters<UnoGenerator['generate']>[1]) => Promise<{ css: string, matched: string[] }>
 }
 
 export interface ClientFunctions {}

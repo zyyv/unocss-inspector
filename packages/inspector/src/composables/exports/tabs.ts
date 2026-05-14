@@ -8,6 +8,7 @@ import ClassList from '../../components/panels/ClassList.vue'
 import DomTree from '../../components/panels/DomTree.vue'
 import StylesInfo from '../../components/panels/InlineStyles.vue'
 import Layout from '../../components/panels/layout/index.vue'
+import Search from '../../components/panels/Search.vue'
 import Settings from '../../components/panels/Settings.vue'
 import TextContent from '../../components/panels/TextContent.vue'
 
@@ -19,6 +20,7 @@ interface UseTabsReturn {
 }
 
 const defaultPanels: TabPanel[] = [
+  { id: 'search', label: 'Search', icon: 'i-hugeicons:search-01', component: Search },
   { id: 'basic', label: 'Basic Info', icon: 'i-hugeicons:alert-diamond', component: BasicInfo },
   { id: 'classes', label: 'Class', icon: 'i-hugeicons:colors', component: ClassList },
   { id: 'styles', label: 'Inline Styles', icon: 'i-hugeicons:left-to-right-list-star', component: StylesInfo },
@@ -32,7 +34,7 @@ const defaultPanels: TabPanel[] = [
 
 export function useTabs(userPanels: TabPanel[] = []): UseTabsReturn {
   const tabs = ref<TabPanel[]>([...defaultPanels, ...userPanels])
-  const activeTabId = ref<string>(tabs.value[0].id)
+  const activeTabId = ref<string>(tabs.value[1].id)
   const slideDirection = ref<'left' | 'right'>('right')
 
   function setActiveTab(id: string) {

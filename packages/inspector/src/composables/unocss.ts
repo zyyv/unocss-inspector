@@ -40,10 +40,22 @@ export function useUnoCSS() {
     return await rpc.value.getSettings()
   }
 
-  async function generate(tokens: string) {
+  async function generate(tokens: Parameters<ServerFunctions['generate']>[0], options?: Parameters<ServerFunctions['generate']>[1]) {
     if (!rpc.value)
       return
-    return await rpc.value.generate(tokens)
+    return await rpc.value.generate(tokens, options)
+  }
+
+  async function formatCSS(css: string) {
+    if (!rpc.value)
+      return
+    return await rpc.value.formatCSS(css)
+  }
+
+  async function generateCSS(tokens: Parameters<ServerFunctions['generateCSS']>[0], options?: Parameters<ServerFunctions['generateCSS']>[1]) {
+    if (!rpc.value)
+      return
+    return await rpc.value.generateCSS(tokens, options)
   }
 
   return {
@@ -52,5 +64,7 @@ export function useUnoCSS() {
     getCtx,
     getSettings,
     generate,
+    formatCSS,
+    generateCSS,
   }
 }

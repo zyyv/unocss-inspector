@@ -3,6 +3,7 @@ import type { UnocssPluginContext } from 'unocss'
 import type { UnocssVitePluginAPI, VitePluginConfig } from 'unocss/vite'
 import type { Options } from './core/options'
 import type { ClientFunctions, SerializedUnoCSSSettings, ServerFunctions } from './types'
+import { format } from 'oxfmt'
 import { createRPCServer } from 'vite-dev-rpc'
 import { Starter } from './index'
 
@@ -171,6 +172,22 @@ function serializeSettings(ctx: UnocssPluginContext<VitePluginConfig<Theme>>): S
   }
 }
 
+async function formatCSS(css: string): Promise<string> {
+  if (!css)
+    return ''
+
+  const result = await format('unocss-inspector.css', css, {
+    printWidth: 100,
+  })
+
+  if (result.errors.length) {
+    const message = result.errors.map(error => error.message).join('\n')
+    throw new Error(message || 'Failed to format CSS')
+  }
+
+  return result.code.trimEnd()
+}
+
 function vite(options?: Options): ReturnType<typeof Starter.vite>[] {
   let ctx: UnocssPluginContext<VitePluginConfig<Theme>> | undefined
 
@@ -215,12 +232,23 @@ function vite(options?: Options): ReturnType<typeof Starter.vite>[] {
             }
             return serializeSettings(ctx)
           },
+          formatCSS,
           async generate(tokens, options) {
             if (!ctx) {
               throw new Error('UnoCSS context not found')
             }
             const { css } = await ctx.uno.generate(tokens, options)
             return css
+          },
+          async generateCSS(tokens, options) {
+            if (!ctx) {
+              throw new Error('UnoCSS context not found')
+            }
+            const { css, matched } = await ctx.uno.generate(tokens, options)
+            return {
+              css: await formatCSS(css),
+              matched: Array.from(matched),
+            }
           },
         })
       },

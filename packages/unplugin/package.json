@@ -55,6 +55,7 @@
   },
   "dependencies": {
     "@uno-inspect/inspector": "workspace:*",
+    "oxfmt": "^0.49.0",
     "unplugin": "catalog:build",
     "unplugin-utils": "catalog:build"
   },
